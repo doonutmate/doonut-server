@@ -18,6 +18,17 @@ spring:
     url: jdbc:h2:mem:doonut-test;MODE=MYSQL;DB_CLOSE_DELAY=-1
     username: sa
     password:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+# Swagger springdoc-ui Configuration
+springdoc:
+  swagger-ui:
+    path: api                     # Swagger UI 경로 => localhost:8000/api
+    tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+    operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+
 
 server:
   port: 8081

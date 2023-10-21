@@ -13,4 +13,8 @@ class ExampleAppService(
     fun create(@RequestBody req: ExampleCreateReq) {
         exampleBusinessService.create(Example(null, req.name))
     }
+
+    fun get(@RequestBody exampleId: Long) {
+        exampleBusinessService.get(exampleId)
+    }
 }

@@ -19,14 +19,4 @@ class SwaggerConfig {
                     .version("1.0"),
             )
     }
-
-    @Bean
-    fun getExampleApi(): GroupedOpenApi {
-        return GroupedOpenApi.builder()
-            .group("example")
-            .pathsToMatch("/example/**")
-            .pathsToExclude("")
-            .packagesToScan("com.doonutmate.example.controller")
-            .build()
-    }
 }

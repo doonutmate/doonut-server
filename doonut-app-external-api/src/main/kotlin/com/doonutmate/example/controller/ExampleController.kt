@@ -1,6 +1,7 @@
 package com.doonutmate.example.controller
 
 import com.doonutmate.example.controller.dto.ExampleCreateReq
+import com.doonutmate.example.model.Example
 import com.doonutmate.example.service.ExampleAppService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "example", description = "테스트용 API")
 @RequestMapping("/example")
 class ExampleController(
-    @Autowired var exampleAppservice: ExampleAppService,
+    @Autowired var exampleAppService: ExampleAppService,
 ) {
     @Operation(summary = "example 생성", description = "example을 생성하는 API입니다.")
     @ApiResponses(
@@ -29,7 +30,7 @@ class ExampleController(
     )
     @PostMapping
     fun create(@RequestBody req: ExampleCreateReq) {
-        exampleAppservice.create(req)
+        exampleAppService.create(req)
     }
 
     @Operation(summary = "example 조회", description = "example을 조회하는 API입니다.")
@@ -39,7 +40,7 @@ class ExampleController(
         ],
     )
     @GetMapping("/{exampleId}")
-    fun get(@PathVariable exampleId: Long) {
-        return exampleAppservice.get(exampleId)
+    fun get(@PathVariable exampleId: Long): Example {
+        return exampleAppService.get(exampleId)
     }
 }

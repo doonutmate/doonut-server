@@ -1,4 +1,4 @@
-name: [PROD] Test CD
+name: production test execution
 
 on:
   pull_request:

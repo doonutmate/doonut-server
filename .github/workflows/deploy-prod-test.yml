@@ -42,8 +42,7 @@ jobs:
         run: ./gradlew --info clean test
 
       - name: Publish Unit Test Results
-        working-directory: ./doonut-app-external-api
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ always() }}
         with:
-          files: build/test-results/**/*.xml
+          files: ./doonut-app-external-api/build/test-results/**/*.xml

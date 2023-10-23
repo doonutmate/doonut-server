@@ -45,4 +45,4 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ always() }}
         with:
-          files: ./doonut-app-external-api/build/test-results/**/*.xml
+          files: doonut-app-external-api/build/test-results/**/*.xml

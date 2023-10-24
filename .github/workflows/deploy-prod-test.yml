@@ -18,6 +18,10 @@ jobs:
           submodules: recursive
           token: ${{ secrets.SUBMODULE_TOKEN }}
 
+      - name: Set application config
+        run: |
+          cp ./doonut-app-external-api/src/main/resources/doonut_submodule_config/application-prod.yaml ./doonut-app-external-api/src/main/resources/application.yaml 
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:

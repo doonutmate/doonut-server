@@ -1,4 +1,0 @@
-[submodule "doonut-submodule-config"]
-	path = doonut-app-external-api/src/main/resources/doonut_submodule_config
-	url = https://github.com/doonutmate/doonut-submodule-config
-	branch = develop

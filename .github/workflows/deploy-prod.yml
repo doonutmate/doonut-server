@@ -1,11 +1,8 @@
 name: Deploy production server
 
-#on:
-#  push:
-#    branches: ["main"]
 on:
-  pull_request:
-    branches: ["develop"]
+  push:
+    branches: ["main"]
 
 permissions: write-all
 

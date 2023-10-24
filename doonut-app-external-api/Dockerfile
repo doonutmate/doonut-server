@@ -1,5 +1,4 @@
 FROM openjdk:17
-COPY build.gradle .
 
 EXPOSE 8080 8080
 

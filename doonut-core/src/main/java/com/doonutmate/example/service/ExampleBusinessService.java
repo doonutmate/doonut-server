@@ -1,6 +1,6 @@
 package com.doonutmate.example.service;
 
-import com.doonutmate.example.entity.ExampleEntity;
+import com.doonutmate.example.mapper.ExampleMapper;
 import com.doonutmate.example.model.Example;
 import com.doonutmate.example.repository.ExampleRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,15 +15,13 @@ public class ExampleBusinessService {
 
     private final ExampleRepository repository;
 
+    private final ExampleMapper mapper;
+
     @Transactional
     public Long create(Example example) {
-        var id = example.id();
-        var name = example.name();
+        var newEntity = mapper.toEntity(example);
 
-        var savedEntity = repository.save(ExampleEntity.builder()
-                .id(id)
-                .name(name)
-                .build());
+        var savedEntity = repository.save(newEntity);
 
         return savedEntity.getId();
     }
@@ -31,6 +29,7 @@ public class ExampleBusinessService {
     public Example get(Long id) {
         var entity = repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return new Example(entity.getId(), entity.getName());
+
+        return mapper.toModel(entity);
     }
 }

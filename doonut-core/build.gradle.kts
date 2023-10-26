@@ -29,8 +29,20 @@ dependencies {
 
     // database
     runtimeOnly("com.h2database:h2")
+
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.addAll(
+        arrayOf(
+            "-Amapstruct.suppressGeneratorTimestamp=true", "-Amapstruct.unmappedTargetPolicy=ERROR", "-Amapstruct.defaultComponentModel=spring"
+        )
+    )
 }

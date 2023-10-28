@@ -34,13 +34,21 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+tasks {
+    copy {
+        from("../doonut-config")
+        include("*.yml")
+        into("src/main/resources")
     }
-}
 
-tasks.withType<Test> {
-    enabled = false
+    withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
+
+    withType<Test> {
+        enabled = false
+    }
 }

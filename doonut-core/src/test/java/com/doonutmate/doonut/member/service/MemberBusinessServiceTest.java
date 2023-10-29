@@ -1,6 +1,6 @@
-package com.doonutmate.example.service;
+package com.doonutmate.doonut.member.service;
 
-import com.doonutmate.example.model.Example;
+import com.doonutmate.doonut.member.model.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,29 +8,33 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class ExampleBusinessServiceTest {
+class MemberBusinessServiceTest {
 
     @Autowired
-    private ExampleBusinessService service;
+    private MemberBusinessService service;
 
     @Test
     void create() {
         // given
-        var example = new Example(null, "name");
+        var member = Member.builder()
+                .name("yeongun")
+                .build();
 
         // when
-        var savedEntityId = service.create(example);
+        var savedEntityId = service.create(member);
 
         // then
         var saved = service.get(savedEntityId);
-        assertThat(saved.name()).isEqualTo(example.name());
+        assertThat(saved.name()).isEqualTo(member.name());
     }
 
     @Test
     void get() {
         // given
-        var example = new Example(null, "name");
-        var savedEntityId = service.create(example);
+        var member = Member.builder()
+                .name("yeongun")
+                .build();
+        var savedEntityId = service.create(member);
 
         // when
         var actual = service.get(savedEntityId);
@@ -38,6 +42,6 @@ class ExampleBusinessServiceTest {
         // then
         assertThat(actual)
                 .extracting("id", "name")
-                .containsExactly(savedEntityId, "name");
+                .containsExactly(savedEntityId, "yeongun");
     }
 }

@@ -30,4 +30,10 @@ public class MemberBusinessService {
                 .map(mapper::toModel)
                 .orElse(null);
     }
+
+    public Member getByOauthId(String OauthId) {
+        return repository.findByOauthId(OauthId)
+                .map(mapper::toModel)
+                .orElse(null);
+    }
 }

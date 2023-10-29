@@ -1,6 +1,7 @@
 package com.doonutmate.doonut.member.service;
 
 import com.doonutmate.doonut.member.model.Member;
+import com.doonutmate.doonut.member.model.OauthType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,5 +44,25 @@ class MemberBusinessServiceTest {
         assertThat(actual)
                 .extracting("id", "name")
                 .containsExactly(savedEntityId, "yeongun");
+    }
+
+    @Test
+    void getByOauthId() {
+        // given
+        var oauthId = "1608565324";
+        var member = Member.builder()
+                .name("yeongun")
+                .oauthId(oauthId)
+                .oauthType(OauthType.KAKAO)
+                .build();
+        service.create(member);
+
+        // when
+        var actual = service.getByOauthId(oauthId);
+
+        // then
+        assertThat(actual)
+                .extracting("name", "oauthId")
+                .containsExactly("yeongun", oauthId);
     }
 }

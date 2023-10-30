@@ -1,3 +1,8 @@
 package com.doonutmate.example.controller.dto
 
-data class TokenRequest()
+import jakarta.validation.constraints.NotEmpty
+
+data class TokenRequest(
+    @NotEmpty
+    val accessToken: String
+)

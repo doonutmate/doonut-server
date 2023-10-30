@@ -1,6 +1,7 @@
 package com.doonutmate.example.controller
 
 import com.doonutmate.example.controller.dto.TokenRequest
+import com.doonutmate.example.service.OauthService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
@@ -12,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @Tag(name = "kakao", description = "카카오 Oauth")
 @RequestMapping("/oauth2")
-class OauthController {
-}
-@Operation(summary = "", description = "example을 생성하는 API입니다.")
-@PostMapping("/access/token")
-fun accessToken(@RequestBody tokenRequest: TokenRequest):ResponseEntity<String>{
-
-
-
+class OauthController(
+    private val oauthService: OauthService,
+) {
+    @Operation(summary = "", description = "example을 생성하는 API입니다.")
+    @PostMapping("/access/token")
+    fun accessToken(@RequestBody tokenRequest: TokenRequest): ResponseEntity<String> {
+        return oauthService.getUserId(tokenRequest.accessToken)
+    }
 }

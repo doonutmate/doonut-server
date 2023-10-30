@@ -34,6 +34,8 @@ dependencies {
 
     // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
+    implementation("com.google.code.gson:gson:2.8.9")
 }
 
 tasks.withType<KotlinCompile> {

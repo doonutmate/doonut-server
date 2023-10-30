@@ -1,6 +1,7 @@
 package com.doonutmate.example.service
 
-import com.google.gson.JsonObject
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -12,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder
 @Service
 class OauthService {
 
-    fun getUserId(accessToken: String): ResponseEntity<String> {
+    fun getUserId(accessToken: String): Long {
         val kakaoUserInfoEndPoint = UriComponentsBuilder.fromHttpUrl("https://kapi.kakao.com/v2/user/me")
         val headers = HttpHeaders()
 
@@ -29,6 +30,10 @@ class OauthService {
             String::class.java,
         )
 
-        return response
+        val jsonParser = JSONParser()
+        val jsonObj = jsonParser.parse(response.body) as JSONObject
+        val userKakaoId = jsonObj.get("id") as Long
+
+        return userKakaoId
     }
 }

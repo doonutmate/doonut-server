@@ -26,7 +26,7 @@ class OauthController(
         ],
     )
     @PostMapping("/access/token")
-    fun accessToken(@RequestBody tokenRequest: TokenRequest): ResponseEntity<String> {
+    fun accessToken(@RequestBody tokenRequest: TokenRequest): Long {
         return oauthService.getUserId(tokenRequest.accessToken)
     }
 }

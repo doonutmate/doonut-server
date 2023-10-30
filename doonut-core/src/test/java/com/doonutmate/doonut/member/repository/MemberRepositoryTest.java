@@ -1,6 +1,7 @@
 package com.doonutmate.doonut.member.repository;
 
 import com.doonutmate.doonut.member.entity.MemberEntity;
+import com.doonutmate.doonut.member.entity.OauthInfo;
 import com.doonutmate.doonut.member.model.OauthType;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,16 @@ class MemberRepositoryTest {
     void findByOauthId() {
         // given
         var oauthId = "1608565323";
-        var entity = MemberEntity.builder()
-                .name("yeongun")
+        var oauthInfo = OauthInfo.builder()
                 .oauthId(oauthId)
                 .oauthType(OauthType.KAKAO)
+                .build();
+        var entity = MemberEntity.builder()
+                .name("yeongun")
+                .oauthInfo(OauthInfo.builder()
+                        .oauthId(oauthInfo.getOauthId())
+                        .oauthType(oauthInfo.getOauthType())
+                        .build())
                 .build();
         repository.save(entity);
 
@@ -32,7 +39,7 @@ class MemberRepositoryTest {
 
         // then
         assertThat(actual)
-                .extracting("name", "oauthId")
-                .containsExactly("yeongun", oauthId);
+                .extracting("name", "oauthInfo")
+                .containsExactly("yeongun", oauthInfo);
     }
 }

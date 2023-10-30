@@ -1,12 +1,10 @@
 package com.doonutmate.doonut.member.entity;
 
 import com.doonutmate.doonut.common.entity.BaseTimeEntity;
-import com.doonutmate.doonut.member.model.OauthType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -48,12 +46,8 @@ public class MemberEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ProfileImageEntity> profileImages = new ArrayList<>();
 
-    @Column
-    String oauthId;
-
-    @Enumerated(EnumType.STRING)
-    @Column
-    OauthType oauthType;
+    @Embedded
+    OauthInfo oauthInfo;
 
     @Builder.Default
     @Column

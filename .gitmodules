@@ -1,0 +1,3 @@
+[submodule "doonut-config"]
+	path = doonut-config
+	url = https://github.com/doonutmate/doonut-config.git

@@ -1,4 +1,4 @@
-package com.doonutmate.example.service
+package com.doonutmate.oauth.service
 
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder
 @Service
 class OauthService {
 
-    fun getUserId(accessToken: String): Long {
+    fun getKakaoUserId(accessToken: String): Long {
         val kakaoUserInfoEndPoint = UriComponentsBuilder.fromHttpUrl("https://kapi.kakao.com/v2/user/me")
         val headers = HttpHeaders()
 
@@ -32,8 +32,6 @@ class OauthService {
 
         val jsonParser = JSONParser()
         val jsonObj = jsonParser.parse(response.body) as JSONObject
-        val userKakaoId = jsonObj.get("id") as Long
-
-        return userKakaoId
+        return jsonObj["id"] as Long
     }
 }

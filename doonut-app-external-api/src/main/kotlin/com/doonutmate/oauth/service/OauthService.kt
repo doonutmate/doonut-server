@@ -8,13 +8,13 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.util.UriComponentsBuilder
 
 @Service
-class OauthService {
-
+class OauthService() {
+    companion object {
+        const val kakaoUserInfoEndPoint = "https://kapi.kakao.com/v2/user/me"
+    }
     fun getKakaoUserId(accessToken: String): Long {
-        val kakaoUserInfoEndPoint = UriComponentsBuilder.fromHttpUrl("https://kapi.kakao.com/v2/user/me")
         val headers = HttpHeaders()
 
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
@@ -24,7 +24,7 @@ class OauthService {
         val httpEntity = HttpEntity<String>(headers)
 
         val response: ResponseEntity<String> = restTemplate.exchange(
-            kakaoUserInfoEndPoint.toUriString(),
+            kakaoUserInfoEndPoint,
             HttpMethod.POST,
             httpEntity,
             String::class.java,

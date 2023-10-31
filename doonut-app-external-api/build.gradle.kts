@@ -48,10 +48,3 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     enabled = false
 }
-
-// task<Copy>("copyConfiig") {
-//    copy {
-//        from("doonut-config/application.yml")
-//        into("src/main/resources")
-//    }
-// }

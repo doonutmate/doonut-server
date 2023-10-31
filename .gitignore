@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### external-api 아래 resources ###
+/doonut-app-external-api/src/main/resources

@@ -18,28 +18,27 @@ class OauthService() {
     @Value("\${END_POINT.KAKAO_USER_INFO}")
     private lateinit var kakaoUserInfoEndPoint: String
 
-    @Autowired
-    private lateinit var restTemplate: RestTemplate
+//    fun getKakaoUserInfo(accessToken: String): ResponseEntity<String> {
+//        try {
+//            val headers = HttpHeaders()
+//            headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
+//            headers.add("Authorization", "Bearer $accessToken")
+//
+//            val httpEntity = HttpEntity<String>(headers)
+//
+//            return restTemplate.exchange(
+//                kakaoUserInfoEndPoint,
+//                HttpMethod.POST,
+//                httpEntity,
+//                String::class.java,
+//            )
+//        } catch (e: RestClientException) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                .body("InvalidTokenException")
+//        }
+//    }
 
-    fun getKakaoUserInfo(accessToken: String): ResponseEntity<String> {
-        try {
-            val headers = HttpHeaders()
-            headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
-            headers.add("Authorization", "Bearer $accessToken")
 
-            val httpEntity = HttpEntity<String>(headers)
-
-            return restTemplate.exchange(
-                kakaoUserInfoEndPoint,
-                HttpMethod.POST,
-                httpEntity,
-                String::class.java,
-            )
-        } catch (e: RestClientException) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("InvalidTokenException")
-        }
-    }
     fun extractKakaoUserInfo(kakaoUserInfo: ResponseEntity<String>, vararg keyNames: String): Map<String, String> {
         val jsonParser = JSONParser()
         val jsonObj = jsonParser.parse(kakaoUserInfo.body) as JSONObject

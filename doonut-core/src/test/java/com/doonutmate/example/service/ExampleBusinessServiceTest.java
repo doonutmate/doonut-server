@@ -25,4 +25,19 @@ class ExampleBusinessServiceTest {
         var saved = service.get(savedEntityId);
         assertThat(saved.name()).isEqualTo(example.name());
     }
+
+    @Test
+    void get() {
+        // given
+        var example = new Example(null, "name");
+        var savedEntityId = service.create(example);
+
+        // when
+        var actual = service.get(savedEntityId);
+
+        // then
+        assertThat(actual)
+                .extracting("id", "name")
+                .containsExactly(savedEntityId, "name");
+    }
 }

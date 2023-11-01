@@ -3,6 +3,7 @@ package com.doonutmate.oauth.service
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -14,9 +15,8 @@ import org.springframework.web.client.RestTemplate
 
 @Service
 class OauthService() {
-    companion object {
-        private const val KAKAO_USER_INFO_END_POINT = "https://kapi.kakao.com/v2/user/me"
-    }
+    @Value("\${END_POINT.KAKAO_USER_INFO}")
+    private lateinit var kakaoUserInfoEndPoint: String
 
     @Autowired
     private lateinit var restTemplate: RestTemplate
@@ -30,14 +30,14 @@ class OauthService() {
             val httpEntity = HttpEntity<String>(headers)
 
             return restTemplate.exchange(
-                KAKAO_USER_INFO_END_POINT,
+                kakaoUserInfoEndPoint,
                 HttpMethod.POST,
                 httpEntity,
                 String::class.java,
             )
         } catch (e: RestClientException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("Invalid AccessToken")
+                .body("InvalidTokenException")
         }
     }
     fun extractKakaoUserInfo(kakaoUserInfo: ResponseEntity<String>, vararg keyNames: String): Map<String, String> {

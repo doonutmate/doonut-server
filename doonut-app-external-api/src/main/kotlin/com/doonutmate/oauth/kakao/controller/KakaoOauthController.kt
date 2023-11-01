@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @Tag(name = "kakao", description = "카카오 Oauth")
 @RequestMapping("/kakao")
-class OauthController(
+class KakaoOauthController(
     private val kakaoAccessTokenLoginClient: KakaoAccessClientLoginService,
 ) {
     @Operation(summary = "kakaoUserId 리턴", description = "accessToken 을 이용해서 카카오 사용자의 Json id를 받아옴")
-    @PostMapping("/access/token")
-    fun getId(@RequestBody tokenRequest: KakaoTokenRequest): TokenIdResponse {
+    @PostMapping("/access/id")
+    fun getKakaoUserId(@RequestBody tokenRequest: KakaoTokenRequest): TokenIdResponse {
         return kakaoAccessTokenLoginClient.getKakaoUserId(tokenRequest)
     }
 
-    @PostMapping("/access/token2")
-    fun getInfo(@RequestBody tokenRequest: KakaoTokenRequest): ResponseEntity<KakaoInfoResponse> {
+    @PostMapping("/access/userinfo")
+    fun getKakaoUserInfo(@RequestBody tokenRequest: KakaoTokenRequest): ResponseEntity<KakaoInfoResponse> {
         return kakaoAccessTokenLoginClient.getKakaoUserInfo(tokenRequest)
     }
 }

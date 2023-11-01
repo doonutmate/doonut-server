@@ -1,4 +1,4 @@
-package com.doonutmate.oauth.service
+package com.doonutmate.oauth.kakao.service
 
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class OauthService() {
-    @Value("\${END_POINT.KAKAO_USER_INFO}")
-    private lateinit var kakaoUserInfoEndPoint: String
 
 //    fun getKakaoUserInfo(accessToken: String): ResponseEntity<String> {
 //        try {

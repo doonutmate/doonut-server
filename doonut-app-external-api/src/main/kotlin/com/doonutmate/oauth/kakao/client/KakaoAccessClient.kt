@@ -1,21 +1,22 @@
-package com.doonutmate.oauth.configuration
+package com.doonutmate.oauth.kakao.client
 
-import com.doonutmate.oauth.dto.TokenIdResponse
+import com.doonutmate.oauth.kakao.constants.Oauth2Constants
+import com.doonutmate.oauth.kakao.dto.KakaoInfoResponse
+import com.doonutmate.oauth.kakao.dto.TokenIdResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.service.annotation.HttpExchange
 import org.springframework.web.service.annotation.PostExchange
-import reactor.core.publisher.Mono
 
-@HttpExchange("https://kapi.kakao.com")
-interface KakaoOpenApiClient {
-    @PostExchange("/v2/user/me")
+@HttpExchange(Oauth2Constants.KAKAO_URL)
+interface KakaoAccessClient {
+    @PostExchange(Oauth2Constants.KAKAO_USER_INFO)
     fun getKakaoUserId(
         @RequestHeader("Authorization") authorization: String,
     ): TokenIdResponse
 
-    @PostExchange("/v2/user/me")
+    @PostExchange(Oauth2Constants.KAKAO_USER_INFO)
     fun getKakaoUserInfo2(
         @RequestHeader("Authorization") authorization: String,
-    ): Mono<ResponseEntity<String>>
+    ): ResponseEntity<KakaoInfoResponse>
 }

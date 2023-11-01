@@ -7,6 +7,7 @@ import com.doonutmate.oauth.dto.TokenRequest
 import com.doonutmate.oauth.service.OauthService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,8 +23,12 @@ class OauthController(
 ) {
     @Operation(summary = "kakaoUserId 리턴", description = "accessToken 을 이용해서 카카오 사용자의 Json id를 받아옴")
     @PostMapping("/access/token")
-    fun login(@RequestBody tokenRequest: TokenRequest): TokenIdResponse {
-//        return oauthService.getKakaoUserInfo(tokenRequest.accessToken)
-        return kakaoAccessTokenLoginClient.login(tokenRequest.accessToken)
+    fun getId(@RequestBody tokenRequest: TokenRequest): TokenIdResponse {
+        return kakaoAccessTokenLoginClient.getKakaoUserId(tokenRequest.accessToken)
+    }
+
+    @PostMapping("/access/token2")
+    fun getInfo(@RequestBody tokenRequest: TokenRequest): Mono<ResponseEntity<String>> {
+        return kakaoAccessTokenLoginClient.getKakaoUserInfo(tokenRequest.accessToken)
     }
 }

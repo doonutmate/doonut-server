@@ -42,7 +42,9 @@ tasks.withType<Test> {
 tasks.withType<JavaCompile> {
     options.compilerArgs.addAll(
         arrayOf(
-            "-Amapstruct.suppressGeneratorTimestamp=true", "-Amapstruct.unmappedTargetPolicy=ERROR", "-Amapstruct.defaultComponentModel=spring"
-        )
+            "-Amapstruct.suppressGeneratorTimestamp=true",
+            "-Amapstruct.unmappedTargetPolicy=ERROR",
+            "-Amapstruct.defaultComponentModel=spring",
+        ),
     )
 }

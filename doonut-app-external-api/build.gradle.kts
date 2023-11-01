@@ -26,12 +26,20 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
+    testImplementation("io.kotest:kotest-framework-datatest:5.6.2")
+    testImplementation("io.mockk:mockk:1.12.4")
     // database
     runtimeOnly("com.h2database:h2")
 
     // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
+    // json
+    implementation("com.googlecode.json-simple:json-simple:1.1")
+
+    // webflux
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 tasks {

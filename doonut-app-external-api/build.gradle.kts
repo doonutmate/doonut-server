@@ -40,16 +40,23 @@ dependencies {
 
     // webflux
     implementation("org.springframework.boot:spring-boot-starter-webflux")
-
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+tasks {
+    copy {
+        from("../doonut-config")
+        include("*.yml")
+        into("src/main/resources")
     }
-}
 
-tasks.withType<Test> {
-    enabled = false
+    withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
+
+    withType<Test> {
+        enabled = false
+    }
 }

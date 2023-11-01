@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class KakaoAccessClientLoginService(
-    private val kakaoAuthClient: KakaoAccessClient,
+    private val kakaoAccessClient: KakaoAccessClient,
 ) {
 
     fun getKakaoUserId(tokenRequest: KakaoTokenRequest): TokenIdResponse {
-        return kakaoAuthClient.getKakaoUserId("Bearer ${tokenRequest.accessToken}")
+        return kakaoAccessClient.getKakaoUserId("Bearer ${tokenRequest.accessToken}")
     }
     fun getKakaoUserInfo(tokenRequest: KakaoTokenRequest): ResponseEntity<KakaoInfoResponse> {
-        return kakaoAuthClient.getKakaoUserInfo("Bearer ${tokenRequest.accessToken}")
+        return kakaoAccessClient.getKakaoUserInfo("Bearer ${tokenRequest.accessToken}")
     }
 }

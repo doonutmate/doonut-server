@@ -16,6 +16,6 @@ class KakaoAccessClientLoginService(
         return kakaoAuthClient.getKakaoUserId("Bearer ${tokenRequest.accessToken}")
     }
     fun getKakaoUserInfo(tokenRequest: KakaoTokenRequest): ResponseEntity<KakaoInfoResponse> {
-        return kakaoAuthClient.getKakaoUserInfo2("Bearer ${tokenRequest.accessToken}")
+        return kakaoAuthClient.getKakaoUserInfo("Bearer ${tokenRequest.accessToken}")
     }
 }

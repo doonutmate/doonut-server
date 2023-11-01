@@ -1,8 +1,8 @@
 package com.doonutmate.oauth.kakao.controller
 
-import com.doonutmate.oauth.kakao.dto.TokenIdResponse
 import com.doonutmate.oauth.kakao.dto.KakaoInfoResponse
 import com.doonutmate.oauth.kakao.dto.KakaoTokenRequest
+import com.doonutmate.oauth.kakao.dto.TokenIdResponse
 import com.doonutmate.oauth.kakao.service.KakaoAccessClientLoginService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -28,5 +28,4 @@ class OauthController(
     fun getInfo(@RequestBody tokenRequest: KakaoTokenRequest): ResponseEntity<KakaoInfoResponse> {
         return kakaoAccessTokenLoginClient.getKakaoUserInfo(tokenRequest)
     }
-
 }

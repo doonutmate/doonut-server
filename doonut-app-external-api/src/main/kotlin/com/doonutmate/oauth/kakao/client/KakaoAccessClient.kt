@@ -16,7 +16,7 @@ interface KakaoAccessClient {
     ): TokenIdResponse
 
     @PostExchange(Oauth2Constants.KAKAO_USER_INFO)
-    fun getKakaoUserInfo2(
+    fun getKakaoUserInfo(
         @RequestHeader("Authorization") authorization: String,
     ): ResponseEntity<KakaoInfoResponse>
 }

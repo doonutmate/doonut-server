@@ -1,4 +1,4 @@
 [submodule "doonut-config"]
 	path = doonut-config
-	url = https://github.com/doonutmate/doonut-config.git
+	url = https://github.com/doonutmate/doonut-config
 	branch = main

@@ -1,8 +1,8 @@
 package com.doonutmate.oauth.kakao.dto
 
-import com.doonutmate.doonut.member.model.Member
+import com.doonutmate.doonut.member.entity.MemberEntity
 
 data class LoginUserInfo(
-    val member: Member,
+    val memberEntity: MemberEntity,
     val isChecked: Boolean,
 )

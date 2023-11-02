@@ -20,7 +20,9 @@ jobs:
 
       - name: Profile Setting
         run: |
-          cd ./doonut-app-external-api/src/main/resources
+          cd ./doonut-app-external-api/src/main
+          mkdir resources
+          cd resources
           touch ./application.yml
           cp ./doonut-config/application-dev.yml ./doonut-app-external-api/src/main/resources/application.yml 
 

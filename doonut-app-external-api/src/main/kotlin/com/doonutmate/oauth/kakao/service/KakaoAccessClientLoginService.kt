@@ -4,7 +4,6 @@ import com.doonutmate.oauth.kakao.client.KakaoAccessClient
 import com.doonutmate.oauth.kakao.dto.KakaoInfoResponse
 import com.doonutmate.oauth.kakao.dto.KakaoTokenRequest
 import com.doonutmate.oauth.kakao.dto.TokenIdResponse
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,7 +16,8 @@ class KakaoAccessClientLoginService(
     fun getKakaoUserId(tokenRequest: KakaoTokenRequest): TokenIdResponse {
         return kakaoAccessClient.getKakaoUserId("Bearer ${tokenRequest.accessToken}")
     }
-    fun getKakaoUserInfo(tokenRequest: KakaoTokenRequest): ResponseEntity<KakaoInfoResponse> {
-        return kakaoAccessClient.getKakaoUserInfo("Bearer ${tokenRequest.accessToken}")
+
+    fun getKakaoSelectedUserInfo(tokenRequest: KakaoTokenRequest): KakaoInfoResponse {
+        return kakaoAccessClient.getKakaoSelectedUserInfo("Bearer ${tokenRequest.accessToken}")
     }
 }

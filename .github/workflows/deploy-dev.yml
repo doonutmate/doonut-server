@@ -18,12 +18,15 @@ jobs:
           submodules: true
           token: ${{ secrets.SUBMODULE_TOKEN }}
 
-      - name: Profile Setting
-        run: |
+      - name: Create application
+        run : |
           cd ./doonut-app-external-api/src/main
           mkdir resources
           cd resources
           touch ./application.yml
+
+      - name: Profile Setting
+        run: |
           cp ./doonut-config/application-dev.yml ./doonut-app-external-api/src/main/resources/application.yml 
 
 

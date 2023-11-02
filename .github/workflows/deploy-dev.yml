@@ -18,18 +18,6 @@ jobs:
           submodules: true
           token: ${{ secrets.SUBMODULE_TOKEN }}
 
-#      - name: Create application
-#        run : |
-#          cd ./doonut-app-external-api/src/main
-#          mkdir resources
-#          cd resources
-#          touch ./application.yml
-#
-#      - name: Profile Setting
-#        run: |
-#          cp ./doonut-config/application-dev.yml ./doonut-app-external-api/src/main/resources/application.yml
-
-
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:

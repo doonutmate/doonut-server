@@ -31,6 +31,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.12.4")
     // database
     runtimeOnly("com.h2database:h2")
+    runtimeOnly("com.mysql:mysql-connector-j")
 
     // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")

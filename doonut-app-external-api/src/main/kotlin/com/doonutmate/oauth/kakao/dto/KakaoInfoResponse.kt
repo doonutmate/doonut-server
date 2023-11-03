@@ -1,5 +1,8 @@
 package com.doonutmate.oauth.kakao.dto
 
+import io.swagger.v3.oas.annotations.media.Schema
+
+@Schema(title = "카카오 토큰을 이용해, 카카오 oauth 서버에서 반환받는 정보들을 담은 dto")
 data class KakaoInfoResponse(
     // TODO: 이거 long으로 바꿔야함
     val id: String?,

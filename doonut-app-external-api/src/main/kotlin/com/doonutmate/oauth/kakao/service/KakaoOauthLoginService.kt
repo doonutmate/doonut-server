@@ -17,10 +17,10 @@ class KakaoOauthLoginService(
     fun kakaoLoginPreventDuplication(tokenRequest: KakaoTokenRequest, oauthType: OauthType): Member? {
         val savedId = kakaoAccessClientLoginService.getKakaoUserId(tokenRequest)
         return memberBusinessService.getByOauthId(savedId.findMemberId())
-            ?: signUpNewMember(tokenRequest, oauthType)
+            ?: kakaoSignUpNewMember(tokenRequest, oauthType)
     }
 
-    fun signUpNewMember(tokenRequest: KakaoTokenRequest, oauthType: OauthType): Member? {
+    fun kakaoSignUpNewMember(tokenRequest: KakaoTokenRequest, oauthType: OauthType): Member? {
         val savedInfo = kakaoAccessClientLoginService.getKakaoSelectedUserInfo(tokenRequest)
         val newMember = Member.builder()
             .name(savedInfo.kakao_account?.name)

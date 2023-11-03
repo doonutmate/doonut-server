@@ -17,7 +17,7 @@ class KakaoAccessClientLoginService(
         return kakaoAccessClient.getKakaoUserId("Bearer ${tokenRequest.accessToken}")
     }
 
-    fun getKakaoSelectedUserInfo(tokenRequest: KakaoTokenRequest): KakaoInfoResponse {
-        return kakaoAccessClient.getKakaoSelectedUserInfo("Bearer ${tokenRequest.accessToken}")
+    fun getKakaoUserInfo(tokenRequest: KakaoTokenRequest): KakaoInfoResponse {
+        return kakaoAccessClient.getKakaoUserInfo("Bearer ${tokenRequest.accessToken}")
     }
 }

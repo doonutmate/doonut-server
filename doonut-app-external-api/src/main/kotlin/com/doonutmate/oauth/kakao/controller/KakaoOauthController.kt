@@ -24,7 +24,7 @@ class KakaoOauthController(
     @Operation(summary = "카카오 토큰을 이용한 값 반환", description = "카카오 accessToken 을 이용해서 카카오 사용자의 id,name,email을 반환")
     @PostMapping("/access/userinfo")
     fun getKakaoSelctedUserInfo(@RequestBody tokenRequest: KakaoTokenRequest): KakaoInfoResponse {
-        return kakaoAccessTokenLoginClient.getKakaoSelectedUserInfo(tokenRequest)
+        return kakaoAccessTokenLoginClient.getKakaoUserInfo(tokenRequest)
     }
 
     @Operation(summary = "카카오 토큰, Oauth타입에 따른 카카오 회원가입", description = "중복 검사를 통해, 이미 있는 회원이면 기존 값 조회, 새로운 회원이면 회원가입")

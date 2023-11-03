@@ -21,7 +21,7 @@ class KakaoOauthLoginService(
     }
 
     fun kakaoSignUpNewMember(tokenRequest: KakaoTokenRequest, oauthType: OauthType): Member? {
-        val savedInfo = kakaoAccessClientLoginService.getKakaoSelectedUserInfo(tokenRequest)
+        val savedInfo = kakaoAccessClientLoginService.getKakaoUserInfo(tokenRequest)
         val newMember = Member.builder()
             .name(savedInfo.kakao_account?.name)
             .email(savedInfo.kakao_account?.email)

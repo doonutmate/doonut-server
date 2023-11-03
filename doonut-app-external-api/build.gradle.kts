@@ -31,8 +31,6 @@ dependencies {
     testImplementation("io.kotest:kotest-framework-datatest:5.6.2")
     testImplementation("io.mockk:mockk:1.12.4")
 
-    // 맥 m1칩 에서 에러?
-    runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.76.Final:osx-aarch_64")
     // database
     runtimeOnly("com.h2database:h2")
 

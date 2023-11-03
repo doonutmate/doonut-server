@@ -17,7 +17,7 @@ class KakaoOauthLoginService(
     fun kakaoLoginPreventDuplication(tokenRequest: KakaoTokenRequest, oauthType: OauthType): Member? {
         val savedId = kakaoAccessClientLoginService.getKakaoUserId(tokenRequest)
         return memberBusinessService.getByOauthId(savedId.findMemberId())
-            ?: return signUpNewMember(tokenRequest, oauthType)
+            ?: signUpNewMember(tokenRequest, oauthType)
     }
 
     fun signUpNewMember(tokenRequest: KakaoTokenRequest, oauthType: OauthType): Member? {

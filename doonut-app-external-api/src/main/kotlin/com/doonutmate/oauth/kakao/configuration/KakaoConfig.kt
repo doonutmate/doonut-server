@@ -9,10 +9,10 @@ class KakaoConfig {
     @Bean
     fun getKakaoOauthApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
-            .group("kakaoOauth")
-            .pathsToMatch("/oauth/**")
+            .group("Oauth")
+            .pathsToMatch("/oauth/external")
             .pathsToExclude("")
-            .packagesToScan("com.doonutmate.oauth.kakao.controller")
+            .packagesToScan("com.doonutmate.oauth.externalOauth")
             .build()
     }
 }

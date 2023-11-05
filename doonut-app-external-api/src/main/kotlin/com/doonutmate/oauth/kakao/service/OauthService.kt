@@ -4,20 +4,18 @@ import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.model.OauthType.*
 import com.doonutmate.doonut.member.service.MemberBusinessService
-import com.doonutmate.oauth.kakao.client.KakaoAccessClient
 import com.doonutmate.oauth.kakao.dto.KakaoTokenRequest
 import com.doonutmate.oauth.kakao.util.OauthProvider
 import org.springframework.stereotype.Service
 
 @Service
 class OauthService(
-    private val kakaoAccessClient: KakaoAccessClient,
     private val memberBusinessService: MemberBusinessService,
     private val kakaoOauthProvider: KakaoOauthProvider,
 ) {
 
     fun login(tokenRequest: KakaoTokenRequest, oauthType: OauthType): Member? {
-        val savedId = kakaoAccessClientLoginService.getKakaoUserId(tokenRequest)
+        val savedId = oauthConvert(oauthType).getUserId(tokenRequest)
         return memberBusinessService.getByOauthId(savedId.findMemberId())
             ?: signUpNewMember(tokenRequest, oauthType)
     }

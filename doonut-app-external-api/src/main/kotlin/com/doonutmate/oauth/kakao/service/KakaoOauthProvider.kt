@@ -4,18 +4,19 @@ import com.doonutmate.oauth.kakao.client.KakaoAccessClient
 import com.doonutmate.oauth.kakao.dto.KakaoInfoResponse
 import com.doonutmate.oauth.kakao.dto.KakaoTokenRequest
 import com.doonutmate.oauth.kakao.dto.TokenIdResponse
+import com.doonutmate.oauth.kakao.util.OauthProvider
 import org.springframework.stereotype.Service
 
 @Service
-class KakaoAccessClientLoginService(
+class KakaoOauthProvider(
     private val kakaoAccessClient: KakaoAccessClient,
-) {
+) : OauthProvider() {
 
-    fun getKakaoUserId(tokenRequest: KakaoTokenRequest): TokenIdResponse {
+    override fun getUserId(tokenRequest: KakaoTokenRequest): TokenIdResponse {
         return kakaoAccessClient.getKakaoUserId("Bearer ${tokenRequest.accessToken}")
     }
 
-    fun getKakaoUserInfo(tokenRequest: KakaoTokenRequest): KakaoInfoResponse {
+    override fun getUserInfo(tokenRequest: KakaoTokenRequest): KakaoInfoResponse {
         return kakaoAccessClient.getKakaoUserInfo("Bearer ${tokenRequest.accessToken}")
     }
 }

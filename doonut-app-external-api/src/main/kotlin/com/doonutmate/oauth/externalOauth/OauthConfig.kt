@@ -1,11 +1,11 @@
-package com.doonutmate.oauth.kakao.configuration
+package com.doonutmate.oauth.externalOauth
 
 import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class KakaoConfig {
+class OauthConfig {
     @Bean
     fun getKakaoOauthApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()

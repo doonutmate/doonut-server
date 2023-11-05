@@ -6,7 +6,4 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class TokenIdResponse(
     @Schema(title = "카카오 유저 id", example = "")
     val id: Long,
-) {
-    fun findMemberId(): String {
-        return id.toString()
-    } }
+)

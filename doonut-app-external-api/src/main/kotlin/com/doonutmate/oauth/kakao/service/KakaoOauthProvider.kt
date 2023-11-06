@@ -6,7 +6,7 @@ import com.doonutmate.doonut.member.service.MemberBusinessService
 import com.doonutmate.oauth.externalOauth.OauthProvider
 import com.doonutmate.oauth.kakao.client.KakaoAccessClient
 import com.doonutmate.oauth.kakao.dto.KakaoInfoResponse
-import com.doonutmate.oauth.kakao.dto.TokenIdResponse
+import com.doonutmate.oauth.kakao.dto.KakaoTokenIdResponse
 import com.doonutmate.oauth.kakao.dto.TokenRequest
 import org.springframework.stereotype.Service
 
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service
 class KakaoOauthProvider(
     private val kakaoAccessClient: KakaoAccessClient,
     private val memberBusinessService: MemberBusinessService,
-) : OauthProvider<KakaoInfoResponse>() {
+) : OauthProvider<KakaoTokenIdResponse, KakaoInfoResponse>() {
 
-    override fun getUserId(tokenRequest: TokenRequest): TokenIdResponse {
+    override fun getUserId(tokenRequest: TokenRequest): KakaoTokenIdResponse {
         return kakaoAccessClient.getKakaoUserId("Bearer ${tokenRequest.accessToken}")
     }
 

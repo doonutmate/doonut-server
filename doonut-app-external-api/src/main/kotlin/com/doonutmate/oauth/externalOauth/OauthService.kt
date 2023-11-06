@@ -19,7 +19,7 @@ class OauthService(
             KAKAO -> {
                 kakaoOauthProvider.getUserId(tokenRequest)
             }
-            APPLE -> TODO()
+            APPLE -> TODO("애플 기능 추가시")
         }
         return memberBusinessService.getByOauthId(savedId.toString())
             ?: signUpNewMember(tokenRequest, oauthType)

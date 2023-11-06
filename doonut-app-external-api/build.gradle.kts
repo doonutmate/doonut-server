@@ -29,6 +29,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
     testImplementation("io.kotest:kotest-framework-datatest:5.6.2")
     testImplementation("io.mockk:mockk:1.12.4")
+
     // database
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")

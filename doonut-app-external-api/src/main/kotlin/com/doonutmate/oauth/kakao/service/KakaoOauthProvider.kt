@@ -3,7 +3,7 @@ package com.doonutmate.oauth.kakao.service
 import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.service.MemberBusinessService
-import com.doonutmate.oauth.externalOauth.OauthProvider
+import com.doonutmate.oauth.common.OauthProvider
 import com.doonutmate.oauth.kakao.client.KakaoAccessClient
 import com.doonutmate.oauth.kakao.dto.KakaoInfoResponse
 import com.doonutmate.oauth.kakao.dto.KakaoTokenIdResponse

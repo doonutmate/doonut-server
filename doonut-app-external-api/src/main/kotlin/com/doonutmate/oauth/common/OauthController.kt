@@ -1,4 +1,4 @@
-package com.doonutmate.oauth.externalOauth
+package com.doonutmate.oauth.common
 
 import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType

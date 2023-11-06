@@ -10,7 +10,7 @@ class OauthConfig {
     fun getKakaoOauthApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("Oauth")
-            .pathsToMatch("/oauth/external")
+            .pathsToMatch("/oauth/**")
             .pathsToExclude("")
             .packagesToScan("com.doonutmate.oauth.common")
             .build()

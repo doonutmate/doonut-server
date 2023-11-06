@@ -2,7 +2,6 @@ package com.doonutmate.oauth.common
 
 import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
-import com.doonutmate.oauth.kakao.dto.TokenRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.PathVariable

@@ -22,10 +22,10 @@ class OauthService(
             APPLE -> TODO("애플 기능 추가시")
         }
         return memberBusinessService.getByOauthId(savedId.toString())
-            ?: signUpNewMember(tokenRequest, oauthType)
+            ?: signUp(tokenRequest, oauthType)
     }
 
-    fun signUpNewMember(tokenRequest: TokenRequest, oauthType: OauthType): Member {
+    fun signUp(tokenRequest: TokenRequest, oauthType: OauthType): Member {
         val newMember = when (oauthType) {
             KAKAO -> {
                 kakaoOauthProvider.signUpKakao(tokenRequest)

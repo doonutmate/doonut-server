@@ -4,6 +4,7 @@ import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.model.OauthType.*
 import com.doonutmate.doonut.member.service.MemberBusinessService
+import com.doonutmate.oauth.JwtTokenProvider
 import com.doonutmate.oauth.kakao.service.KakaoOauthProvider
 import org.springframework.stereotype.Service
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service
 class OauthService(
     private val memberBusinessService: MemberBusinessService,
     private val kakaoOauthProvider: KakaoOauthProvider,
+    private val jwtTokenProvider: JwtTokenProvider,
 ) {
 
     fun login(tokenRequest: TokenRequest, oauthType: OauthType): Member? {

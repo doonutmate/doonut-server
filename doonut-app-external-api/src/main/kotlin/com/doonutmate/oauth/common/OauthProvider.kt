@@ -1,6 +1,9 @@
 package com.doonutmate.oauth.common
 
-abstract class OauthProvider<T, U> {
-    abstract fun getUserId(tokenRequest: TokenRequest): T
-    abstract fun getUserInfo(tokenRequest: TokenRequest): U
+import com.doonutmate.doonut.member.model.Member
+
+interface OauthProvider<T, U> {
+    fun getUserId(tokenRequest: TokenRequest): T
+    fun getUserInfo(tokenRequest: TokenRequest): U
+    fun signUp(tokenRequest: TokenRequest): Member
 }

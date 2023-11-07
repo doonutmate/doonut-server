@@ -15,7 +15,7 @@ class OauthService(
     private val jwtTokenProvider: JwtTokenProvider,
 ) {
 
-    fun login(tokenRequest: TokenRequest, oauthType: OauthType): String {
+    fun login(tokenRequest: TokenRequest, oauthType: OauthType): String? {
         val savedId = when (oauthType) {
             KAKAO -> {
                 kakaoOauthProvider.getUserId(tokenRequest)

@@ -1,6 +1,5 @@
 package com.doonutmate.oauth.common
 
-import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -18,7 +17,7 @@ class OauthController(
 ) {
     @Operation(summary = "Oauth타입에 따른 회원가입", description = "중복 검사를 통해, 이미 있는 회원이면 기존 값 조회, 새로운 회원이면 회원가입")
     @PostMapping("login/{oauthType}")
-    fun login(@PathVariable oauthType: OauthType, @RequestBody tokenRequest: TokenRequest): Member? {
+    fun login(@PathVariable oauthType: OauthType, @RequestBody tokenRequest: TokenRequest): String? {
         return oauthService.login(tokenRequest, oauthType)
     }
 }

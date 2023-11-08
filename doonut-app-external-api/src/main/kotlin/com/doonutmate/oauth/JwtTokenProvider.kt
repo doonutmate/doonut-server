@@ -11,11 +11,10 @@ import java.nio.charset.StandardCharsets
 import java.util.Date
 import javax.crypto.SecretKey
 
-
 @Component
 class JwtTokenProvider(
     @Value("\${security.jwt.token.secret-key}") secretKey: String,
-    @Value("\${security.jwt.token.expire-length}") private val validityInMilliseconds: Long
+    @Value("\${security.jwt.token.expire-length}") private val validityInMilliseconds: Long,
 ) {
     private val key: SecretKey = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
 

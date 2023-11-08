@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 class KakaoOauthProvider(
     private val kakaoAccessClient: KakaoAccessClient,
     private val memberBusinessService: MemberBusinessService,
-) : OauthProvider<KakaoIdResponse, KakaoInfoResponse>() {
+) : OauthProvider<KakaoIdResponse, KakaoInfoResponse> {
 
     override fun getUserId(tokenRequest: TokenRequest): KakaoIdResponse {
         return kakaoAccessClient.getKakaoUserId("Bearer ${tokenRequest.accessToken}")
@@ -24,7 +24,7 @@ class KakaoOauthProvider(
         return kakaoAccessClient.getKakaoUserInfo("Bearer ${tokenRequest.accessToken}")
     }
 
-    fun signUpKakao(tokenRequest: TokenRequest): Member {
+    override fun signUp(tokenRequest: TokenRequest): Member {
         val savedInfo = getUserInfo(tokenRequest)
         val newMember = Member.builder()
             .name(savedInfo.kakao_account?.name)

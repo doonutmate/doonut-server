@@ -4,6 +4,7 @@ import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.model.OauthType.*
 import com.doonutmate.doonut.member.service.MemberBusinessService
+import com.doonutmate.oauth.JwtTokenProvider
 import com.doonutmate.oauth.kakao.service.KakaoOauthProvider
 import org.springframework.stereotype.Service
 
@@ -11,23 +12,26 @@ import org.springframework.stereotype.Service
 class OauthService(
     private val memberBusinessService: MemberBusinessService,
     private val kakaoOauthProvider: KakaoOauthProvider,
+    private val jwtTokenProvider: JwtTokenProvider,
 ) {
 
-    fun login(tokenRequest: TokenRequest, oauthType: OauthType): Member? {
+    fun login(tokenRequest: TokenRequest, oauthType: OauthType): String? {
         val savedId = when (oauthType) {
             KAKAO -> {
                 kakaoOauthProvider.getUserId(tokenRequest)
             }
             APPLE -> TODO("애플 기능 추가시")
         }
-        return memberBusinessService.getByOauthId(savedId.toString())
+        val member = memberBusinessService.getByOauthId(savedId.toString())
             ?: signUp(tokenRequest, oauthType)
+
+        return jwtTokenProvider.createToken(member.oauthId)
     }
 
     fun signUp(tokenRequest: TokenRequest, oauthType: OauthType): Member {
         val newMember = when (oauthType) {
             KAKAO -> {
-                kakaoOauthProvider.signUpKakao(tokenRequest)
+                kakaoOauthProvider.signUp(tokenRequest)
             }
             APPLE -> TODO("애플 기능 추가시")
         }

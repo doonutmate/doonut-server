@@ -5,22 +5,22 @@ import com.doonutmate.exception.BaseExceptionCode
 import com.doonutmate.oauth.JwtTokenProvider
 import jakarta.servlet.http.HttpServletRequest
 import org.aspectj.lang.ProceedingJoinPoint
+import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
-import org.aspectj.lang.annotation.Before
 import org.springframework.stereotype.Component
 
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class GetIdFromToken
 
 @Aspect
 @Component
-class TokenAuthenticationAspect(
+class GetIdFromTokenAspect(
     private val jwtTokenProvider: JwtTokenProvider,
 ) {
 
-    @Before("@annotation(GetIdFromToken)")
-    fun checkAuth(joinPoint: ProceedingJoinPoint): String {
+    @Around("@annotation(GetIdFromToken)")
+    fun authorizationToken(joinPoint: ProceedingJoinPoint): Any? {
         val request = (joinPoint.args.find { it is HttpServletRequest } as? HttpServletRequest)
             ?: throw BaseException(BaseExceptionCode.REQUEST_NOT_FOUND)
 
@@ -31,7 +31,10 @@ class TokenAuthenticationAspect(
             throw BaseException(BaseExceptionCode.INVALID_TOKEN_PREFIX)
         }
 
-        val token = authorizationHeader.substring(7)
-        return jwtTokenProvider.getPayload(token)
-    }
+        val token = authorizationHeader.substring(6)
+        val userId = jwtTokenProvider.getPayload(token)
+        request.setAttribute("userId", userId)
+
+        // 타겟 메소드 실행
+        return joinPoint.proceed() }
 }

@@ -9,6 +9,4 @@ enum class BaseExceptionCode(val httpStatusCode: Int, val message: String) {
     AUTHORIZATION_HEADER_NULL(HttpStatus.BAD_REQUEST.value(), "인증 헤더가 null입니다."),
 
     INVALID_TOKEN_PREFIX(HttpStatus.UNAUTHORIZED.value(), "Bearer값이 아닙니다"),
-
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "토큰이 유효하지 않습니다."),
 }

@@ -25,8 +25,8 @@ class OauthController(
 
     @GetMapping("login/1")
     @GetIdFromToken
-    fun test(request: HttpServletRequest): String? {
-        val userId = request.getAttribute("userId") as? String
-        return userId
+    fun test(request: HttpServletRequest): String {
+        val userId = request.getAttribute("userId")
+        return userId as String
     }
 }

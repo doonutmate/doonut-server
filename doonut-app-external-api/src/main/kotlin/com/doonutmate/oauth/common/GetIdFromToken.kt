@@ -31,10 +31,9 @@ class GetIdFromTokenAspect(
             throw BaseException(BaseExceptionCode.INVALID_TOKEN_PREFIX)
         }
 
-        val token = authorizationHeader.substring(6)
+        val token = authorizationHeader.substring(7)
         val userId = jwtTokenProvider.getPayload(token)
         request.setAttribute("userId", userId)
-
-        // 타겟 메소드 실행
-        return joinPoint.proceed() }
+        return joinPoint.proceed()
+    }
 }

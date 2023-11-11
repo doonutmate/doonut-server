@@ -21,7 +21,7 @@ class GetIdFromTokenAspect(
 
     @Around("@annotation(GetIdFromToken)")
     fun authorizationToken(joinPoint: ProceedingJoinPoint): Any? {
-        val request = (joinPoint.args.find { it is HttpServletRequest } as? HttpServletRequest)
+        val request = joinPoint.args.filterIsInstance<HttpServletRequest>().firstOrNull()
             ?: throw BaseException(BaseExceptionCode.REQUEST_NOT_FOUND)
 
         val authorizationHeader = request.getHeader("Authorization")

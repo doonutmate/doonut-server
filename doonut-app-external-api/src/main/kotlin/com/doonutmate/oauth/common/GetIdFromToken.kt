@@ -1,10 +1,10 @@
 package com.doonutmate.oauth.common
 
+import com.doonutmate.exception.BaseException
+import com.doonutmate.exception.BaseExceptionCode
 import com.doonutmate.oauth.JwtTokenProvider
-import com.doonutmate.oauth.exception.BaseExceptionCode
-import com.doonutmate.oauth.exception.InvalidTokenException
 import jakarta.servlet.http.HttpServletRequest
-import org.aspectj.lang.JoinPoint
+import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.springframework.stereotype.Component
@@ -20,19 +20,18 @@ class TokenAuthenticationAspect(
 ) {
 
     @Before("@annotation(GetIdFromToken)")
-    fun beforeMethod(joinPoint: JoinPoint) {
-        val request = (
-            joinPoint.args.filterIsInstance<HttpServletRequest>().firstOrNull()
-                ?: throw InvalidTokenException(BaseExceptionCode.REQUEST_NOT_FOUND)
-            )
+    fun checkAuth(joinPoint: ProceedingJoinPoint): String {
+        val request = (joinPoint.args.find { it is HttpServletRequest } as? HttpServletRequest)
+            ?: throw BaseException(BaseExceptionCode.REQUEST_NOT_FOUND)
+
         val authorizationHeader = request.getHeader("Authorization")
-            ?: throw InvalidTokenException(BaseExceptionCode.AUTHORIZATION_HEADER_NULL)
+            ?: throw BaseException(BaseExceptionCode.AUTHORIZATION_HEADER_NULL)
+
+        if (!authorizationHeader.startsWith("Bearer ")) {
+            throw BaseException(BaseExceptionCode.INVALID_TOKEN_PREFIX)
+        }
 
         val token = authorizationHeader.substring(7)
-
-        // "Bearer <토큰>" 형태라고 가정할 때
-        val userId = jwtTokenProvider.getPayload(token)
-
-        // 이제 토큰에서 추출한 사용자 ID를 가지고 있습니다. 여기서 추가 작업을 수행할 수 있습니다.
+        return jwtTokenProvider.getPayload(token)
     }
 }

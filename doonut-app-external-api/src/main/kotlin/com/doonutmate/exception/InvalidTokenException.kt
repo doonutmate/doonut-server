@@ -1,3 +1,3 @@
-package com.doonutmate.oauth.exception
+package com.doonutmate.exception
 
 class InvalidTokenException() : RuntimeException("유효하지 않는 토근 값입니다")

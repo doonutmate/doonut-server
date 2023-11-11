@@ -1,6 +1,6 @@
 package com.doonutmate.oauth
 
-import com.doonutmate.oauth.exception.InvalidTokenException
+import com.doonutmate.exception.InvalidTokenException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

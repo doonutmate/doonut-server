@@ -1,6 +1,6 @@
 package com.doonutmate.oauth
 
-import com.doonutmate.oauth.exception.InvalidTokenException
+import com.doonutmate.exception.InvalidTokenException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm

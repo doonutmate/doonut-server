@@ -24,7 +24,7 @@ class KakaoOauthProvider(
         return kakaoAccessClient.getKakaoUserInfo("Bearer ${tokenRequest.accessToken}")
     }
 
-    override fun signUp(tokenRequest: TokenRequest): Member {
+    override fun signUp(tokenRequest: TokenRequest): Long {
         val savedInfo = getUserInfo(tokenRequest)
         val newMember = Member.builder()
             .name(savedInfo.kakao_account?.name)
@@ -33,7 +33,6 @@ class KakaoOauthProvider(
             .oauthType(OauthType.KAKAO)
             .deleted(false)
             .build()
-        memberBusinessService.create(newMember)
-        return newMember
+        return memberBusinessService.create(newMember)
     }
 }

@@ -1,6 +1,5 @@
 package com.doonutmate.oauth.common
 
-import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.model.OauthType.*
 import com.doonutmate.doonut.member.service.MemberBusinessService
@@ -22,19 +21,19 @@ class OauthService(
             }
             APPLE -> TODO("애플 기능 추가시")
         }
-        val member = memberBusinessService.getByOauthId(savedId.toString())
+        val userId = memberBusinessService.getByOauthId(savedId.toString())?.id
             ?: signUp(tokenRequest, oauthType)
 
-        return jwtTokenProvider.createToken(member.oauthId)
+        return jwtTokenProvider.createToken(userId.toString())
     }
 
-    fun signUp(tokenRequest: TokenRequest, oauthType: OauthType): Member {
-        val newMember = when (oauthType) {
+    fun signUp(tokenRequest: TokenRequest, oauthType: OauthType): Long {
+        val newMemberId = when (oauthType) {
             KAKAO -> {
                 kakaoOauthProvider.signUp(tokenRequest)
             }
             APPLE -> TODO("애플 기능 추가시")
         }
-        return newMember
+        return newMemberId
     }
 }

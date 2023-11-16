@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 class OauthController(
     private val oauthService: OauthService,
 ) {
-    @Operation(summary = "Oauth타입에 따른 회원가입", description = "중복 검사를 통해, 이미 있는 회원이면 기존 값 조회, 새로운 회원이면 회원가입")
+    @Operation(summary = "Oauth 타입 별 로그인", description = "각 Oauth 타입에 맞는 로그인을 진행한 뒤 AccessToken을 반환한다.")
     @PostMapping("/login")
-    fun login(@RequestParam oauthType: OauthType, @RequestBody tokenRequest: TokenRequest): String {
-        return oauthService.login(tokenRequest, oauthType)
+    fun login(@RequestParam oauthType: OauthType, @RequestBody loginRequest: LoginRequest): LoginResponse {
+        return oauthService.login(loginRequest, oauthType)
     }
 }

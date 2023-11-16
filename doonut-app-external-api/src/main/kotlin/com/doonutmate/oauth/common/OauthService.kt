@@ -15,24 +15,24 @@ class OauthService(
     private val jwtTokenProvider: JwtTokenProvider,
 ) {
 
-    fun login(tokenRequest: TokenRequest, oauthType: OauthType): String {
+    fun login(loginRequest: LoginRequest, oauthType: OauthType): LoginResponse {
         val savedId = when (oauthType) {
             KAKAO -> {
-                kakaoOauthProvider.getUserId(tokenRequest)
+                kakaoOauthProvider.getUserId(loginRequest)
             }
 
             APPLE -> TODO("애플 기능 추가시")
         }
         val member = memberBusinessService.getByOauthId(savedId.toString())
-            ?: signUp(tokenRequest, oauthType)
+            ?: signUp(loginRequest, oauthType)
 
-        return jwtTokenProvider.createToken(member.oauthId)
+        return LoginResponse(jwtTokenProvider.createToken(member.oauthId))
     }
 
-    fun signUp(tokenRequest: TokenRequest, oauthType: OauthType): Member {
+    fun signUp(loginRequest: LoginRequest, oauthType: OauthType): Member {
         val newMember = when (oauthType) {
             KAKAO -> {
-                kakaoOauthProvider.signUp(tokenRequest)
+                kakaoOauthProvider.signUp(loginRequest)
             }
 
             APPLE -> TODO("애플 기능 추가시")

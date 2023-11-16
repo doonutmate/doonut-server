@@ -1,6 +1,9 @@
-package com.doonutmate.oauth.common
+package com.doonutmate.oauth.controller
 
 import com.doonutmate.doonut.member.model.OauthType
+import com.doonutmate.oauth.controller.dto.LoginRequest
+import com.doonutmate.oauth.controller.dto.LoginResponse
+import com.doonutmate.oauth.service.OauthService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.PostMapping

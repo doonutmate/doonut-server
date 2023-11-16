@@ -1,10 +1,12 @@
-package com.doonutmate.oauth.common
+package com.doonutmate.oauth.service
 
 import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.model.OauthType.*
 import com.doonutmate.doonut.member.service.MemberBusinessService
 import com.doonutmate.oauth.JwtTokenProvider
+import com.doonutmate.oauth.controller.dto.LoginRequest
+import com.doonutmate.oauth.controller.dto.LoginResponse
 import com.doonutmate.oauth.kakao.service.KakaoOauthProvider
 import org.springframework.stereotype.Service
 

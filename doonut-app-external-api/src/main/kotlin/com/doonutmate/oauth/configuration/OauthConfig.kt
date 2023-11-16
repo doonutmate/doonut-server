@@ -1,4 +1,4 @@
-package com.doonutmate.oauth.common
+package com.doonutmate.oauth.configuration
 
 import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean
@@ -12,7 +12,7 @@ class OauthConfig {
             .group("Oauth")
             .pathsToMatch("/oauth/**")
             .pathsToExclude("")
-            .packagesToScan("com.doonutmate.oauth.common")
+            .packagesToScan("com.doonutmate.oauth.controller")
             .build()
     }
 }

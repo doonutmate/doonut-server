@@ -20,8 +20,8 @@ class AuthorizationArgumentResolver(
     }
 
     override fun supportsParameter(parameter: MethodParameter): Boolean {
-        return parameter.getParameterAnnotation(Authorization::class.java) != null &&
-            parameter.parameterType == String::class.java }
+        return parameter.getParameterAnnotation(Authorization::class.java) != null
+    }
 
     override fun resolveArgument(
         parameter: MethodParameter,

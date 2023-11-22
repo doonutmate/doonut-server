@@ -17,14 +17,14 @@ class OauthService(
 ) {
 
     fun login(loginRequest: LoginRequest, oauthType: OauthType): LoginResponse {
-        val savedId = when (oauthType) {
+        val savedIdDto = when (oauthType) {
             KAKAO -> {
                 kakaoOauthProvider.getUserId(loginRequest)
             }
 
             APPLE -> TODO("애플 기능 추가시")
         }
-        val memberId = memberBusinessService.getByOauthId(savedId.toString())?.id
+        val memberId = memberBusinessService.getByOauthId(savedIdDto.toString())?.id
             ?: signUp(loginRequest, oauthType)
 
         return LoginResponse(jwtTokenProvider.createToken(memberId.toString()))

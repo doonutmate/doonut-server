@@ -15,6 +15,10 @@ import org.springframework.web.method.support.ModelAndViewContainer
 class AuthorizationArgumentResolver(
     private val jwtTokenProvider: JwtTokenProvider,
 ) : HandlerMethodArgumentResolver {
+    companion object {
+        const val BEARER_PREFIX_LEN = 7
+    }
+
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.getParameterAnnotation(Authorization::class.java) != null &&
             parameter.parameterType == String::class.java }
@@ -25,8 +29,7 @@ class AuthorizationArgumentResolver(
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
     ): Any {
-        val request: HttpServletRequest =
-            webRequest.getNativeRequest(HttpServletRequest::class.java) as HttpServletRequest
+        val request = webRequest.getNativeRequest(HttpServletRequest::class.java) as HttpServletRequest
 
         val authorizationHeader = request.getHeader("Authorization")
             ?: throw BaseException(BaseExceptionCode.AUTHORIZATION_HEADER_NULL)
@@ -35,8 +38,7 @@ class AuthorizationArgumentResolver(
             throw BaseException(BaseExceptionCode.INVALID_TOKEN_PREFIX)
         }
 
-        // TODO 매직넘버
-        val token = authorizationHeader.substring(7)
+        val token = authorizationHeader.substring(BEARER_PREFIX_LEN)
         return jwtTokenProvider.getPayload(token)
     }
 }

@@ -3,11 +3,11 @@ package com.doonutmate.oauth.kakao.service
 import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.service.MemberBusinessService
-import com.doonutmate.oauth.service.OauthProvider
 import com.doonutmate.oauth.controller.dto.LoginRequest
 import com.doonutmate.oauth.kakao.client.KakaoAccessClient
 import com.doonutmate.oauth.kakao.dto.KakaoIdResponse
 import com.doonutmate.oauth.kakao.dto.KakaoInfoResponse
+import com.doonutmate.oauth.service.OauthProvider
 import org.springframework.stereotype.Service
 
 @Service
@@ -24,7 +24,7 @@ class KakaoOauthProvider(
         return kakaoAccessClient.getKakaoUserInfo("Bearer ${loginRequest.accessToken}")
     }
 
-    override fun signUp(loginRequest: LoginRequest): Member {
+    override fun signUp(loginRequest: LoginRequest): Long {
         val savedInfo = getUserInfo(loginRequest)
         val newMember = Member.builder()
             .name(savedInfo.kakao_account?.name)
@@ -33,7 +33,6 @@ class KakaoOauthProvider(
             .oauthType(OauthType.KAKAO)
             .deleted(false)
             .build()
-        memberBusinessService.create(newMember)
-        return newMember
+        return memberBusinessService.create(newMember)
     }
 }

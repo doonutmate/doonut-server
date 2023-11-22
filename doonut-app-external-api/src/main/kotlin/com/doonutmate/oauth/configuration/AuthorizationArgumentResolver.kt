@@ -15,12 +15,9 @@ import org.springframework.web.method.support.ModelAndViewContainer
 class AuthorizationArgumentResolver(
     private val jwtTokenProvider: JwtTokenProvider,
 ) : HandlerMethodArgumentResolver {
-    companion object {
-        const val BEARER_PREFIX_LEN = 7
-    }
 
     override fun supportsParameter(parameter: MethodParameter): Boolean {
-        return parameter.getParameterAnnotation(Authorization::class.java) != null
+        return parameter.hasParameterAnnotation(Authorization::class.java)
     }
 
     override fun resolveArgument(
@@ -31,7 +28,7 @@ class AuthorizationArgumentResolver(
     ): Any {
         val request = webRequest.getNativeRequest(HttpServletRequest::class.java) as HttpServletRequest
 
-        val authorizationHeader = request.getHeader("Authorization")
+        val authorizationHeader = request.getHeader(org.springframework.http.HttpHeaders.AUTHORIZATION)
             ?: throw BaseException(BaseExceptionCode.AUTHORIZATION_HEADER_NULL)
 
         if (!authorizationHeader.startsWith("Bearer ")) {
@@ -40,5 +37,9 @@ class AuthorizationArgumentResolver(
 
         val token = authorizationHeader.substring(BEARER_PREFIX_LEN)
         return jwtTokenProvider.getPayload(token)
+    }
+
+    companion object {
+        const val BEARER_PREFIX_LEN = 7
     }
 }

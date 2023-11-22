@@ -4,6 +4,7 @@ import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.oauth.configuration.Authorization
 import com.doonutmate.oauth.controller.dto.LoginRequest
 import com.doonutmate.oauth.controller.dto.LoginResponse
+import com.doonutmate.oauth.kakao.dto.KakaoIdResponse
 import com.doonutmate.oauth.service.OauthService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -27,12 +28,12 @@ class OauthController(
         return oauthService.login(loginRequest, oauthType)
     }
 
-    @GetMapping("login/1")
+    @GetMapping("/login-test")
     fun test(
         @Authorization
         @Parameter(hidden = true)
         userId: String,
-    ): String {
-        return userId
+    ): KakaoIdResponse {
+        return KakaoIdResponse(userId)
     }
 }

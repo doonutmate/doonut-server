@@ -6,6 +6,7 @@ import com.doonutmate.oauth.controller.dto.LoginRequest
 import com.doonutmate.oauth.controller.dto.LoginResponse
 import com.doonutmate.oauth.service.OauthService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,7 +28,11 @@ class OauthController(
     }
 
     @GetMapping("login/1")
-    fun test(@Authorization userId: String): String {
+    fun test(
+        @Authorization
+        @Parameter(hidden = true)
+        userId: String,
+    ): String {
         return userId
     }
 }

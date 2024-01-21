@@ -1,8 +1,6 @@
 package com.doonutmate.example.controller
 
 import com.doonutmate.example.service.LogService
-import com.doonutmate.oauth.exception.BaseException
-import com.doonutmate.oauth.exception.BaseExceptionCode
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,6 +26,6 @@ class LogApplication(
 
     @GetMapping("test/base")
     fun baseException(): String {
-        throw BaseException(BaseExceptionCode.INTERNAL_SERVER_ERROR)
+        throw Exception("로그인 시 에러가 발생했습니다!!!")
     }
 }

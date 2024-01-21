@@ -15,16 +15,32 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(IllegalArgumentException::class, IllegalStateException::class)
     fun handleBadRequestException(exception: RuntimeException): ResponseEntity<ApiResponse<Unit>> {
-        logger.error("Illegal Exception ", exception)
+        logger.error(exception.message, exception)
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ApiResponse.error(exception.message))
     }
 
+    @ExceptionHandler(BaseException::class)
+    fun handleBaseException(exception: BaseException): ResponseEntity<ApiResponse<Unit>> {
+        logger.warn(exception.message, exception)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ApiResponse.error(exception.message))
+    }
+
+    @ExceptionHandler(RuntimeException::class)
+    fun handleRuntimeException(exception: RuntimeException): ResponseEntity<ApiResponse<Unit>> {
+        logger.warn("RuntimeException: ${exception.message}", exception)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ApiResponse.error(exception.message))
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleGlobalException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
-        logger.error("message", exception)
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ApiResponse.error(exception.message))
+        logger.error("예상하지 못한 에러가 발생했습니다. ${exception.message}", exception)
+        logger.error(exception.stackTrace[0].toString())
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(ApiResponse.error(exception.message, exception.stackTrace[0]))
     }
 }

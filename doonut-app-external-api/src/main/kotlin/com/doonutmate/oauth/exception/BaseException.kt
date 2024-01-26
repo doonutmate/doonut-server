@@ -1,3 +1,5 @@
 package com.doonutmate.oauth.exception
 
-class BaseException(val baseExceptionCode: BaseExceptionCode) : RuntimeException()
+import org.springframework.http.HttpStatus
+
+open class BaseException(val httpStatus: HttpStatus, override val message: String) : RuntimeException()

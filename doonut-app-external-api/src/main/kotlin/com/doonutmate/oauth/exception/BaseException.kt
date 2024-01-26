@@ -1,3 +1,3 @@
 package com.doonutmate.oauth.exception
 
-class BaseException(val baseExceptionCode: BaseExceptionCode) : RuntimeException()
+open class BaseException(val baseExceptionCode: BaseExceptionCode) : RuntimeException()

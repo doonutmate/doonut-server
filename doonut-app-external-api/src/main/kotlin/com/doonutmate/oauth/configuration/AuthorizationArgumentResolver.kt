@@ -1,6 +1,7 @@
 package com.doonutmate.oauth.configuration
 
 import com.doonutmate.oauth.JwtTokenProvider
+import com.doonutmate.oauth.exception.AuthorizationException
 import com.doonutmate.oauth.exception.BaseException
 import com.doonutmate.oauth.exception.BaseExceptionCode
 import jakarta.servlet.http.HttpServletRequest
@@ -29,7 +30,7 @@ class AuthorizationArgumentResolver(
         val request = webRequest.getNativeRequest(HttpServletRequest::class.java) as HttpServletRequest
 
         val authorizationHeader = request.getHeader(org.springframework.http.HttpHeaders.AUTHORIZATION)
-            ?: throw BaseException(BaseExceptionCode.AUTHORIZATION_HEADER_NULL)
+            ?: throw AuthorizationException(BaseExceptionCode.AUTHORIZATION_HEADER_NULL)
 
         if (!authorizationHeader.startsWith("Bearer ")) {
             throw BaseException(BaseExceptionCode.INVALID_TOKEN_PREFIX)

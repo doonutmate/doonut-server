@@ -18,7 +18,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         val errorLocation = getErrorLocation(exception)
 
         logger.warn("BaseException occurred: $errorMessage , Location: $errorLocation")
-        return createErrorResponse(HttpStatus.BAD_REQUEST, errorMessage, request)
+        return createErrorResponse(exception.httpStatus, errorMessage, request)
     }
 
     @ExceptionHandler(RuntimeException::class)

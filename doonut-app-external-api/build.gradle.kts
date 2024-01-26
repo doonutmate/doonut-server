@@ -52,6 +52,11 @@ dependencies {
 
     // s3
     implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+
+    // localstack
+    implementation("com.amazonaws:aws-java-sdk-s3")
+    implementation("org.testcontainers:localstack")
+    testImplementation("org.testcontainers:junit-jupiter")
 }
 
 tasks {

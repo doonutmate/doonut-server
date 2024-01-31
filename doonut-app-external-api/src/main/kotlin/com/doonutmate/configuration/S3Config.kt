@@ -1,4 +1,4 @@
-package com.doonutmate.example.s3
+package com.doonutmate.configuration
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials

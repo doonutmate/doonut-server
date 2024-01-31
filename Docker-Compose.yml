@@ -4,9 +4,9 @@ services:
   localstack:
     image: localstack/localstack
     ports:
-      - "4566:4566"
+      - "4568:4566"
     environment:
       - SERVICES=s3
-    container_name: localstack
+    container_name: localstack-doonut
     volumes:
       - "./localstack-init:/docker-entrypoint-initaws.d"

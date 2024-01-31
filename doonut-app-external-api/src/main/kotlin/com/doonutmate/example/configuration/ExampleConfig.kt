@@ -10,9 +10,15 @@ class ExampleConfig {
     fun getExampleApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("example")
-            .pathsToMatch("/example/**")
+            .pathsToMatch(
+                "/example/**",
+                "/upload",
+            )
             .pathsToExclude("")
-            .packagesToScan("com.doonutmate.example.controller")
+            .packagesToScan(
+                "com.doonutmate.example.controller",
+                "com.doonutmate.example.s3",
+            )
             .build()
     }
 }

@@ -10,6 +10,7 @@ import com.doonutmate.image.controller.dto.ImageUploadResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.util.UUID
 
 @Service
 class ImageService(
@@ -21,31 +22,35 @@ class ImageService(
     private val bucket: String? = null
 
     fun saveFile(multipartFile: MultipartFile): ImageUploadResponse {
-        val originalFilename = multipartFile.originalFilename
-        val metadata = ObjectMetadata()
-        metadata.setContentLength(multipartFile.size)
-        metadata.setContentType(multipartFile.contentType)
+        val randomKey = UUID.randomUUID().toString()
+        val imageUrl = saveFileToS3(multipartFile, randomKey)
 
-        amazonS3.putObject(bucket, originalFilename, multipartFile.inputStream, metadata)
-        val imageUrl = amazonS3.getUrl(bucket, originalFilename).toString()
+        saveFileToDb(multipartFile, randomKey, imageUrl)
 
         return ImageUploadResponse(imageUrl)
     }
 
-    fun saveFileToDb(multipartFile: MultipartFile, url: String): Long {
+    private fun saveFileToS3(multipartFile: MultipartFile, key: String): String {
+        val metadata = ObjectMetadata()
+        metadata.contentLength = multipartFile.size
+        metadata.contentType = multipartFile.contentType
+
+        amazonS3.putObject(bucket, key, multipartFile.inputStream, metadata)
+
+        return amazonS3.getUrl(bucket, key).toString()
+    }
+
+    private fun saveFileToDb(multipartFile: MultipartFile, key: String, imageUrl: String): Long {
         val imageMeta: ImageMeta = ImageMetaSupporter.extract(multipartFile)
         val newImage = Image.builder()
-            .imageHostUrl(url)
+            .imageKey(key)
+            .oriImageName(multipartFile.originalFilename)
+            .imageHostUrl(imageUrl)
             .height(imageMeta.height)
             .width(imageMeta.widht)
             .capacity(imageMeta.capacity)
             .deleted(false)
             .build()
         return imageBusinessService.create(newImage)
-    }
-
-    // TODO bucket_url 추가
-    companion object {
-        const val BUCKET_URL = ""
     }
 }

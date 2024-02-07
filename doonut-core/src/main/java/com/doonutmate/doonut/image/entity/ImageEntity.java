@@ -25,6 +25,9 @@ public class ImageEntity extends BaseTimeEntity {
     Long memberId;
 
     @Column
+    String imageKey;
+
+    @Column
     String oriImageName;
 
     @Column

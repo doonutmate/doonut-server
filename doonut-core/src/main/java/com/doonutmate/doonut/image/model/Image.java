@@ -6,12 +6,12 @@ import lombok.Builder;
 public record Image(
         Long id,
         Long memberId,
+        String imageKey,
         String oriImageName,
         String imageHostUrl,
         int height,
         int width,
         long capacity,
         boolean deleted
-
 ) {
 }

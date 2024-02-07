@@ -26,10 +26,4 @@ class ImageController(
     fun login(@RequestPart("multipartFile") multipartFile: MultipartFile): ImageUploadResponse {
         return imageService.saveFile(multipartFile)
     }
-
-    @Operation(summary = "image db 등록 확인용")
-    @PostMapping("test")
-    fun justTest(@RequestPart("multipartFile") multipartFile: MultipartFile): Long {
-        return imageService.saveFileToDb(multipartFile, "https://213")
-    }
 }

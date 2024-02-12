@@ -5,9 +5,11 @@ import com.doonutmate.doonut.member.model.OauthType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 @SpringBootTest
 class MemberBusinessServiceTest {
 
@@ -17,9 +19,7 @@ class MemberBusinessServiceTest {
     @Test
     void create() {
         // given
-        var member = Member.builder()
-                .name("yeongun")
-                .build();
+        var member = generateMember();
 
         // when
         var savedEntityId = service.create(member);
@@ -32,9 +32,7 @@ class MemberBusinessServiceTest {
     @Test
     void get() {
         // given
-        var member = Member.builder()
-                .name("yeongun")
-                .build();
+        var member = generateMember();
         var savedEntityId = service.create(member);
 
         // when
@@ -50,11 +48,7 @@ class MemberBusinessServiceTest {
     void getByOauthId() {
         // given
         var oauthId = "1608565324";
-        var member = Member.builder()
-                .name("yeongun")
-                .oauthId(oauthId)
-                .oauthType(OauthType.KAKAO)
-                .build();
+        var member = generateMember();
         service.create(member);
 
         // when
@@ -64,5 +58,15 @@ class MemberBusinessServiceTest {
         assertThat(actual)
                 .extracting("name", "oauthId")
                 .containsExactly("yeongun", oauthId);
+    }
+
+    private Member generateMember() {
+        var oauthId = "1608565324";
+        return Member.builder()
+                .name("yeongun")
+                .email("yeongun@naver.com")
+                .oauthId(oauthId)
+                .oauthType(OauthType.KAKAO)
+                .build();
     }
 }

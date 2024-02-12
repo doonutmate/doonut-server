@@ -14,7 +14,7 @@ public class ImageMetaSupporter {
 
             int width = bufferedImage.getWidth();
             int height = bufferedImage.getHeight();
-            long capacity = file.getSize() / 1024;
+            int capacity = (int) (file.getSize() / 1024);
 
             return new ImageMeta(width, height, capacity);
         } catch (Exception e) {

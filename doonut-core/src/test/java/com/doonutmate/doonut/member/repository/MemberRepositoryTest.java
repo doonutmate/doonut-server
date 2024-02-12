@@ -26,6 +26,7 @@ class MemberRepositoryTest {
                 .build();
         var entity = MemberEntity.builder()
                 .name("yeongun")
+                .email("yeongun@naver.com")
                 .oauthInfo(OauthInfo.builder()
                         .oauthId(oauthInfo.getOauthId())
                         .oauthType(oauthInfo.getOauthType())

@@ -37,7 +37,7 @@ public class ImageEntity extends BaseTimeEntity {
     int height;
 
     @Column
-    long width;
+    int width;
 
     @Column
     int capacity;

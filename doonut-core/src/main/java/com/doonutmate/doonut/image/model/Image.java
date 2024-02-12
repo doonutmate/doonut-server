@@ -11,7 +11,7 @@ public record Image(
         String imageHostUrl,
         int height,
         int width,
-        long capacity,
+        int capacity,
         boolean deleted
 ) {
 }

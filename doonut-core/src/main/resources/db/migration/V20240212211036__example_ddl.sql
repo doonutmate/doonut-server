@@ -1,0 +1,6 @@
+CREATE TABLE example_entity
+(
+    id   BIGINT AUTO_INCREMENT NOT NULL COMMENT 'ID',
+    name VARCHAR(100) NOT NULL COMMENT 'name',
+    PRIMARY KEY (id)
+)

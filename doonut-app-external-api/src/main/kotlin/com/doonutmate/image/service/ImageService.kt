@@ -21,13 +21,16 @@ class ImageService(
     @Value("\${cloud.aws.s3.bucket}")
     private val bucket: String? = null
 
+    @Value("\${cloud.aws.cloudfront.prefix}")
+    private val imageHostUrlPrefix: String? = null
+
     fun saveFile(multipartFile: MultipartFile): ImageUploadResponse {
         val randomKey = UUID.randomUUID().toString()
-        val imageUrl = saveFileToS3(multipartFile, randomKey)
 
-        saveFileToDb(multipartFile, randomKey, imageUrl)
+        saveFileToS3(multipartFile, randomKey)
+        saveFileToDb(multipartFile, randomKey)
 
-        return ImageUploadResponse(imageUrl)
+        return ImageUploadResponse(getImageHostUrl(randomKey))
     }
 
     private fun saveFileToS3(multipartFile: MultipartFile, key: String): String {
@@ -40,12 +43,12 @@ class ImageService(
         return amazonS3.getUrl(bucket, key).toString()
     }
 
-    private fun saveFileToDb(multipartFile: MultipartFile, key: String, imageUrl: String): Long {
+    private fun saveFileToDb(multipartFile: MultipartFile, key: String): Long {
         val imageMeta: ImageMeta = ImageMetaSupporter.extract(multipartFile)
         val newImage = Image.builder()
             .imageKey(key)
             .oriImageName(multipartFile.originalFilename)
-            .imageHostUrl(imageUrl)
+            .imageHostUrl(getImageHostUrl(key))
             .height(imageMeta.height)
             .width(imageMeta.widht)
             .capacity(imageMeta.capacity)
@@ -53,4 +56,6 @@ class ImageService(
             .build()
         return imageBusinessService.create(newImage)
     }
+
+    private fun getImageHostUrl(key: String) = imageHostUrlPrefix + key
 }

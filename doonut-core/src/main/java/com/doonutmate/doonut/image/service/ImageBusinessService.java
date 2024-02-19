@@ -1,5 +1,6 @@
 package com.doonutmate.doonut.image.service;
 
+import com.doonutmate.doonut.challenge.model.Challenge;
 import com.doonutmate.doonut.image.mapper.ImageMapper;
 import com.doonutmate.doonut.image.model.Image;
 import com.doonutmate.doonut.image.repository.ImageRepository;
@@ -9,6 +10,8 @@ import com.doonutmate.doonut.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,6 +33,12 @@ public class ImageBusinessService {
     public Image get(Long id) {
         return repository.findById(id)
                 .map(mapper::toModel)
+                .orElse(null);
+    }
+
+    public List<Image> getAllByIdAndDate(String memberId, int year, int month) {
+        return repository.findAllByMemberIdAndDate(memberId, year, month)
+                .map(mapper::toModelList)
                 .orElse(null);
     }
 }

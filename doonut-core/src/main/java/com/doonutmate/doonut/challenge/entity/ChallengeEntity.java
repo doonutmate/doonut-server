@@ -21,10 +21,13 @@ public class ChallengeEntity extends BaseTimeEntity {
     Long id;
 
     @Column
-    Long memberId;
+    String memberId;
 
     @Column
     String imageUrl;
+
+    @Column
+    int days;
 
     @Column
     boolean deleted;

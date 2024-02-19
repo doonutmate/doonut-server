@@ -2,6 +2,7 @@ package com.doonutmate.image.service
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.ObjectMetadata
+import com.doonutmate.challenge.controller.dto.ChallengeListRequest
 import com.doonutmate.doonut.image.model.Image
 import com.doonutmate.doonut.image.service.ImageBusinessService
 import com.doonutmate.image.ImageMeta
@@ -59,4 +60,8 @@ class ImageService(
     }
 
     private fun getImageHostUrl(key: String) = imageHostUrlPrefix + key
+
+    fun getImage(memberId: String, req: ChallengeListRequest): List<Image> {
+        return imageBusinessService.getAllByIdAndDate(memberId, req.year, req.month)
+    }
 }

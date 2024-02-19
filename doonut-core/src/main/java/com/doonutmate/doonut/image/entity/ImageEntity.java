@@ -22,7 +22,7 @@ public class ImageEntity extends BaseTimeEntity {
     Long id;
 
     @Column
-    Long memberId;
+    String memberId;
 
     @Column
     String imageKey;

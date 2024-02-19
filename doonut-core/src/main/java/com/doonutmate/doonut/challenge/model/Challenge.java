@@ -5,8 +5,9 @@ import lombok.Builder;
 @Builder
 public record Challenge(
         Long id,
-        Long memberId,
+        String memberId,
         String imageUrl,
+        int days,
         boolean deleted
 ) {
 }

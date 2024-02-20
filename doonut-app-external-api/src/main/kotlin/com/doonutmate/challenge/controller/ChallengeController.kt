@@ -1,19 +1,19 @@
 package com.doonutmate.challenge.controller
 
-import com.doonutmate.challenge.controller.dto.ChallengeListRequest
-import com.doonutmate.challenge.controller.dto.ChallengeListResponse
 import com.doonutmate.challenge.service.ChallengeService
-import com.doonutmate.doonut.image.repository.ImageRepository
+import com.doonutmate.doonut.challenge.model.ChallengeType
+import com.doonutmate.image.controller.dto.ImageUploadResponse
 import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @Tag(name = "Challenge", description = "챌린지 API")
@@ -34,4 +34,20 @@ class ChallengeController(
 //    ): List<ChallengeListResponse> {
 //        return service.findImage(memberId, req)
 //    }
+
+    @Operation(summary = "사진을 s3와 db에 저장", description = "")
+    @PostMapping(
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE],
+    )
+    fun getList(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: String,
+
+        @RequestPart("multipartFile") multipartFile: MultipartFile,
+        @RequestParam type: ChallengeType,
+    ): ImageUploadResponse {
+        return service.saveResizingImage(multipartFile, type, memberId)
+    }
 }

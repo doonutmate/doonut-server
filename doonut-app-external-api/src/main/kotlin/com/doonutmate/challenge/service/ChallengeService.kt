@@ -2,7 +2,6 @@ package com.doonutmate.challenge.service
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.ObjectMetadata
-import com.doonutmate.challenge.service.dto.ResizingResponse
 import com.doonutmate.doonut.challenge.model.Challenge
 import com.doonutmate.doonut.challenge.model.ChallengeType
 import com.doonutmate.doonut.challenge.service.ChallengeBusinessServicee
@@ -36,12 +35,10 @@ class ChallengeService(
     fun saveResizingImage(
         multipartFile: MultipartFile,
         type: ChallengeType,
-        fileName: String,
         memberId: String,
     ): ImageUploadResponse {
         val randomKey = UUID.randomUUID().toString()
         val resizingImage = resizeImage(randomKey, getFileFormatName(multipartFile), multipartFile, type)
-
         saveFileToDb(type, memberId, randomKey)
         saveFileToS3(resizingImage, randomKey)
 
@@ -73,7 +70,7 @@ class ChallengeService(
         return service.create(newChallenge)
     }
 
-    fun resizeImage(
+    private fun resizeImage(
         fileName: String,
         fileFormatName: String,
         originImage: MultipartFile,
@@ -81,13 +78,13 @@ class ChallengeService(
     ): MultipartFile {
         try {
             val image: BufferedImage = ImageIO.read(originImage.inputStream)
-            val branchedLengthAndName = validLengthAndName(type, fileName)
+            val length = branchedLength(type)
             val imageMarvin = MarvinImage(image)
 
             val scale = Scale()
             scale.load()
-            scale.setAttribute("newWidth", branchedLengthAndName.length)
-            scale.setAttribute("newHeight", branchedLengthAndName.length)
+            scale.setAttribute("newWidth", length)
+            scale.setAttribute("newHeight", length)
             scale.process(imageMarvin.clone(), imageMarvin, null, null, false)
 
             val imageNoAlpha: BufferedImage = imageMarvin.bufferedImageNoAlpha
@@ -95,20 +92,20 @@ class ChallengeService(
             ImageIO.write(imageNoAlpha, fileFormatName, baos)
             baos.flush()
 
-            return MockMultipartFile(branchedLengthAndName.fileName, baos.toByteArray())
+            return MockMultipartFile(fileName, baos.toByteArray())
         } catch (e: IOException) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 리사이즈에 실패했습니다.")
         }
     }
 
-    private fun validLengthAndName(type: ChallengeType, fileName: String): ResizingResponse {
+    private fun branchedLength(type: ChallengeType): Int {
         return when (type) {
             ChallengeType.DEFAULT -> {
-                ResizingResponse(getDefaultFileName(fileName), DEFAULT_LENGTH)
+                DEFAULT_LENGTH
             }
 
             ChallengeType.THUMBNAIL -> {
-                ResizingResponse(getThumbnailFileName(fileName), THUMBNAIL_LENGTH)
+                THUMBNAIL_LENGTH
             }
         }
     }
@@ -117,14 +114,6 @@ class ChallengeService(
 
     private fun getFileFormatName(file: MultipartFile): String {
         return file.contentType!!.substring(file.contentType!!.lastIndexOf("/") + 1)
-    }
-
-    private fun getThumbnailFileName(filename: String): String {
-        return "s_$filename"
-    }
-
-    private fun getDefaultFileName(fileName: String): String {
-        return "d_$fileName"
     }
 
     companion object {

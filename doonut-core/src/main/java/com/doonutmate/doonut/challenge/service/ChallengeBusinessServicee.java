@@ -18,7 +18,6 @@ import java.util.List;
 @Service
 public class ChallengeBusinessServicee {
     private final ChallengeRepository challengeRepository;
-    private final ImageRepository imageRepository;
     private final ChallengeMapper mapper;
 
     @Transactional

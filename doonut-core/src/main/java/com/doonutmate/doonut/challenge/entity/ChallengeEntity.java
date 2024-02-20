@@ -1,5 +1,6 @@
 package com.doonutmate.doonut.challenge.entity;
 
+import com.doonutmate.doonut.challenge.model.ChallengeType;
 import com.doonutmate.doonut.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,7 +28,7 @@ public class ChallengeEntity extends BaseTimeEntity {
     String imageUrl;
 
     @Column
-    int days;
+    ChallengeType type;
 
     @Column
     boolean deleted;

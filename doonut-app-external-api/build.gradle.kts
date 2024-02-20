@@ -31,6 +31,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
     testImplementation("io.kotest:kotest-framework-datatest:5.6.2")
     testImplementation("io.mockk:mockk:1.12.4")
+    implementation("org.springframework:spring-test")
 
     // database
     runtimeOnly("com.h2database:h2")
@@ -57,6 +58,10 @@ dependencies {
     implementation("com.amazonaws:aws-java-sdk-s3")
     implementation("org.testcontainers:localstack")
     testImplementation("org.testcontainers:junit-jupiter")
+
+    // marvin(image resizing)
+    implementation("com.github.downgoon:marvin:1.5.5")
+    implementation("com.github.downgoon:MarvinPlugins:1.5.5")
 }
 
 tasks {

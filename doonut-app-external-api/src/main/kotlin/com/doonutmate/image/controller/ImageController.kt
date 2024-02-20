@@ -40,16 +40,16 @@ class ImageController(
         return imageService.saveFile(multipartFile, userId)
     }
 
-    @Operation(summary = "특정 달에 해당하는 챌린지 목록 조회", description = "특정 연월을 입력으로 받으면 챌린지 목록을 반환한다.")
-    @GetMapping
-    fun getList(
-        @Authorization
-        @Parameter(hidden = true)
-        memberId: String,
-
-        @Valid @ModelAttribute
-        req: ChallengeListRequest,
-    ): List<Image> {
-        return imageService.getImage(memberId, req)
-    }
+//    @Operation(summary = "특정 달에 해당하는 챌린지 목록 조회", description = "특정 연월을 입력으로 받으면 챌린지 목록을 반환한다.")
+//    @GetMapping
+//    fun getList(
+//        @Authorization
+//        @Parameter(hidden = true)
+//        memberId: String,
+//
+//        @Valid @ModelAttribute
+//        req: ChallengeListRequest,
+//    ): List<Image> {
+//        return imageService.getImage(memberId, req)
+//    }
 }

@@ -15,6 +15,4 @@ public interface ImageMapper {
 
     Image toModel(ImageEntity entity);
 
-    List<Image> toModelList(List<ImageEntity> model);
-
 }

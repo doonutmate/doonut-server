@@ -7,7 +7,7 @@ public record Challenge(
         Long id,
         String memberId,
         String imageUrl,
-        int days,
+        ChallengeType type,
         boolean deleted
 ) {
 }

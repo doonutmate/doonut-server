@@ -1,15 +1,15 @@
 package com.doonutmate.challenge.service
 
-import com.doonutmate.challenge.service.dto.ResizingRequest
+import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.doonutmate.challenge.service.dto.ResizingResponse
 import com.doonutmate.doonut.challenge.model.Challenge
 import com.doonutmate.doonut.challenge.model.ChallengeType
 import com.doonutmate.doonut.challenge.service.ChallengeBusinessServicee
-import com.doonutmate.doonut.member.model.OauthType
-import com.doonutmate.image.ImageMeta
-import com.doonutmate.image.ImageMetaSupporter
 import com.doonutmate.image.controller.dto.ImageUploadResponse
 import marvin.image.MarvinImage
 import org.marvinproject.image.transform.scale.Scale
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.stereotype.Service
@@ -23,15 +23,54 @@ import javax.imageio.ImageIO
 
 @Service
 class ChallengeService(
+    private val amazonS3: AmazonS3,
     private val service: ChallengeBusinessServicee,
 ) {
 
-    fun saveResizingImage(multipartFile: MultipartFile, type: ChallengeType, memberId: String): ImageUploadResponse {
-        val randomKey = UUID.randomUUID().toString()
+    @Value("\${cloud.aws.cloudfront.prefix}")
+    private val imageHostUrlPrefix: String? = null
 
-        saveFileToDb(multipartFile, type, memberId)
+    @Value("\${cloud.aws.s3.bucket}")
+    private val bucket: String? = null
+
+    fun saveResizingImage(
+        multipartFile: MultipartFile,
+        type: ChallengeType,
+        fileName: String,
+        memberId: String,
+    ): ImageUploadResponse {
+        val randomKey = UUID.randomUUID().toString()
+        val resizingImage = resizeImage(randomKey, getFileFormatName(multipartFile), multipartFile, type)
+
+        saveFileToDb(type, memberId, randomKey)
+        saveFileToS3(resizingImage, randomKey)
 
         return ImageUploadResponse(getImageHostUrl(randomKey))
+    }
+
+    private fun saveFileToS3(multipartFile: MultipartFile, key: String): String {
+        val metadata = ObjectMetadata()
+        metadata.contentLength = multipartFile.size
+        metadata.contentType = multipartFile.contentType
+
+        amazonS3.putObject(bucket, key, multipartFile.inputStream, metadata)
+
+        return amazonS3.getUrl(bucket, key).toString()
+    }
+
+    private fun saveFileToDb(
+        type: ChallengeType,
+        memberId: String,
+        key: String,
+    ): Long {
+        val newChallenge = Challenge.builder()
+            .type(type)
+            .imageUrl(getImageHostUrl(key))
+            .memberId(memberId)
+            .deleted(false)
+            .build()
+
+        return service.create(newChallenge)
     }
 
     fun resizeImage(
@@ -42,13 +81,13 @@ class ChallengeService(
     ): MultipartFile {
         try {
             val image: BufferedImage = ImageIO.read(originImage.inputStream)
-
+            val branchedLengthAndName = validLengthAndName(type, fileName)
             val imageMarvin = MarvinImage(image)
 
             val scale = Scale()
             scale.load()
-            scale.setAttribute("newWidth", targetLength)
-            scale.setAttribute("newHeight", targetLength)
+            scale.setAttribute("newWidth", branchedLengthAndName.length)
+            scale.setAttribute("newHeight", branchedLengthAndName.length)
             scale.process(imageMarvin.clone(), imageMarvin, null, null, false)
 
             val imageNoAlpha: BufferedImage = imageMarvin.bufferedImageNoAlpha
@@ -56,33 +95,28 @@ class ChallengeService(
             ImageIO.write(imageNoAlpha, fileFormatName, baos)
             baos.flush()
 
-            return MockMultipartFile(fileName, baos.toByteArray())
+            return MockMultipartFile(branchedLengthAndName.fileName, baos.toByteArray())
         } catch (e: IOException) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 리사이즈에 실패했습니다.")
         }
     }
 
-    private fun saveFileToDb(multipartFile: MultipartFile, type: ChallengeType, memberId: String): Long {
-        val imageMeta: ImageMeta = ImageMetaSupporter.extract(multipartFile)
-        val newChallenge = Challenge.builder()
-            .type(type)
-            .imageUrl(multipartFile.originalFilename)
-            .memberId(memberId)
-            .deleted(false)
-            .build()
-
-        return service.create(newChallenge)
-    }
-
-    private fun validLengthAndName(type: ChallengeType, req: ResizingRequest): ResizingRequest {
+    private fun validLengthAndName(type: ChallengeType, fileName: String): ResizingResponse {
         return when (type) {
             ChallengeType.DEFAULT -> {
-                ResizingRequest(getDefaultFileName(req.fileName), DEFAULT_LENGTH)
+                ResizingResponse(getDefaultFileName(fileName), DEFAULT_LENGTH)
             }
+
             ChallengeType.THUMBNAIL -> {
-                ResizingRequest(getThumbnailFileName(req.fileName), THUMBNAIL_LENGTH)
+                ResizingResponse(getThumbnailFileName(fileName), THUMBNAIL_LENGTH)
             }
         }
+    }
+
+    private fun getImageHostUrl(key: String) = imageHostUrlPrefix + key
+
+    private fun getFileFormatName(file: MultipartFile): String {
+        return file.contentType!!.substring(file.contentType!!.lastIndexOf("/") + 1)
     }
 
     private fun getThumbnailFileName(filename: String): String {

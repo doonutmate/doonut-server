@@ -14,19 +14,10 @@ import java.util.OptionalInt;
 @Mapper
 public interface ChallengeMapper {
 
-    @Mapping(target = "days", ignore = true)
     ChallengeEntity toEntity(Challenge model);
 
-    @Mapping(target = "days", ignore = true)
     Challenge toModel(ChallengeEntity entity);
 
-    @Mapping(target = "imageUrl", source = "imageKey")
-    @Mapping(target = "days", ignore = true)
-    Challenge toChallenge(Image entity);
-
-    @Mapping(target = "imageUrl", source = "imageKey")
-    @Mapping(target = "days", ignore = true)
-    List<Challenge> toChallengeList(List<Image> otherModelList);
-
-
+//    @Mapping(target = "imageUrl", source = "imageKey")
+//    List<Challenge> toChallengeList(List<Image> otherModelList);
 }

@@ -18,6 +18,5 @@ public interface ChallengeMapper {
 
     Challenge toModel(ChallengeEntity entity);
 
-//    @Mapping(target = "imageUrl", source = "imageKey")
-//    List<Challenge> toChallengeList(List<Image> otherModelList);
+    List<Challenge> toChallengeList(List<ChallengeEntity> otherModelList);
 }

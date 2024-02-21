@@ -2,6 +2,8 @@ package com.doonutmate.challenge.service
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.ObjectMetadata
+import com.doonutmate.challenge.controller.dto.ChallengeListRequest
+import com.doonutmate.challenge.controller.dto.ChallengeListResponse
 import com.doonutmate.doonut.challenge.model.Challenge
 import com.doonutmate.doonut.challenge.model.ChallengeType
 import com.doonutmate.doonut.challenge.service.ChallengeBusinessServicee
@@ -31,6 +33,20 @@ class ChallengeService(
 
     @Value("\${cloud.aws.s3.bucket}")
     private val bucket: String? = null
+
+    fun getChallengeList(
+        memberId: String,
+        req: ChallengeListRequest,
+    ): List<ChallengeListResponse> {
+        val arr = service.getAllByIdAndDate(memberId, req.year, req.month)
+        val transformedList: List<ChallengeListResponse> = arr.map { challenge ->
+            ChallengeListResponse(
+                imageUrl = challenge.imageUrl,
+                day = challenge.created_at.toString().substring(DAYS_START, DAYS_END),
+            )
+        }
+        return transformedList
+    }
 
     fun saveResizingImage(
         multipartFile: MultipartFile,
@@ -118,6 +134,8 @@ class ChallengeService(
 
     companion object {
         const val DEFAULT_LENGTH = 390
-        const val THUMBNAIL_LENGTH = 68
+        const val THUMBNAIL_LENGTH = 46
+        const val DAYS_START = 8
+        const val DAYS_END = 10
     }
 }

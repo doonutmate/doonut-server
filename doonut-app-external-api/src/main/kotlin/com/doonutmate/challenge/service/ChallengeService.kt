@@ -117,7 +117,7 @@ class ChallengeService(
     }
 
     companion object {
-        const val DEFAULT_LENGTH = 300
+        const val DEFAULT_LENGTH = 390
         const val THUMBNAIL_LENGTH = 68
     }
 }

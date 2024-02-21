@@ -35,10 +35,4 @@ public class ImageBusinessService {
                 .map(mapper::toModel)
                 .orElse(null);
     }
-
-//    public List<Image> getAllByIdAndDate(String memberId, int year, int month) {
-//        return repository.findAllByMemberIdAndDate(memberId, year, month)
-//                .map(mapper::toModelList)
-//                .orElse(null);
-//    }
 }

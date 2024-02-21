@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ImageBusinessService {
 
     private final ImageRepository repository;
-    private final MemberRepository memberRepository;
     private final ImageMapper mapper;
 
     @Transactional
@@ -31,11 +30,6 @@ public class ImageBusinessService {
     public Image get(Long id) {
         return repository.findById(id)
                 .map(mapper::toModel)
-                .orElse(null);
-    }
-
-    public MemberEntity getMemberByOauthId(String oauthId){
-        return memberRepository.findByOauthId(oauthId)
                 .orElse(null);
     }
 }

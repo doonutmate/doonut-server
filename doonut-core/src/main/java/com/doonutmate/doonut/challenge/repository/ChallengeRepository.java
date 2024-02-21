@@ -22,7 +22,7 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
                 AND FUNCTION('YEAR', challenge.createdAt) = :year
                 AND FUNCTION('MONTH', challenge.createdAt) = :month
             """)
-    Optional<List<ChallengeEntity>> findAllByMemberIdAndDate(
+    List<ChallengeEntity> findAllByMemberIdAndDate(
             @Param("memberId") String memberId,
             @Param("year") int year,
             @Param("month") int month

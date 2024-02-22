@@ -24,7 +24,7 @@ class OauthService(
 
             APPLE -> TODO("애플 기능 추가시")
         }
-        val memberId = memberBusinessService.getByOauthId(savedIdDto.toString())?.id
+        val memberId = memberBusinessService.getByOauthId(savedIdDto.id)?.id
             ?: signUp(loginRequest, oauthType)
 
         return LoginResponse(jwtTokenProvider.createToken(memberId.toString()))

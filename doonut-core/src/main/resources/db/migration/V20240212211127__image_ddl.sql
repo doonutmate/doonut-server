@@ -1,7 +1,7 @@
 CREATE TABLE image
 (
     id             BIGINT AUTO_INCREMENT NOT NULL COMMENT 'ID',
-    member_id      BIGINT NULL COMMENT '멤버 ID',
+    member_id      VARCHAR(100) NULL COMMENT '멤버 ID',
     image_key      VARCHAR(200)                         NOT NULL COMMENT '이미지 UUID 키값',
     ori_image_name VARCHAR(100) NULL COMMENT '원본 이미지 명',
     image_host_url VARCHAR(500)                         NOT NULL COMMENT '이미지 host url',

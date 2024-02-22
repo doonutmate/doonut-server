@@ -36,7 +36,7 @@ class AuthorizationArgumentResolver(
         }
 
         val token = authorizationHeader.substring(BEARER_PREFIX_LEN)
-        return jwtTokenProvider.getPayload(token)
+        return jwtTokenProvider.getPayload(token).toLong()
     }
 
     companion object {

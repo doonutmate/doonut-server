@@ -29,7 +29,7 @@ class ImageController(
         @RequestPart("multipartFile") multipartFile: MultipartFile,
         @Authorization
         @Parameter(hidden = true)
-        userId: String,
+        userId: Long,
     ): ImageUploadResponse {
         return imageService.saveFile(multipartFile, userId)
     }

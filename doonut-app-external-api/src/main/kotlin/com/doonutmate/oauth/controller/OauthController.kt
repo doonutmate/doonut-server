@@ -32,8 +32,8 @@ class OauthController(
     fun test(
         @Authorization
         @Parameter(hidden = true)
-        userId: String,
+        userId: Long,
     ): KakaoIdResponse {
-        return KakaoIdResponse(userId)
+        return KakaoIdResponse(userId.toString())
     }
 }

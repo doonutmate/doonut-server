@@ -3,6 +3,9 @@ package com.doonutmate.doonut.image.service;
 import com.doonutmate.doonut.image.mapper.ImageMapper;
 import com.doonutmate.doonut.image.model.Image;
 import com.doonutmate.doonut.image.repository.ImageRepository;
+import com.doonutmate.doonut.member.entity.MemberEntity;
+import com.doonutmate.doonut.member.model.Member;
+import com.doonutmate.doonut.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ImageBusinessService {
 
     private final ImageRepository repository;
-
     private final ImageMapper mapper;
 
     @Transactional

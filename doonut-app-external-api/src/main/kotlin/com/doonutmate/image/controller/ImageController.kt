@@ -2,7 +2,9 @@ package com.doonutmate.image.controller
 
 import com.doonutmate.image.controller.dto.ImageUploadResponse
 import com.doonutmate.image.service.ImageService
+import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
@@ -23,7 +25,12 @@ class ImageController(
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE],
     )
-    fun login(@RequestPart("multipartFile") multipartFile: MultipartFile): ImageUploadResponse {
-        return imageService.saveFile(multipartFile)
+    fun login(
+        @RequestPart("multipartFile") multipartFile: MultipartFile,
+        @Authorization
+        @Parameter(hidden = true)
+        userId: Long,
+    ): ImageUploadResponse {
+        return imageService.saveFile(multipartFile, userId)
     }
 }

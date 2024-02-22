@@ -24,11 +24,11 @@ class ImageService(
     @Value("\${cloud.aws.cloudfront.prefix}")
     private val imageHostUrlPrefix: String? = null
 
-    fun saveFile(multipartFile: MultipartFile): ImageUploadResponse {
+    fun saveFile(multipartFile: MultipartFile, memberId: Long): ImageUploadResponse {
         val randomKey = UUID.randomUUID().toString()
 
         saveFileToS3(multipartFile, randomKey)
-        saveFileToDb(multipartFile, randomKey)
+        saveFileToDb(multipartFile, randomKey, memberId)
 
         return ImageUploadResponse(getImageHostUrl(randomKey))
     }
@@ -43,7 +43,7 @@ class ImageService(
         return amazonS3.getUrl(bucket, key).toString()
     }
 
-    private fun saveFileToDb(multipartFile: MultipartFile, key: String): Long {
+    private fun saveFileToDb(multipartFile: MultipartFile, key: String, memberId: Long): Long {
         val imageMeta: ImageMeta = ImageMetaSupporter.extract(multipartFile)
         val newImage = Image.builder()
             .imageKey(key)
@@ -52,6 +52,7 @@ class ImageService(
             .height(imageMeta.height)
             .width(imageMeta.widht)
             .capacity(imageMeta.capacity)
+            .memberId(memberId)
             .deleted(false)
             .build()
         return imageBusinessService.create(newImage)

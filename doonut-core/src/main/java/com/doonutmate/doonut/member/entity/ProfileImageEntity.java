@@ -18,6 +18,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -35,6 +36,7 @@ public class ProfileImageEntity extends BaseTimeEntity {
     @EqualsAndHashCode.Include
     Long id;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "member_id")
     private MemberEntity member;

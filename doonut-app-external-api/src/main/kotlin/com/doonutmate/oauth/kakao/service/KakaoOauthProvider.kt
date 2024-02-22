@@ -27,12 +27,13 @@ class KakaoOauthProvider(
     override fun signUp(loginRequest: LoginRequest): Long {
         val savedInfo = getUserInfo(loginRequest)
         val newMember = Member.builder()
-            .name(savedInfo.kakao_account?.name)
+            .name(savedInfo.kakao_account?.profile?.nickname)
             .email(savedInfo.kakao_account?.email)
             .oauthId(savedInfo.id)
             .oauthType(OauthType.KAKAO)
             .deleted(false)
             .build()
-        return memberBusinessService.create(newMember)
+
+        return memberBusinessService.create(newMember, savedInfo.kakao_account?.profile?.profile_image_url)
     }
 }

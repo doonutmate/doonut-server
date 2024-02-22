@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class MemberEntity extends BaseTimeEntity {
     @Column
     String email;
 
+    @Setter
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ProfileImageEntity> profileImages = new ArrayList<>();

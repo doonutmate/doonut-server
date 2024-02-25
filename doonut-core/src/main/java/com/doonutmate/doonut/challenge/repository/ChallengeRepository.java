@@ -1,15 +1,11 @@
 package com.doonutmate.doonut.challenge.repository;
 
 import com.doonutmate.doonut.challenge.entity.ChallengeEntity;
-import com.doonutmate.doonut.image.entity.ImageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long> {
 
@@ -23,7 +19,7 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
                 AND FUNCTION('MONTH', challenge.createdAt) = :month
             """)
     List<ChallengeEntity> findAllByMemberIdAndDate(
-            @Param("memberId") String memberId,
+            @Param("memberId") Long memberId,
             @Param("year") int year,
             @Param("month") int month
     );

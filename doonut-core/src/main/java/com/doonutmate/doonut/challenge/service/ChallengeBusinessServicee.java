@@ -3,15 +3,10 @@ package com.doonutmate.doonut.challenge.service;
 import com.doonutmate.doonut.challenge.mapper.ChallengeMapper;
 import com.doonutmate.doonut.challenge.model.Challenge;
 import com.doonutmate.doonut.challenge.repository.ChallengeRepository;
-import com.doonutmate.doonut.image.mapper.ImageMapper;
-import com.doonutmate.doonut.image.model.Image;
-import com.doonutmate.doonut.image.repository.ImageRepository;
-import com.doonutmate.doonut.image.service.ImageBusinessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -36,7 +31,7 @@ public class ChallengeBusinessServicee {
                 .orElse(null);
     }
 
-    public List<Challenge> getAllByIdAndDate(String memberId, int year, int month) {
+    public List<Challenge> getAllByIdAndDate(Long memberId, int year, int month) {
         return repository.findAllByMemberIdAndDate(memberId, year, month)
                 .stream()
                 .map(mapper::toModel)

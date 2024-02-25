@@ -22,7 +22,7 @@ public class ChallengeEntity extends BaseTimeEntity {
     Long id;
 
     @Column
-    String memberId;
+    Long memberId;
 
     @Column
     String imageUrl;

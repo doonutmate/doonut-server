@@ -32,7 +32,7 @@ class ChallengeController(
     fun getList(
         @Authorization
         @Parameter(hidden = true)
-        memberId: String,
+        memberId: Long,
 
         @Valid @ModelAttribute
         req: ChallengeListRequest,
@@ -48,7 +48,7 @@ class ChallengeController(
     fun saveResizingChallengeImage(
         @Authorization
         @Parameter(hidden = true)
-        memberId: String,
+        memberId: Long,
 
         @RequestPart("multipartFile") multipartFile: MultipartFile,
         @RequestParam type: ChallengeType,

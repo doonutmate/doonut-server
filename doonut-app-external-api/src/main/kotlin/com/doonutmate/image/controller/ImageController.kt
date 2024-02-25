@@ -28,10 +28,10 @@ class ImageController(
     fun imageUpload(
         @Authorization
         @Parameter(hidden = true)
-        userId: String,
+        memberId: Long,
 
-        @RequestPart("multipartFile") multipartFile: MultipartFile
+        @RequestPart("multipartFile") multipartFile: MultipartFile,
     ): ImageUploadResponse {
-        return imageService.saveFile(multipartFile, userId)
+        return imageService.saveFile(multipartFile, memberId)
     }
 }

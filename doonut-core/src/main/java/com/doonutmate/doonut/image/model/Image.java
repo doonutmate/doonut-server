@@ -5,7 +5,7 @@ import lombok.Builder;
 @Builder
 public record Image(
         Long id,
-        String memberId,
+        Long memberId,
         String imageKey,
         String oriImageName,
         String imageHostUrl,

@@ -7,7 +7,7 @@ import java.time.Instant;
 @Builder
 public record Challenge(
         Long id,
-        String memberId,
+        Long memberId,
         String imageUrl,
         ChallengeType type,
         Instant createdAt,

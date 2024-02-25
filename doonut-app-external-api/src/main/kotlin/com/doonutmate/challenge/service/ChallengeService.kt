@@ -35,7 +35,7 @@ class ChallengeService(
     private val bucket: String? = null
 
     fun getChallengeList(
-        memberId: String,
+        memberId: Long,
         req: ChallengeListRequest,
     ): List<ChallengeListResponse> {
         ChallengeType.THUMBNAIL.width;
@@ -54,7 +54,7 @@ class ChallengeService(
     fun saveResizingImage(
         multipartFile: MultipartFile,
         type: ChallengeType,
-        memberId: String,
+        memberId: Long,
     ): ImageUploadResponse {
         val randomKey = UUID.randomUUID().toString()
         val resizingImage = resizeImage(randomKey, getFileFormatName(multipartFile), multipartFile, type)
@@ -76,7 +76,7 @@ class ChallengeService(
 
     private fun saveFileToDb(
         type: ChallengeType,
-        memberId: String,
+        memberId: Long,
         key: String,
     ): Long {
         val newChallenge = Challenge.builder()
@@ -113,7 +113,7 @@ class ChallengeService(
 
             return MockMultipartFile(fileName, baos.toByteArray())
         } catch (e: IOException) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 리사이즈에 실패했습니다.")
+            throw e
         }
     }
 

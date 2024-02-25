@@ -1,9 +1,13 @@
 package com.doonutmate.doonut.challenge.entity;
 
-import com.doonutmate.doonut.challenge.model.ChallengeType;
 import com.doonutmate.doonut.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -26,9 +30,6 @@ public class ChallengeEntity extends BaseTimeEntity {
 
     @Column
     String imageUrl;
-
-    @Column
-    ChallengeType type;
 
     @Column
     boolean deleted;

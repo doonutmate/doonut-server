@@ -2,6 +2,8 @@ package com.doonutmate.image.service
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.ObjectMetadata
+import com.doonutmate.doonut.challenge.model.Challenge
+import com.doonutmate.doonut.challenge.service.ChallengeBusinessServicee
 import com.doonutmate.doonut.image.model.Image
 import com.doonutmate.doonut.image.service.ImageBusinessService
 import com.doonutmate.image.ImageMeta
@@ -16,6 +18,7 @@ import java.util.UUID
 class ImageService(
     private val amazonS3: AmazonS3,
     private val imageBusinessService: ImageBusinessService,
+    private val challengeBusinessService: ChallengeBusinessServicee,
 ) {
 
     @Value("\${cloud.aws.s3.bucket}")
@@ -30,33 +33,49 @@ class ImageService(
         saveFileToS3(multipartFile, randomKey)
         saveFileToDb(multipartFile, randomKey, memberId)
 
-        return ImageUploadResponse(getImageHostUrl(randomKey))
+        return ImageUploadResponse(getImageUrl(randomKey))
     }
 
-    private fun saveFileToS3(multipartFile: MultipartFile, key: String): String {
+    private fun saveFileToS3(multipartFile: MultipartFile, key: String) {
         val metadata = ObjectMetadata()
         metadata.contentLength = multipartFile.size
         metadata.contentType = multipartFile.contentType
 
         amazonS3.putObject(bucket, key, multipartFile.inputStream, metadata)
 
-        return amazonS3.getUrl(bucket, key).toString()
+        amazonS3.getUrl(bucket, key).toString()
     }
 
-    private fun saveFileToDb(multipartFile: MultipartFile, key: String, memberId: Long): Long {
+    private fun saveFileToDb(multipartFile: MultipartFile, key: String, memberId: Long) {
+        val imageUrl = saveImage(multipartFile, key, memberId)
+        saveChallenge(memberId, imageUrl)
+    }
+
+    private fun saveImage(multipartFile: MultipartFile, key: String, memberId: Long): String {
         val imageMeta: ImageMeta = ImageMetaSupporter.extract(multipartFile)
+        val imageUrl = getImageUrl(key)
         val newImage = Image.builder()
             .imageKey(key)
             .oriImageName(multipartFile.originalFilename)
-            .imageHostUrl(getImageHostUrl(key))
+            .imageHostUrl(imageUrl)
             .height(imageMeta.height)
             .width(imageMeta.widht)
             .capacity(imageMeta.capacity)
             .memberId(memberId)
             .deleted(false)
             .build()
-        return imageBusinessService.create(newImage)
+        imageBusinessService.create(newImage)
+        return imageUrl
     }
 
-    private fun getImageHostUrl(key: String) = imageHostUrlPrefix + key
+    private fun saveChallenge(memberId: Long, imageUrl: String) {
+        val newChallenge = Challenge.builder()
+            .memberId(memberId)
+            .imageUrl(imageUrl)
+            .deleted(false)
+            .build()
+        challengeBusinessService.create(newChallenge)
+    }
+
+    private fun getImageUrl(key: String) = imageHostUrlPrefix + key
 }

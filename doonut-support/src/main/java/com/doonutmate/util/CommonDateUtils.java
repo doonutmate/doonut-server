@@ -36,6 +36,10 @@ public class CommonDateUtils {
         return calendar;
     }
 
+    public static int getDay(Instant instant) {
+        return instant.atZone(TimeZone.getTimeZone(KST_ZONE_ID).toZoneId()).getDayOfMonth();
+    }
+
     /**
      * Calendar는 month가 0부터 시작한다.
      *

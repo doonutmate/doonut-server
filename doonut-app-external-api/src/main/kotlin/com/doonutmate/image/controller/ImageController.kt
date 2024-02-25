@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @Tag(name = "이미지 업로드")
 @RestController
-@RequestMapping("/image")
+@RequestMapping
 class ImageController(
     private val imageAppService: ImageAppService,
 ) {

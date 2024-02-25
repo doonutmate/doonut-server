@@ -38,7 +38,8 @@ public class ChallengeBusinessServicee {
 
     public List<Challenge> getAllByIdAndDate(String memberId, int year, int month) {
         return repository.findAllByMemberIdAndDate(memberId, year, month)
-                .map(mapper::toChallengeList)
-                .orElse(null);
+                .stream()
+                .map(mapper::toModel)
+                .toList();
     }
 }

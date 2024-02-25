@@ -10,8 +10,7 @@ public record Challenge(
         String memberId,
         String imageUrl,
         ChallengeType type,
-
-        Instant created_at,
+        Instant createdAt,
         boolean deleted
 ) {
 }

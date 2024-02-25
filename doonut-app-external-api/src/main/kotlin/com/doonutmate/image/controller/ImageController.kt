@@ -26,8 +26,11 @@ class ImageController(
         produces = [MediaType.APPLICATION_JSON_VALUE],
     )
     fun imageUpload(
-        @RequestPart("multipartFile") multipartFile: MultipartFile,
-        @Authorization @Parameter(hidden = true) userId: Long,
+        @Authorization
+        @Parameter(hidden = true)
+        userId: String,
+
+        @RequestPart("multipartFile") multipartFile: MultipartFile
     ): ImageUploadResponse {
         return imageService.saveFile(multipartFile, userId)
     }

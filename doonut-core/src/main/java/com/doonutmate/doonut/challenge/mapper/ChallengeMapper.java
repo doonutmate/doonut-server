@@ -12,8 +12,5 @@ public interface ChallengeMapper {
 
     ChallengeEntity toEntity(Challenge model);
 
-    @Mapping(target = "created_at", source = "createdAt")
     Challenge toModel(ChallengeEntity entity);
-
-    List<Challenge> toChallengeList(List<ChallengeEntity> otherModelList);
 }

@@ -38,11 +38,14 @@ class ChallengeService(
         memberId: String,
         req: ChallengeListRequest,
     ): List<ChallengeListResponse> {
+        ChallengeType.THUMBNAIL.width;
+        ChallengeType.THUMBNAIL.height;
+
         val arr = service.getAllByIdAndDate(memberId, req.year, req.month)
         val transformedList: List<ChallengeListResponse> = arr.map { challenge ->
             ChallengeListResponse(
                 imageUrl = challenge.imageUrl,
-                day = challenge.created_at.toString().substring(DAYS_START, DAYS_END),
+                day = challenge.createdAt.toString().substring(DAYS_START, DAYS_END),
             )
         }
         return transformedList

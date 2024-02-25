@@ -22,6 +22,10 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":doonut-support"))
+
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

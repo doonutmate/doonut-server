@@ -5,22 +5,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
 import java.util.List;
 
 public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long> {
 
-
     @Query("""
                 SELECT challenge
                 FROM ChallengeEntity challenge
-                WHERE challenge.deleted = false 
+                WHERE challenge.deleted = false
                 AND challenge.memberId = :memberId
-                AND FUNCTION('YEAR', challenge.createdAt) = :year
-                AND FUNCTION('MONTH', challenge.createdAt) = :month
+                AND challenge.createdAt >= :startAt
+                AND challenge.createdAt <= :endAt
             """)
     List<ChallengeEntity> findAllByMemberIdAndDate(
             @Param("memberId") Long memberId,
-            @Param("year") int year,
-            @Param("month") int month
+            @Param("startAt") Instant startAt,
+            @Param("endAt") Instant endAt
     );
 }

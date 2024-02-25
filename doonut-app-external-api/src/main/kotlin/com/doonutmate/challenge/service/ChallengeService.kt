@@ -3,20 +3,17 @@ package com.doonutmate.challenge.service
 import com.doonutmate.challenge.controller.dto.ChallengeListRequest
 import com.doonutmate.challenge.controller.dto.ChallengeListResponse
 import com.doonutmate.doonut.challenge.model.ChallengeType
-import com.doonutmate.doonut.challenge.service.ChallengeBusinessServicee
+import com.doonutmate.doonut.challenge.service.ChallengeBusinessService
 import org.springframework.stereotype.Service
 
 @Service
 class ChallengeService(
-    private val service: ChallengeBusinessServicee,
+    private val service: ChallengeBusinessService,
 ) {
 
-    fun getChallengeList(
-        memberId: Long,
-        req: ChallengeListRequest,
-    ): List<ChallengeListResponse> {
-        ChallengeType.THUMBNAIL.width;
-        ChallengeType.THUMBNAIL.height;
+    fun getChallengeList(memberId: Long, req: ChallengeListRequest): List<ChallengeListResponse> {
+        ChallengeType.THUMBNAIL.width
+        ChallengeType.THUMBNAIL.height
 
         val arr = service.getAllByIdAndDate(memberId, req.year, req.month)
         val transformedList: List<ChallengeListResponse> = arr.map { challenge ->

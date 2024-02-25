@@ -3,6 +3,7 @@ package com.doonutmate.doonut.challenge.service;
 import com.doonutmate.doonut.challenge.mapper.ChallengeMapper;
 import com.doonutmate.doonut.challenge.model.Challenge;
 import com.doonutmate.doonut.challenge.repository.ChallengeRepository;
+import com.doonutmate.util.CommonDateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class ChallengeBusinessServicee {
+public class ChallengeBusinessService {
     private final ChallengeRepository repository;
     private final ChallengeMapper mapper;
 
@@ -32,7 +33,10 @@ public class ChallengeBusinessServicee {
     }
 
     public List<Challenge> getAllByIdAndDate(Long memberId, int year, int month) {
-        return repository.findAllByMemberIdAndDate(memberId, year, month)
+        var startAt = CommonDateUtils.getFirst(year, month);
+        var endAt = CommonDateUtils.getLast(year, month);
+
+        return repository.findAllByMemberIdAndDate(memberId, startAt, endAt)
                 .stream()
                 .map(mapper::toModel)
                 .toList();

@@ -1,7 +1,7 @@
 package com.doonutmate.image.service
 
 import com.doonutmate.doonut.challenge.model.Challenge
-import com.doonutmate.doonut.challenge.service.ChallengeBusinessServicee
+import com.doonutmate.doonut.challenge.service.ChallengeBusinessService
 import com.doonutmate.doonut.image.model.Image
 import com.doonutmate.doonut.image.service.ImageBusinessService
 import com.doonutmate.image.ImageMeta
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile
 @Service
 class ImageFacadeService(
     private val imageBusinessService: ImageBusinessService,
-    private val challengeBusinessService: ChallengeBusinessServicee,
+    private val challengeBusinessService: ChallengeBusinessService,
 ) {
     @Value("\${cloud.aws.cloudfront.prefix}")
     private val imageHostUrlPrefix: String? = null

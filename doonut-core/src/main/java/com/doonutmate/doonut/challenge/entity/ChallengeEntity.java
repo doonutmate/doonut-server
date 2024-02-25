@@ -1,7 +1,12 @@
 package com.doonutmate.doonut.challenge.entity;
 
 import com.doonutmate.doonut.common.entity.BaseTimeEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

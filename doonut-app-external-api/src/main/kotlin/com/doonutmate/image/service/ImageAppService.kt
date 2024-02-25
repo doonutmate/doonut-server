@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @Service
-class ImageService(
+class ImageAppService(
     private val amazonS3: AmazonS3,
     private val imageFacadeService: ImageFacadeService,
 ) {

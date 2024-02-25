@@ -1,7 +1,7 @@
 package com.doonutmate.image.controller
 
 import com.doonutmate.image.controller.dto.ImageUploadResponse
-import com.doonutmate.image.service.ImageService
+import com.doonutmate.image.service.ImageAppService
 import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/image")
 class ImageController(
-    private val imageService: ImageService,
+    private val imageAppService: ImageAppService,
 ) {
     @Operation(summary = "이미지 업로드", description = "이미지를 업로드하면 url을 반환한다.")
     @PostMapping(
@@ -32,6 +32,6 @@ class ImageController(
 
         @RequestPart("multipartFile") multipartFile: MultipartFile,
     ): ImageUploadResponse {
-        return imageService.saveFile(multipartFile, memberId)
+        return imageAppService.saveFile(multipartFile, memberId)
     }
 }

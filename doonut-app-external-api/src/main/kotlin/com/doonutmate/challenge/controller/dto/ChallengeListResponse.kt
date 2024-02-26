@@ -7,6 +7,9 @@ data class ChallengeListResponse(
     @Schema(title = "일", example = "31")
     var day: Int,
 
-    @Schema(title = "이미지 url")
-    val imageUrl: String,
+    @Schema(title = "기본 이미지 url")
+    val defaultUrl: String,
+
+    @Schema(title = "썸네일 이미지 url")
+    val thumbNailUrl: String,
 )

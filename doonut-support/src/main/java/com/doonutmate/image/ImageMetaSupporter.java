@@ -1,5 +1,6 @@
 package com.doonutmate.image;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -20,5 +21,9 @@ public class ImageMetaSupporter {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public static String getExtension(String fileName) {
+        return FilenameUtils.getExtension(fileName);
     }
 }

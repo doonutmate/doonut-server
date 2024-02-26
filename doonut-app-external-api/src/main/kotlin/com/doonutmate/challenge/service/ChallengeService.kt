@@ -16,7 +16,8 @@ class ChallengeService(
         val challenges = service.getAllByIdAndDate(memberId, req.year, req.month)
         return challenges.map { challenge ->
             ChallengeListResponse(
-                imageUrl = ChallengeType.getThumbNailUrl(challenge.imageUrl),
+                defaultUrl = ChallengeType.getDefaultUrl(challenge.imageUrl),
+                thumbNailUrl = ChallengeType.getThumbNailUrl(challenge.imageUrl),
                 day = CommonDateUtils.getDay(challenge.createdAt),
             )
         }

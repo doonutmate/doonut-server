@@ -54,6 +54,28 @@ class CommonDateUtilsTest {
     }
 
     @ParameterizedTest
+    @MethodSource("getYearMonthDay_provider")
+    void getYearMonthDay(Instant instant, String expected) {
+
+        // when
+        var actual = CommonDateUtils.getYearMonthDay(instant);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> getYearMonthDay_provider() {
+        return Stream.of(
+                arguments(CommonDateUtils.getInstant(2023, 12, 30), "20231230"),
+                arguments(CommonDateUtils.getInstant(2023, 12, 31), "20231231"),
+                arguments(CommonDateUtils.getInstant(2024, 1, 1), "20240101"),
+                arguments(CommonDateUtils.getInstant(2024, 1, 31), "20240131"),
+                arguments(CommonDateUtils.getInstant(2024, 2, 1), "20240201"),
+                arguments(CommonDateUtils.getInstant(2024, 3, 1), "20240301")
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("getDay_provider")
     void getDay(Instant instant, int expected) {
 

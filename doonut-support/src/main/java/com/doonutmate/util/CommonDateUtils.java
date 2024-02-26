@@ -1,12 +1,15 @@
 package com.doonutmate.util;
 
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
 
 public class CommonDateUtils {
 
-    public static final String KST_ZONE_ID = "Asia/Seoul";
+    private static final String KST_ZONE_ID = "Asia/Seoul";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyyMMdd").withZone(TimeZone.getTimeZone(KST_ZONE_ID).toZoneId());
 
     public static Instant getInstant(int year, int month, int day) {
         Calendar calendar = getCalendar(year, month, day);
@@ -34,6 +37,10 @@ public class CommonDateUtils {
         calendar.set(Calendar.MILLISECOND, ms);
 
         return calendar;
+    }
+
+    public static String getYearMonthDay(Instant instant) {
+        return DATE_TIME_FORMATTER.format(instant);
     }
 
     public static int getDay(Instant instant) {

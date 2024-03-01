@@ -23,4 +23,14 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
             @Param("startAt") Instant startAt,
             @Param("endAt") Instant endAt
     );
+
+    @Query("""
+                SELECT challenge
+                FROM ChallengeEntity challenge
+                WHERE challenge.deleted = false
+                AND challenge.memberId = :memberId
+                AND challenge.createdAt >= :startAt
+            """)
+    List<ChallengeEntity> findAllByMemberIdAfter(Long memberId, Instant startAt);
 }
+

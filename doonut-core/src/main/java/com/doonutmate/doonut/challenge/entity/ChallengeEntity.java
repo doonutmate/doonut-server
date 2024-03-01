@@ -7,12 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import lombok.Getter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -38,4 +33,8 @@ public class ChallengeEntity extends BaseTimeEntity {
 
     @Column
     boolean deleted;
+
+    public void delete() {
+        deleted = true;
+    }
 }

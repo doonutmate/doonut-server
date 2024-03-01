@@ -18,7 +18,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         val errorLocation = getErrorLocation(exception)
 
         logger.warn("BaseException occurred: $errorMessage , Location: $errorLocation")
-        return createErrorResponse(exception.httpStatus, errorMessage, request)
+        return create4xxErrorResponse(exception.httpStatus, errorMessage, request)
     }
 
     @ExceptionHandler(RuntimeException::class)
@@ -27,7 +27,7 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         val errorLocation = getErrorLocation(exception)
 
         logger.error("RuntimeException occurred: $errorMessage , Location: $errorLocation")
-        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage, request)
+        return create4xxErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage, request)
     }
 
     @ExceptionHandler(Exception::class)
@@ -36,14 +36,23 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
         val errorLocation = getErrorLocation(exception)
 
         logger.error("Exception occurred: $errorMessage , Location: $errorLocation")
-        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage, request)
+        return create4xxErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage, request)
+    }
+
+    @ExceptionHandler(InternalServerException::class)
+    fun handleInternalServerException(exception: InternalServerException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
+        val errorMessage = getErrorMessage(exception)
+        val errorLocation = getErrorLocation(exception)
+
+        logger.error("InternalServerException occurred: $errorMessage , Location: $errorLocation")
+        return create5xxErrorResponse(errorMessage, request)
     }
 
     private fun getErrorMessage(exception: Exception) = exception.message ?: UNKNOWN_ERROR
 
     private fun getErrorLocation(exception: Exception) = exception.stackTrace.firstOrNull()
 
-    private fun createErrorResponse(
+    private fun create4xxErrorResponse(
         httpStatus: HttpStatus,
         errorMessage: String,
         request: HttpServletRequest,
@@ -54,5 +63,17 @@ class ExceptionHandler : ResponseEntityExceptionHandler() {
             request.requestURI,
         )
         return ResponseEntity.badRequest().body(errorResponse)
+    }
+
+    private fun create5xxErrorResponse(
+        errorMessage: String,
+        request: HttpServletRequest,
+    ): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            errorMessage,
+            request.requestURI,
+        )
+        return ResponseEntity.internalServerError().body(errorResponse)
     }
 }

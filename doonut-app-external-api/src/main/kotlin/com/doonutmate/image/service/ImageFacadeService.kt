@@ -6,6 +6,7 @@ import com.doonutmate.doonut.image.model.Image
 import com.doonutmate.doonut.image.service.ImageBusinessService
 import com.doonutmate.image.ImageMeta
 import com.doonutmate.image.ImageMetaSupporter
+import com.doonutmate.oauth.exception.InternalServerException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -43,7 +44,7 @@ class ImageFacadeService(
     }
 
     private fun validate(challenges: MutableList<Challenge>) {
-        if (challenges.size >= 2) throw RuntimeException()
+        if (challenges.size >= 2) throw InternalServerException()
     }
 
     private fun saveImage(multipartFile: MultipartFile, key: String, memberId: Long): String {

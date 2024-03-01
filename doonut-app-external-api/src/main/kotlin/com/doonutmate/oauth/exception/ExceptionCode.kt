@@ -2,7 +2,7 @@ package com.doonutmate.oauth.exception
 
 import org.springframework.http.HttpStatus
 
-enum class BaseExceptionCode(val httpCode: HttpStatus, val message: String) {
+enum class ExceptionCode(val httpCode: HttpStatus, val message: String) {
 
     /**
      * 400 BAD_REQUEST: 잘못된 요청

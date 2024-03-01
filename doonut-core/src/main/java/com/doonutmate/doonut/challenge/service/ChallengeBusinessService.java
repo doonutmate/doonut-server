@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -40,5 +41,18 @@ public class ChallengeBusinessService {
                 .stream()
                 .map(mapper::toModel)
                 .toList();
+    }
+
+    public List<Challenge> getList(Long memberId, Instant startAt) {
+        return repository.findAllByMemberIdAfter(memberId, startAt)
+                .stream()
+                .map(mapper::toModel)
+                .toList();
+    }
+
+    public void delete(Long id) {
+        var entity = repository.findById(id)
+                .orElseThrow();
+        entity.delete();
     }
 }

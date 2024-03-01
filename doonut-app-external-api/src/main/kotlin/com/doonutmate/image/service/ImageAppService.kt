@@ -30,7 +30,6 @@ class ImageAppService(
         val randomKey = resolveObjectKey(multipartFile)
 
         saveFileToS3(multipartFile, randomKey)
-        // TODO 기존 이미지 삭제 로직 추가 필요
         val imageUrl = saveFileToDb(multipartFile, randomKey, memberId)
 
         return ImageUploadResponse(imageUrl)

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import java.time.Instant
 
 @Transactional(readOnly = true)
 @Service
@@ -23,9 +24,26 @@ class ImageFacadeService(
     @Transactional
     fun save(multipartFile: MultipartFile, key: String, memberId: Long): String {
         val imageUrl = saveImage(multipartFile, key, memberId)
+        deleteChallenge(memberId)
         saveChallenge(memberId, imageUrl)
 
         return imageUrl
+    }
+
+    private fun deleteChallenge(memberId: Long) {
+        val challenges = challengeBusinessService.getList(memberId, Instant.now())
+        if (challenges.isEmpty()) {
+            return
+        }
+
+        validate(challenges)
+
+        val challengeId = challenges[0].id
+        challengeBusinessService.delete(challengeId)
+    }
+
+    private fun validate(challenges: MutableList<Challenge>) {
+        if (challenges.size >= 2) throw RuntimeException()
     }
 
     private fun saveImage(multipartFile: MultipartFile, key: String, memberId: Long): String {

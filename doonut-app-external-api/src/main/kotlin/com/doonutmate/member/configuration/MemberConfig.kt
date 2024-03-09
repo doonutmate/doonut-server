@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class MemberConfig {
     @Bean
-    fun getExampleApi(): GroupedOpenApi {
+    fun getMemberApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("member")
             .pathsToMatch(

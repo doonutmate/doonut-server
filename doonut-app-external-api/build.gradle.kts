@@ -40,6 +40,9 @@ dependencies {
     // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
+    // slack-log-alarm
+    implementation("com.github.maricn:logback-slack-appender:1.6.1")
+
     // json
     implementation("com.googlecode.json-simple:json-simple:1.1")
 

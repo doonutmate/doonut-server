@@ -1,5 +1,6 @@
 package com.doonutmate.doonut.member.service;
 
+import com.doonutmate.doonut.member.event.MemberDeleteEvent;
 import com.doonutmate.doonut.member.mapper.MemberMapper;
 import com.doonutmate.doonut.member.mapper.ProfileImageMapper;
 import com.doonutmate.doonut.member.model.ImageType;
@@ -7,6 +8,7 @@ import com.doonutmate.doonut.member.model.Member;
 import com.doonutmate.doonut.member.model.ProfileImage;
 import com.doonutmate.doonut.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class MemberBusinessService {
 
     private final MemberRepository repository;
+    private final ApplicationEventPublisher eventPublisher;
 
     private final MemberMapper mapper;
     private final ProfileImageMapper profileImageMapper;
@@ -30,7 +33,6 @@ public class MemberBusinessService {
 
         return savedEntity.getId();
     }
-
 
     @Transactional
     public Long create(Member member, String imageUrl) {
@@ -58,5 +60,14 @@ public class MemberBusinessService {
         return repository.findByOauthId(OauthId)
                 .map(mapper::toModel)
                 .orElse(null);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        var entity = repository.findById(id)
+                .orElseThrow(RuntimeException::new); // TODO 적절한 예외로 변환 ex) NotFoundMemberException
+
+        entity.delete();
+        eventPublisher.publishEvent(new MemberDeleteEvent(id));
     }
 }

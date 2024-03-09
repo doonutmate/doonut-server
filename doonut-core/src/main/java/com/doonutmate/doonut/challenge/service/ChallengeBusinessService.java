@@ -3,8 +3,10 @@ package com.doonutmate.doonut.challenge.service;
 import com.doonutmate.doonut.challenge.mapper.ChallengeMapper;
 import com.doonutmate.doonut.challenge.model.Challenge;
 import com.doonutmate.doonut.challenge.repository.ChallengeRepository;
+import com.doonutmate.doonut.member.event.MemberDeleteEvent;
 import com.doonutmate.util.CommonDateUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,9 +52,16 @@ public class ChallengeBusinessService {
                 .toList();
     }
 
+    @Transactional
     public void delete(Long id) {
         var entity = repository.findById(id)
                 .orElseThrow();
         entity.delete();
+    }
+
+    @EventListener
+    public void deleteByEvent(MemberDeleteEvent event) {
+        var memberId = event.id();
+        repository.deleteAllByMemberId(memberId);
     }
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 class MemberController(
     @Autowired var memberAppService: MemberAppService,
 ) {
-    @Operation(summary = "멤버 탈퇴", description = "멤버가 회원 탈퇴한다.")
+    @Operation(summary = "멤버 탈퇴", description = "멤버가 탈퇴한다.")
     @DeleteMapping
     fun delete(
         @Authorization

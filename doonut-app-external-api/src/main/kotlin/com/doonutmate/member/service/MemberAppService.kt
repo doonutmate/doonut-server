@@ -11,6 +11,6 @@ class MemberAppService(
     fun delete(memberId: Long) {
         memberBusinessService.delete(memberId)
 
-        // TODO 애플 소셜 로그인 회원 시 APPLE 서버로 회원 탈퇴 API를 날리도록 로직 추가
+        // TODO 애플로 로그인한 멤버면 APPLE 서버로 탈퇴 API를 날리도록 로직 추가
     }
 }

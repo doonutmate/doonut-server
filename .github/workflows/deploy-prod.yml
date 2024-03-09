@@ -1,8 +1,8 @@
-name: Deploy Dev server
+name: Deploy Prod server
 
 on:
   push:
-    branches: ["develop"]
+    branches: ["main"]
 
 permissions: write-all
 
@@ -62,10 +62,10 @@ jobs:
           username: ec2-user
           key: ${{ secrets.AWS_EC2_PEM_KEY }}
           script: |
-            cd /home/ec2-user/doonut/dev
+            cd /home/ec2-user/doonut/prod
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker stop develop-server
-            docker rm develop-server
+            docker stop production-server
+            docker rm production-server
             docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_PROD_REPO }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_PROD_REPO }}:latest
             docker-compose up -d

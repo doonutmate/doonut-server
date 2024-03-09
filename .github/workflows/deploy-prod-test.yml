@@ -1,8 +1,8 @@
-name: develop test execution
+name: production test execution
 
 on:
   pull_request:
-    branches: ["develop"]
+    branches: ["main"]
 
 permissions: write-all
 

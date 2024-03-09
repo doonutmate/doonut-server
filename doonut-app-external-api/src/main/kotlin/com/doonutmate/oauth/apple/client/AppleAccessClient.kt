@@ -6,7 +6,7 @@ import org.springframework.web.service.annotation.GetExchange
 import org.springframework.web.service.annotation.HttpExchange
 
 @HttpExchange(AppleOauthConstants.APPLE_URL)
-interface AppleClient {
+interface AppleAccessClient {
     @GetExchange(AppleOauthConstants.GET_PUBLIC_KEYS)
     fun getApplePublicKeys(): ApplePublicKeyResponse?
 }

@@ -64,7 +64,8 @@ jobs:
           script: |
             cd /home/ec2-user/doonut/dev
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker rm $(docker ps -a -q)
+            docker stop develop-server
+            docker rm develop-server
             docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_PROD_REPO }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_PROD_REPO }}:latest
             docker-compose up -d

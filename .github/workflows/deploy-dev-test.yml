@@ -1,4 +1,4 @@
-name: production test execution
+name: develop test execution
 
 on:
   pull_request:

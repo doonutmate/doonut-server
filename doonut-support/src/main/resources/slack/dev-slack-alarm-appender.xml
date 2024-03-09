@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <springProperty name="SLACK_WEBHOOK_URI" source="logging.slack.webhook-url"/>
+    <appender name="SLACK-DEV-WARN" class="com.github.maricn.logback.SlackAppender">
+        <webhookUri>${SLACK_WEBHOOK_URI}</webhookUri>
+        <channel>#be-error-alarm-dev</channel>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${SLACK_LOG_PATTERN}</pattern>
+        </layout>
+        <username>알람봇</username>
+        <iconEmoji>:alarmbot:</iconEmoji>
+    </appender>
+
+    <appender name="DEV_ASYNC_SLACK" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="SLACK-DEV-WARN"/>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+    </appender>
+</included>

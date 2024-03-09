@@ -8,6 +8,8 @@ import com.doonutmate.oauth.apple.dto.AppleOauthRequest
 import com.doonutmate.oauth.apple.utils.AppleClaimsValidator
 import com.doonutmate.oauth.apple.utils.AppleJwtParser
 import com.doonutmate.oauth.apple.utils.ApplePublicKeyGenerator
+import com.doonutmate.oauth.controller.dto.LoginRequest
+import com.doonutmate.oauth.service.OauthProvider
 import io.jsonwebtoken.Claims
 import org.springframework.stereotype.Service
 import java.security.PublicKey
@@ -19,34 +21,38 @@ class AppleOauthProvider(
     private val applePublicKeyGenerator: ApplePublicKeyGenerator,
     private val appleClaimsValidator: AppleClaimsValidator,
     private val memberBusinessService: MemberBusinessService,
-) {
+) : OauthProvider<AppleOauthRequest, AppleOauthRequest> {
 
-    fun signUp(identityToken: String): Long {
-        val req: AppleOauthRequest = getApplePlatformMember(identityToken)
-        val newMember = Member.builder()
-            .name(req.name)
-            .email(req.email)
-            .oauthId(req.oauthId)
-            .oauthType(OauthType.APPLE)
-            .deleted(false)
-            .build()
-
-        return memberBusinessService.create(newMember)
-    }
-
-    fun getApplePlatformMember(identityToken: String): AppleOauthRequest {
-        val headers = appleJwtParser.parseHeaders(identityToken)
+    override fun getUserId(loginRequest: LoginRequest): AppleOauthRequest {
+        val headers = appleJwtParser.parseHeaders(loginRequest.accessToken)
         val applePublicKeyResponse = appleClient.getApplePublicKeys()
 
         val publicKey: PublicKey = applePublicKeyGenerator.generatePublicKey(headers, applePublicKeyResponse)
 
-        val claims = appleJwtParser.parsePublicKeyAndGetClaims(identityToken, publicKey)
+        val claims = appleJwtParser.parsePublicKeyAndGetClaims(loginRequest.accessToken, publicKey)
         validateClaims(claims)
         return AppleOauthRequest(
             claims.subject,
             claims["name", String::class.java],
             claims["email", String::class.java],
         )
+    }
+
+    override fun getUserInfo(loginRequest: LoginRequest): AppleOauthRequest {
+        TODO("Not yet implemented")
+    }
+
+    override fun signUp(loginRequest: LoginRequest): Long {
+        val req: AppleOauthRequest = getUserId(loginRequest)
+        val newMember = Member.builder()
+            .name(req.name)
+            .email(req.email)
+            .oauthId(req.id)
+            .oauthType(OauthType.APPLE)
+            .deleted(false)
+            .build()
+
+        return memberBusinessService.create(newMember)
     }
 
     private fun validateClaims(claims: Claims) {

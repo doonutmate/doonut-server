@@ -1,6 +1,7 @@
 package com.doonutmate.doonut.challenge.service;
 
 import com.doonutmate.doonut.challenge.model.Challenge;
+import com.doonutmate.doonut.member.event.MemberDeleteEvent;
 import com.doonutmate.util.CommonDateUtils;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
@@ -29,11 +30,7 @@ class ChallengeBusinessServiceTest {
     @Test
     void getAllByIdAndDate_firstDay() {
         // given
-        service.create(Challenge.builder()
-                .memberId(1L)
-                .imageUrl("https://test.url")
-                .deleted(false)
-                .build());
+        service.create(createChallenge(1L));
         var createdAt = CommonDateUtils.getInstant(2024, 2, 1);
         jdbcTemplate.update("""
                     UPDATE challenge
@@ -55,11 +52,7 @@ class ChallengeBusinessServiceTest {
     @Test
     void getAllByIdAndDate_lastDay() {
         // given
-        service.create(Challenge.builder()
-                .memberId(1L)
-                .imageUrl("https://test.url")
-                .deleted(false)
-                .build());
+        service.create(createChallenge(1L));
         var createdAt = CommonDateUtils.getLast(2024, 2);
         jdbcTemplate.update("""
                     UPDATE challenge
@@ -81,11 +74,7 @@ class ChallengeBusinessServiceTest {
     @Test
     void getAllByIdAndDate_nextFirstDay() {
         // given
-        service.create(Challenge.builder()
-                .memberId(1L)
-                .imageUrl("https://test.url")
-                .deleted(false)
-                .build());
+        service.create(createChallenge(1L));
         var createdAt = CommonDateUtils.getFirst(2024, 3);
         jdbcTemplate.update("""
                     UPDATE challenge
@@ -106,11 +95,7 @@ class ChallengeBusinessServiceTest {
     @Test
     void get() {
         // given
-        var savedId1 = service.create(Challenge.builder()
-                .memberId(1L)
-                .imageUrl("https://test.url")
-                .deleted(false)
-                .build());
+        var savedId1 = service.create(createChallenge(1L));
         em.flush();
         em.clear();
 
@@ -127,11 +112,7 @@ class ChallengeBusinessServiceTest {
 
         // given
         var memberId = 1L;
-        var savedId1 = service.create(Challenge.builder()
-                .memberId(memberId)
-                .imageUrl("https://test.url")
-                .deleted(false)
-                .build());
+        var savedId1 = service.create(createChallenge(memberId));
         var marchLastDay = CommonDateUtils.getInstant(2024, 3, 31);
         jdbcTemplate.update("""
                     UPDATE challenge
@@ -139,11 +120,7 @@ class ChallengeBusinessServiceTest {
                     WHERE id = ?
                 """, marchLastDay, savedId1);
 
-        var savedId2 = service.create(Challenge.builder()
-                .memberId(memberId)
-                .imageUrl("https://test.url")
-                .deleted(false)
-                .build());
+        var savedId2 = service.create(createChallenge(memberId));
         var aprilFirstDay = CommonDateUtils.getFirst(2024, 4);
         jdbcTemplate.update("""
                     UPDATE challenge
@@ -151,11 +128,7 @@ class ChallengeBusinessServiceTest {
                     WHERE id = ?
                 """, aprilFirstDay, savedId2);
 
-        var savedId3 = service.create(Challenge.builder()
-                .memberId(memberId)
-                .imageUrl("https://test.url")
-                .deleted(false)
-                .build());
+        var savedId3 = service.create(createChallenge(memberId));
         var aprilSecondDay = CommonDateUtils.getInstant(2024, 4, 2);
         jdbcTemplate.update("""
                     UPDATE challenge
@@ -163,11 +136,7 @@ class ChallengeBusinessServiceTest {
                     WHERE id = ?
                 """, aprilSecondDay, savedId3);
 
-        var savedId4 = service.create(Challenge.builder()
-                .memberId(memberId)
-                .imageUrl("https://test.url")
-                .deleted(true)
-                .build());
+        var savedId4 = service.create(createChallenge(memberId, true));
         var aprilThirdDay = CommonDateUtils.getInstant(2024, 4, 3);
         jdbcTemplate.update("""
                     UPDATE challenge
@@ -184,5 +153,57 @@ class ChallengeBusinessServiceTest {
         assertThat(result).hasSize(2);
         assertThat(result.get(0).createdAt()).isEqualTo(aprilFirstDay);
         assertThat(result.get(1).createdAt()).isEqualTo(aprilSecondDay);
+    }
+
+    @DisplayName("챌린지 id를 받으면 해당 챌린지를 삭제한다.")
+    @Test
+    void delete() {
+        // given
+        var memberId = 1L;
+        var savedId = service.create(createChallenge(memberId));
+
+        // when
+        service.delete(savedId);
+
+        // then
+        var deletedMember = service.get(savedId);
+        assertThat(deletedMember.deleted()).isTrue();
+    }
+
+    @DisplayName("MemberDeleteEvent를 받으면 해당 멤버의 모든 챌린지를 삭제한다.")
+    @Test
+    void deleteByEvent() {
+        // given
+        var memberId1 = 1L;
+        var memberId2 = 2L;
+        var savedId1 = service.create(createChallenge(memberId1));
+        var savedId2 = service.create(createChallenge(memberId1));
+        var savedId3 = service.create(createChallenge(memberId2));
+        em.flush();
+        em.clear();
+
+        // when
+        service.deleteByEvent(MemberDeleteEvent.builder().id(memberId1).build());
+
+        // then
+        assertThat(service.get(savedId1).deleted()).isTrue();
+        assertThat(service.get(savedId2).deleted()).isTrue();
+        assertThat(service.get(savedId3).deleted()).isFalse();
+    }
+
+    private Challenge createChallenge(long memberId) {
+        return Challenge.builder()
+                .memberId(memberId)
+                .imageUrl("https://test.url")
+                .deleted(false)
+                .build();
+    }
+
+    private Challenge createChallenge(long memberId, boolean deleted) {
+        return Challenge.builder()
+                .memberId(memberId)
+                .imageUrl("https://test.url")
+                .deleted(deleted)
+                .build();
     }
 }

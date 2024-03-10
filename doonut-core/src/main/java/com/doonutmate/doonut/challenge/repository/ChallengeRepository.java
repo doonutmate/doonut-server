@@ -2,6 +2,7 @@ package com.doonutmate.doonut.challenge.repository;
 
 import com.doonutmate.doonut.challenge.entity.ChallengeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -32,5 +33,13 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
                 AND challenge.createdAt >= :startAt
             """)
     List<ChallengeEntity> findAllByMemberIdAfter(Long memberId, Instant startAt);
+
+    @Modifying
+    @Query("""
+                UPDATE ChallengeEntity c
+                SET c.deleted = true
+                WHERE c.memberId = :memberId
+            """)
+    void deleteAllByMemberId(Long memberId);
 }
 

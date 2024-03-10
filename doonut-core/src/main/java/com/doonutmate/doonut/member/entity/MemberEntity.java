@@ -54,4 +54,8 @@ public class MemberEntity extends BaseTimeEntity {
     @Builder.Default
     @Column
     boolean deleted = false;
+
+    public void delete() {
+        deleted = true;
+    }
 }

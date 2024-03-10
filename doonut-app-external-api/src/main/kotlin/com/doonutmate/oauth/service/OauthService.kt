@@ -25,10 +25,10 @@ class OauthService(
             }
 
             APPLE -> {
-                appleOauthProvider.getUserId(loginRequest).id
+                appleOauthProvider.getUserId(loginRequest).oauthId
             }
         }
-        val memberId = memberBusinessService.getByOauthId(savedId)?.oauthId
+        val memberId = memberBusinessService.getByOauthId(savedId)?.id
             ?: signUp(loginRequest, oauthType)
 
         return LoginResponse(jwtTokenProvider.createToken(memberId.toString()))

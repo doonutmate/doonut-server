@@ -47,7 +47,7 @@ class AppleOauthProvider(
         val newMember = Member.builder()
             .name(req.name)
             .email(req.email)
-            .oauthId(req.id)
+            .oauthId(req.oauthId)
             .oauthType(OauthType.APPLE)
             .deleted(false)
             .build()

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class AppleClaimsValidator(
-    @Value("\${apple.iss}") private val iss: String,
-    @Value("\${apple.client-id}") private val clientId: String,
-    @Value("\${apple.nonce}") nonce: String,
+    @Value("\${apple.oauth.iss}") private val iss: String,
+    @Value("\${apple.oauth.sub}") private val clientId: String,
+    @Value("\${apple.oauth.nonce}") nonce: String,
 ) {
     private val nonce: String = EncryptUtils.encrypt(nonce)
 

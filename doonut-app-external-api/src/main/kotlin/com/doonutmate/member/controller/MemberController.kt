@@ -1,5 +1,6 @@
 package com.doonutmate.member.controller
 
+import com.doonutmate.member.controller.dto.MyPageResponse
 import com.doonutmate.member.service.MemberAppService
 import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,6 +19,17 @@ import org.springframework.web.bind.annotation.RestController
 class MemberController(
     @Autowired var memberAppService: MemberAppService,
 ) {
+    @Operation(summary = "마이페이지 조회", description = "마이페이지를 조회한다.")
+    @GetMapping("/mypage")
+    fun findMyInfo(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+    ): MyPageResponse {
+        // TODO 마이페이지 조회 API 구현
+        return MyPageResponse("친절한 상어", "https://fastly.picsum.photos/id/1044/640/640.jpg?hmac=5bfELbOuzIo267_2zlgVi73Wv43fq7MqdhSpjr8c15Y")
+    }
+
     @Operation(summary = "멤버 탈퇴", description = "멤버가 탈퇴한다.")
     @DeleteMapping
     fun delete(

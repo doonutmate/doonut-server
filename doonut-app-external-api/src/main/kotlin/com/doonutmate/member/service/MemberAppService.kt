@@ -17,7 +17,6 @@ class MemberAppService(
     }
 
     fun delete(memberId: Long, code: String) {
-        val response: AppleTokenResponse = appleOauthProvider.createAuthToken(code)
         val accessToken = appleOauthProvider.createAuthToken(code).accessToken
         appleOauthProvider.revokeAccessToken(accessToken)
         memberBusinessService.delete(memberId)

@@ -29,7 +29,6 @@ class AppleOauthProvider(
 
     @Value("\${apple.oauth.kid}") private val KID: String,
     @Value("\${apple.oauth.sub}") private val SUB: String,
-    @Value("\${apple.oauth.redirect-uri}") private val REDIRECT_URI: String,
 ) : OauthProvider<AppleIdResponse, AppleOauthRequest> {
 
     override fun getUserId(loginRequest: LoginRequest): AppleIdResponse {
@@ -75,11 +74,13 @@ class AppleOauthProvider(
 
     fun revokeAccessToken(accessToken: String) {
         val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB)
-        appleClient.revokeToken(SUB, appleSecret, accessToken)
+        appleClient.revokeToken(SUB, appleSecret, accessToken, "refresh_token")
     }
+    // TODO 토큰 revoke 실패시 처리
 
     private fun validateAndCreateClaims(loginRequest: LoginRequest): Claims {
         val headers = appleJwtParser.parseHeaders(loginRequest.accessToken)
+
         val applePublicKeyResponse = appleClient.getApplePublicKeys()
 
         val publicKey: PublicKey = applePublicKeyGenerator.generatePublicKey(headers, applePublicKeyResponse)

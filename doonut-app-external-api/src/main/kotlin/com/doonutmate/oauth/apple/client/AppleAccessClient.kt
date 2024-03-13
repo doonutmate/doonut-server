@@ -35,5 +35,6 @@ interface AppleAccessClient {
         @RequestParam("client_id") clientId: String,
         @RequestParam("client_secret") clientSecret: String,
         @RequestParam("token") token: String,
+        @RequestParam("token_type_hint") hint: String,
     ): ResponseEntity<Unit>
 }

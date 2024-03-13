@@ -13,11 +13,11 @@ import java.util.Base64
 class AppleJwtParser {
     fun parseHeaders(identityToken: String): Map<String, String> {
         try {
-            val encodedHeader = identityToken.split(IDENTITY_TOKEN_VALUE_DELIMITER)[HEADER_INDEX]
-            val decodedHeader = String(Base64.getDecoder().decode(encodedHeader))
+            val encodedHeader = identityToken.split(Regex(IDENTITY_TOKEN_VALUE_DELIMITER))[HEADER_INDEX]
+            val decodedHeader = String(Base64.getUrlDecoder().decode(encodedHeader))
             return OBJECT_MAPPER.readValue(decodedHeader)
         } catch (e: Exception) {
-            throw RuntimeException()
+            throw RuntimeException(e)
         }
     }
 

@@ -47,6 +47,15 @@ public class CommonDateUtils {
         return instant.atZone(TimeZone.getTimeZone(KST_ZONE_ID).toZoneId()).getDayOfMonth();
     }
 
+    public static Instant getToday() {
+        var now = Instant.now().atZone(TimeZone.getTimeZone(KST_ZONE_ID).toZoneId());
+        var year = now.getYear();
+        var month = now.getMonth().getValue();
+        var day = now.getDayOfMonth();
+
+        return getInstant(year, month, day);
+    }
+
     /**
      * Calendar는 month가 0부터 시작한다.
      *

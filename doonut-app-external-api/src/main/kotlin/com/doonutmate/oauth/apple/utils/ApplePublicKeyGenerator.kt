@@ -15,10 +15,7 @@ class ApplePublicKeyGenerator {
         tokenHeaders: Map<String, String>,
         applePublicKeys: ApplePublicKeyResponse,
     ): PublicKey {
-        val publicKey: ApplePublicKey = applePublicKeys.getMatchedKey(
-            tokenHeaders["kid"] ?: "unknown",
-            tokenHeaders["alg"] ?: "unknown",
-        )
+        val publicKey = applePublicKeys.getMatchedKey(tokenHeaders["alg"], tokenHeaders["kid"])
         return getPublicKey(publicKey)
     }
 

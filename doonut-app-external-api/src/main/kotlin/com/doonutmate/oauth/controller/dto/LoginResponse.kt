@@ -1,5 +1,6 @@
 package com.doonutmate.oauth.controller.dto
 
+import com.doonutmate.doonut.member.model.OauthType
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotEmpty
 
@@ -7,8 +8,10 @@ import jakarta.validation.constraints.NotEmpty
 data class LoginResponse(
     @Schema(
         title = "accessToken",
-        example = "eyJpc3MiOiJ2ZWxvcGVydC5jb20iLCJleHAiOiIxNDg1MjcwMDAwMDAwIiwiaHR0cHM6Ly92ZWxvcGVydC5jb20vand0X2NsYWltcy9pc19hZG1pbiI6dHJ1ZSwidXNlcklkIjoiMTEwMjgzNzM3MjcxMDIiLCJ1c2VybmFtZSI6InZlbG9wZXJ0In0"
+        example = "eyJpc3MiOiJ2ZWxvcGVydC5jb20iLCJleHAiOiIxNDg1MjcwMDAwMDAwIiwiaHR0cHM6Ly92ZWxvcGVydC5jb20vand0X2NsYWltcy9pc19hZG1pbiI6dHJ1ZSwidXNlcklkIjoiMTEwMjgzNzM3MjcxMDIiLCJ1c2VybmFtZSI6InZlbG9wZXJ0In0",
     )
     @NotEmpty
     val accessToken: String,
+
+    val oauthType: OauthType,
 )

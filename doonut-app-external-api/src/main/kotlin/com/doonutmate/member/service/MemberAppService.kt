@@ -1,24 +1,31 @@
 package com.doonutmate.member.service
 
+import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.service.MemberBusinessService
-import com.doonutmate.oauth.apple.dto.AppleTokenResponse
-import com.doonutmate.oauth.apple.service.AppleOauthProvider
-import org.springframework.beans.factory.annotation.Autowired
+import com.doonutmate.member.controller.dto.DeleteRequest
+import com.doonutmate.member.service.strategy.AppleMemberDelete
+import com.doonutmate.member.service.strategy.KakaoMemeberDelete
 import org.springframework.stereotype.Service
 
 @Service
 class MemberAppService(
-    @Autowired var memberBusinessService: MemberBusinessService,
-    private val appleOauthProvider: AppleOauthProvider,
+    private val appleMemberDelete: AppleMemberDelete,
+    private val kakaoMemeberDelete: KakaoMemeberDelete,
+    private val memberBusinessService: MemberBusinessService,
 ) {
-    fun delete(memberId: Long) {
-        memberBusinessService.delete(memberId)
-        // TODO 애플로 로그인한 멤버면 APPLE 서버로 탈퇴 API를 날리도록 로직 추가
+    fun delete(req: DeleteRequest) {
+        when (req.oauthType) {
+            OauthType.KAKAO -> {
+                kakaoMemeberDelete.delete(req)
+            }
+
+            OauthType.APPLE -> {
+                appleMemberDelete.delete(req)
+            }
+        }
     }
 
-    fun delete(memberId: Long, code: String) {
-        val accessToken = appleOauthProvider.createAuthToken(code).accessToken
-        appleOauthProvider.revokeAccessToken(accessToken)
-        memberBusinessService.delete(memberId)
+    fun determineOauthType(memberId: Long): OauthType {
+        return memberBusinessService.get(memberId).oauthType
     }
 }

@@ -33,7 +33,7 @@ class ApplePrivateKeyGenerator {
     }
 
     private fun getPrivateKey(): PrivateKey {
-        val resource = ClassPathResource("resources/AuthKey_LMU9S63B75.p8")
+        val resource = ClassPathResource("AuthKey_LMU9S63B75.p8")
         val privateKey = String(Files.readAllBytes(Paths.get(resource.uri)))
         val pemReader = StringReader(privateKey)
         PEMParser(pemReader).use { pemParser ->

@@ -1,5 +1,7 @@
 package com.doonutmate.member.controller
 
+import com.doonutmate.doonut.member.model.OauthType
+import com.doonutmate.member.controller.dto.DeleteRequest
 import com.doonutmate.member.service.MemberAppService
 import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
@@ -8,7 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -23,8 +27,20 @@ class MemberController(
         @Authorization
         @Parameter(hidden = true)
         memberId: Long,
+        @RequestParam oauthType: OauthType,
+        @RequestParam(required = false) code: String,
     ): ResponseEntity<Void> {
-        memberAppService.delete(memberId)
+        memberAppService.delete(DeleteRequest(memberId, code, oauthType))
         return ResponseEntity.ok().build()
+    }
+
+    @Operation(summary = "oauthType 판별", description = "회원탈퇴전 oauthType 을 판별한다")
+    @GetMapping("oauth-type")
+    fun determineOauthType(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+    ): OauthType {
+        return memberAppService.determineOauthType(memberId)
     }
 }

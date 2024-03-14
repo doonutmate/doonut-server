@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -32,15 +31,5 @@ class MemberController(
     ): ResponseEntity<Void> {
         memberAppService.delete(DeleteRequest(memberId, code, oauthType))
         return ResponseEntity.ok().build()
-    }
-
-    @Operation(summary = "oauthType 판별", description = "회원탈퇴전 oauthType 을 판별한다")
-    @GetMapping("oauth-type")
-    fun determineOauthType(
-        @Authorization
-        @Parameter(hidden = true)
-        memberId: Long,
-    ): OauthType {
-        return memberAppService.determineOauthType(memberId)
     }
 }

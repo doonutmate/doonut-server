@@ -24,8 +24,4 @@ class MemberAppService(
             }
         }
     }
-
-    fun determineOauthType(memberId: Long): OauthType {
-        return memberBusinessService.get(memberId).oauthType
-    }
 }

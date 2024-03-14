@@ -31,7 +31,7 @@ class OauthService(
         val memberId = memberBusinessService.getByOauthId(savedId)?.id
             ?: signUp(loginRequest, oauthType)
 
-        return LoginResponse(jwtTokenProvider.createToken(memberId.toString()))
+        return LoginResponse(jwtTokenProvider.createToken(memberId.toString()), oauthType)
     }
 
     fun signUp(loginRequest: LoginRequest, oauthType: OauthType): Long {

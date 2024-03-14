@@ -65,9 +65,9 @@ dependencies {
 
 tasks {
     copy {
-        from("../doonut-config")
-        include("*.yml")
-        into("src/main/resources")
+//        from("../doonut-config")
+//        include("*.yml")
+//        into("src/main/resources")
     }
 
     withType<KotlinCompile> {

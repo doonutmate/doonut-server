@@ -29,6 +29,7 @@ class AppleOauthProvider(
 
     @Value("\${apple.oauth.kid}") private val KID: String,
     @Value("\${apple.oauth.sub}") private val SUB: String,
+    @Value("\${apple.oauth.team-id}") private val TEAD_ID: String,
 ) : OauthProvider<AppleIdResponse, AppleOauthRequest> {
 
     override fun getUserId(loginRequest: LoginRequest): AppleIdResponse {
@@ -63,17 +64,17 @@ class AppleOauthProvider(
     }
 
     fun createAuthToken(code: String): AppleTokenResponse {
-        val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB)
+        val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB, TEAD_ID)
         return appleClient.createAppleToken(SUB, appleSecret, "authorization_code", code)
     }
 
     fun reissuanceAccessToken(refreshToken: String): AppleTokenResponse {
-        val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB)
+        val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB, TEAD_ID)
         return appleClient.reissuanceAccessTokens(SUB, appleSecret, "refresh_token", refreshToken)
     }
 
     fun revokeAccessToken(accessToken: String) {
-        val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB)
+        val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB,TEAD_ID)
         appleClient.revokeToken(SUB, appleSecret, accessToken, "refresh_token")
     }
     // TODO 토큰 revoke 실패시 처리

@@ -18,12 +18,12 @@ import java.util.Date
 @Component
 class ApplePrivateKeyGenerator {
 
-    fun createClientSecret(kid: String, sub: String): String {
+    fun createClientSecret(kid: String, sub: String, teamId: String): String {
         val expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant())
         return Jwts.builder()
             .setHeaderParam("kid", kid)
             .setHeaderParam("alg", "ES256")
-            .setIssuer("DASKP64V6P")
+            .setIssuer(teamId)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(expirationDate)
             .setAudience("https://appleid.apple.com")

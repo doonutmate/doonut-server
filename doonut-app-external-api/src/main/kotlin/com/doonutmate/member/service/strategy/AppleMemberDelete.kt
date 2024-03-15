@@ -16,8 +16,4 @@ class AppleMemberDelete(
         appleOauthProvider.revokeAccessToken(accessToken)
         memberBusinessService.delete(req.memberId)
     }
-
-    override fun supports(oauthTypeStrategy: OauthTypeStrategy): Boolean {
-        return oauthTypeStrategy == OauthTypeStrategy.APPLE
-    }
 }

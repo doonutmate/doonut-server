@@ -12,8 +12,4 @@ class KakaoMemeberDelete(
     override fun delete(req: DeleteRequest) {
         memberBusinessService.delete(req.memberId)
     }
-
-    override fun supports(oauthTypeStrategy: OauthTypeStrategy): Boolean {
-        return oauthTypeStrategy == OauthTypeStrategy.KAKAO
-    }
 }

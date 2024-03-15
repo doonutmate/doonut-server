@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service
 class MemberAppService(
     memberDeleteStrategy: List<MemberDeleteStrategy>,
 ) {
-    private val memberDeleteStrategyMap = memberDeleteStrategy.associateBy { it.oauthTypeStrategy }
+    private val memberDeleteStrategyMap = memberDeleteStrategy.associateBy { it.memberDeleteOauthType }
     fun delete(req: DeleteRequest) {
-        memberDeleteStrategyMap[req.oauthTypeStrategy]
+        memberDeleteStrategyMap[req.memberDeleteOauthType]
             ?.delete(req)
     }
 }

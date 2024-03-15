@@ -1,12 +1,12 @@
 package com.doonutmate.doonut.member.model;
 
-public enum OauthTypeStrategy {
+public enum MemberDeleteOauthType {
     KAKAO("kakaoMemberDelete"),
     APPLE("appleMemberDelete");
 
     public final String strategyName;
 
-    OauthTypeStrategy(String strategyName) {
+    MemberDeleteOauthType(String strategyName) {
         this.strategyName = strategyName;
     }
 }

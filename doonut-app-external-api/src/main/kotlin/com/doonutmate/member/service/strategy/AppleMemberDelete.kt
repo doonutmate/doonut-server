@@ -11,6 +11,10 @@ class AppleMemberDelete(
     private val appleOauthProvider: AppleOauthProvider,
     private val memberBusinessService: MemberBusinessService,
 ) : MemberDeleteStrategy {
+
+    override val oauthTypeStrategy: OauthTypeStrategy
+        get() = OauthTypeStrategy.APPLE
+
     override fun delete(req: DeleteRequest) {
         val accessToken = appleOauthProvider.createAuthToken(req.code).accessToken
         appleOauthProvider.revokeAccessToken(accessToken)

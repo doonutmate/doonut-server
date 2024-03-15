@@ -1,5 +1,6 @@
 package com.doonutmate.member.service.strategy
 
+import com.doonutmate.doonut.member.model.OauthTypeStrategy
 import com.doonutmate.doonut.member.service.MemberBusinessService
 import com.doonutmate.member.controller.dto.DeleteRequest
 import com.doonutmate.oauth.apple.service.AppleOauthProvider
@@ -14,5 +15,9 @@ class AppleMemberDelete(
         val accessToken = appleOauthProvider.createAuthToken(req.code).accessToken
         appleOauthProvider.revokeAccessToken(accessToken)
         memberBusinessService.delete(req.memberId)
+    }
+
+    override fun supports(oauthTypeStrategy: OauthTypeStrategy): Boolean {
+        return oauthTypeStrategy == OauthTypeStrategy.APPLE
     }
 }

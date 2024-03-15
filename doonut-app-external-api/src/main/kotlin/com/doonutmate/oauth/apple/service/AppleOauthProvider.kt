@@ -68,13 +68,13 @@ class AppleOauthProvider(
         return appleClient.createAppleToken(SUB, appleSecret, "authorization_code", code)
     }
 
-    fun reissuanceAccessToken(refreshToken: String): AppleTokenResponse {
+    fun reissueAccessTokens(refreshToken: String): AppleTokenResponse {
         val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB, TEAD_ID)
         return appleClient.reissuanceAccessTokens(SUB, appleSecret, "refresh_token", refreshToken)
     }
 
     fun revokeAccessToken(accessToken: String) {
-        val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB,TEAD_ID)
+        val appleSecret = applePrivateKeyGenerator.createClientSecret(KID, SUB, TEAD_ID)
         appleClient.revokeToken(SUB, appleSecret, accessToken, "refresh_token")
     }
     // TODO 토큰 revoke 실패시 처리
@@ -86,9 +86,7 @@ class AppleOauthProvider(
 
         val publicKey: PublicKey = applePublicKeyGenerator.generatePublicKey(headers, applePublicKeyResponse)
 
-        val claims = appleJwtParser.parsePublicKeyAndGetClaims(loginRequest.accessToken, publicKey)
-
-        return claims
+        return appleJwtParser.parsePublicKeyAndGetClaims(loginRequest.accessToken, publicKey)
     }
 
     private fun validateClaims(claims: Claims) {

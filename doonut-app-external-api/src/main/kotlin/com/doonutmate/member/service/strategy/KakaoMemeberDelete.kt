@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 class KakaoMemeberDelete(
     private val memberBusinessService: MemberBusinessService,
-) : StrategyMemberDelete {
+) : MemberDeleteStrategy {
     override fun delete(req: DeleteRequest) {
         memberBusinessService.delete(req.memberId)
     }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class AppleMemberDelete(
     private val appleOauthProvider: AppleOauthProvider,
     private val memberBusinessService: MemberBusinessService,
-) : StrategyMemberDelete {
+) : MemberDeleteStrategy {
     override fun delete(req: DeleteRequest) {
         val accessToken = appleOauthProvider.createAuthToken(req.code).accessToken
         appleOauthProvider.revokeAccessToken(accessToken)

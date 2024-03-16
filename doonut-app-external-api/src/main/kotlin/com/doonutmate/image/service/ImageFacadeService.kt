@@ -7,11 +7,11 @@ import com.doonutmate.doonut.image.service.ImageBusinessService
 import com.doonutmate.image.ImageMeta
 import com.doonutmate.image.ImageMetaSupporter
 import com.doonutmate.oauth.exception.InternalServerException
+import com.doonutmate.util.CommonDateUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import java.time.Instant
 
 @Transactional(readOnly = true)
 @Service
@@ -32,7 +32,7 @@ class ImageFacadeService(
     }
 
     private fun deleteChallenge(memberId: Long) {
-        val challenges = challengeBusinessService.getList(memberId, Instant.now())
+        val challenges = challengeBusinessService.getList(memberId, CommonDateUtils.getToday())
         if (challenges.isEmpty()) {
             return
         }

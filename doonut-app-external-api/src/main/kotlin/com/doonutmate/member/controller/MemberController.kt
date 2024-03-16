@@ -1,6 +1,6 @@
 package com.doonutmate.member.controller
 
-import com.doonutmate.doonut.member.model.MemberDeleteOauthType
+import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.member.controller.dto.DeleteRequest
 import com.doonutmate.member.service.MemberAppService
 import com.doonutmate.oauth.configuration.Authorization
@@ -26,10 +26,10 @@ class MemberController(
         @Authorization
         @Parameter(hidden = true)
         memberId: Long,
-        @RequestParam memberDeleteOauthType: MemberDeleteOauthType,
+        @RequestParam oauthType: OauthType,
         @RequestParam(required = false) code: String,
     ): ResponseEntity<Void> {
-        memberAppService.delete(DeleteRequest(memberId, code, memberDeleteOauthType))
+        memberAppService.delete(DeleteRequest(memberId, code, oauthType))
         return ResponseEntity.ok().build()
     }
 }

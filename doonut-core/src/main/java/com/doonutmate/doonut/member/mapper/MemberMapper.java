@@ -5,7 +5,7 @@ import com.doonutmate.doonut.member.model.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(uses = {ProfileImageMapper.class})
 public interface MemberMapper {
 
     @Mapping(target = "profileImages", ignore = true)

@@ -29,8 +29,7 @@ class MemberController(
         @Parameter(hidden = true)
         memberId: Long,
     ): MyPageResponse {
-        // TODO 마이페이지 조회 API 구현
-        return MyPageResponse("친절한 상어", "https://fastly.picsum.photos/id/1044/640/640.jpg?hmac=5bfELbOuzIo267_2zlgVi73Wv43fq7MqdhSpjr8c15Y")
+        return memberAppService.findMyInfo(memberId)
     }
 
     @Operation(summary = "멤버 탈퇴", description = "멤버가 탈퇴한다.")

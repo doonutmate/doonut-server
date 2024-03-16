@@ -19,4 +19,5 @@ enum class ExceptionCode(val httpCode: HttpStatus, val message: String) {
      * @see org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
      */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다."),
+    NOT_MATCHED_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "Apple JWT 값의 alg, kid 정보가 올바르지 않습니다.")
 }

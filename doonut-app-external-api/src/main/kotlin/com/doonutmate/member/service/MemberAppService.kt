@@ -1,16 +1,16 @@
 package com.doonutmate.member.service
 
-import com.doonutmate.doonut.member.service.MemberBusinessService
-import org.springframework.beans.factory.annotation.Autowired
+import com.doonutmate.member.controller.dto.DeleteRequest
+import com.doonutmate.member.service.strategy.MemberDeleteStrategy
 import org.springframework.stereotype.Service
 
 @Service
 class MemberAppService(
-    @Autowired var memberBusinessService: MemberBusinessService,
+    memberDeleteStrategy: List<MemberDeleteStrategy>,
 ) {
-    fun delete(memberId: Long) {
-        memberBusinessService.delete(memberId)
-
-        // TODO 애플로 로그인한 멤버면 APPLE 서버로 탈퇴 API를 날리도록 로직 추가
+    private val memberDeleteStrategyMap = memberDeleteStrategy.associateBy { it.oauthType }
+    fun delete(req: DeleteRequest) {
+        memberDeleteStrategyMap[req.oauthType]
+            ?.delete(req)
     }
 }

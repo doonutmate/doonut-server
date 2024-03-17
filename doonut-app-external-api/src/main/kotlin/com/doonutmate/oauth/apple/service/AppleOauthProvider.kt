@@ -3,6 +3,7 @@ package com.doonutmate.oauth.apple.service
 import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.doonut.member.service.MemberBusinessService
+import com.doonutmate.name.RandomNameGenerator
 import com.doonutmate.oauth.apple.client.AppleAccessClient
 import com.doonutmate.oauth.apple.dto.AppleIdResponse
 import com.doonutmate.oauth.apple.dto.AppleOauthRequest
@@ -53,7 +54,7 @@ class AppleOauthProvider(
     override fun signUp(loginRequest: LoginRequest): Long {
         val req: AppleOauthRequest = getUserInfo(loginRequest)
         val newMember = Member.builder()
-            .name(req.name)
+            .name(getRandomName(req.name))
             .email(req.email)
             .oauthId(req.oauthId)
             .oauthType(OauthType.APPLE)
@@ -61,6 +62,13 @@ class AppleOauthProvider(
             .build()
 
         return memberBusinessService.create(newMember)
+    }
+
+    private fun getRandomName(name: String?): String {
+        if (!name.isNullOrBlank()) {
+            return name
+        }
+        return RandomNameGenerator.generateRandomName()
     }
 
     fun createAuthToken(code: String): AppleTokenResponse {

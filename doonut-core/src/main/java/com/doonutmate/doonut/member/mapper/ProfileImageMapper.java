@@ -10,4 +10,6 @@ public interface ProfileImageMapper {
 
     @Mapping(target = "member", ignore = true)
     ProfileImageEntity toEntity(ProfileImage model);
+
+    ProfileImage toModel(ProfileImageEntity entity);
 }

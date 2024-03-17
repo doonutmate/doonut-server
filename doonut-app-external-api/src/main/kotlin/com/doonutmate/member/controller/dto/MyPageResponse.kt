@@ -8,5 +8,5 @@ data class MyPageResponse(
     val nickname: String,
 
     @Schema(title = "프로필 이미지 url")
-    val profileImageUrl: String,
+    val profileImageUrl: String?,
 )

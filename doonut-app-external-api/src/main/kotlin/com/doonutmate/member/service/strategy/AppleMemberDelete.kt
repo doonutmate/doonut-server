@@ -16,6 +16,7 @@ class AppleMemberDelete(
         get() = OauthType.APPLE
 
     override fun delete(req: DeleteRequest) {
+        requireNotNull(req.code) { "애플 로그인 시 인증 코드는 null 일 수 없습니다." }
         val accessToken = appleOauthProvider.createAuthToken(req.code).accessToken
         appleOauthProvider.revokeAccessToken(accessToken)
         memberBusinessService.delete(req.memberId)

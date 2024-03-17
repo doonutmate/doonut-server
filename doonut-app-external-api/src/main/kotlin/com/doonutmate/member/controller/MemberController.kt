@@ -1,7 +1,7 @@
 package com.doonutmate.member.controller
 
-import com.doonutmate.doonut.member.model.OauthType
 import com.doonutmate.member.controller.dto.DeleteRequest
+import com.doonutmate.member.controller.dto.MemberDeleteRequest
 import com.doonutmate.member.controller.dto.MyPageResponse
 import com.doonutmate.member.service.MemberAppService
 import com.doonutmate.oauth.configuration.Authorization
@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 class MemberController(
     @Autowired var memberAppService: MemberAppService,
 ) {
+
     @Operation(summary = "마이페이지 조회", description = "마이페이지를 조회한다.")
     @GetMapping("/mypage")
     fun findMyInfo(
@@ -38,10 +39,10 @@ class MemberController(
         @Authorization
         @Parameter(hidden = true)
         memberId: Long,
-        @RequestParam oauthType: OauthType,
-        @RequestParam(required = false) code: String,
+        @RequestBody memberDeleteRequest: MemberDeleteRequest,
     ): ResponseEntity<Void> {
-        memberAppService.delete(DeleteRequest(memberId, code, oauthType))
+        // TODO 회원탈퇴 사유 구글시트와 연동
+        memberAppService.delete(DeleteRequest(memberId, memberDeleteRequest.code, memberDeleteRequest.oauthType))
         return ResponseEntity.ok().build()
     }
 }

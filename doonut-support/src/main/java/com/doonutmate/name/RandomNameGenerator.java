@@ -6,6 +6,6 @@ public class RandomNameGenerator {
         var firstName = FirstName.getRandomFirstName();
         var lastName = LastName.getRandomLastName();
 
-        return String.format("%s %s", firstName.name(), lastName.name());
+        return String.format("%s %s", firstName.getText(), lastName.getText());
     }
 }

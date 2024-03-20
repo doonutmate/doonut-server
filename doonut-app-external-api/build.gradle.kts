@@ -67,6 +67,7 @@ tasks {
     copy {
         from("../doonut-config")
         include("*.yml")
+        include("*.p8")
         into("src/main/resources")
     }
 

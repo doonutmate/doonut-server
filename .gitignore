@@ -40,3 +40,7 @@ out/
 
 ### Log file ###
 *.log
+
+
+### Secret file ###
+*.p8

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 import org.testcontainers.shaded.org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.testcontainers.shaded.org.bouncycastle.openssl.PEMParser
 import org.testcontainers.shaded.org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
+import java.io.InputStream
 import java.io.StringReader
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -34,7 +35,8 @@ class ApplePrivateKeyGenerator {
 
     private fun getPrivateKey(): PrivateKey {
         val resource = ClassPathResource("AuthKey_LMU9S63B75.p8")
-        val privateKey = String(Files.readAllBytes(Paths.get(resource.uri)))
+        val inputStream: InputStream = resource.inputStream
+        val privateKey = inputStream.readBytes().toString(Charsets.UTF_8)
         val pemReader = StringReader(privateKey)
         PEMParser(pemReader).use { pemParser ->
             val converter = JcaPEMKeyConverter()

@@ -64,4 +64,15 @@ public class ChallengeBusinessService {
         var memberId = event.id();
         repository.deleteAllByMemberId(memberId);
     }
+
+    /**
+     * @return 1 : 잠금을 획득하는데 성공하였을때 0 : timeout 초 동안 잠금 획득에 실패했을때
+     */
+    public int getLock(Long memberId) {
+        return repository.getLock(memberId.toString());
+    }
+
+    public void releaseLock(Long memberId) {
+        repository.releaseLock(memberId.toString());
+    }
 }

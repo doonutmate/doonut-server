@@ -22,7 +22,7 @@ public class CommonDateUtils {
 
     public static Instant getLast(int year, int month) {
         var lastDay = getCalendar(year, month, 1).getActualMaximum(Calendar.DAY_OF_MONTH);
-        var calendar = getCalendar(year, month, lastDay, 23, 59, 59, 999);
+        var calendar = getCalendar(year, month, lastDay, 23, 59, 59, 0);
 
         return calendar.toInstant();
     }

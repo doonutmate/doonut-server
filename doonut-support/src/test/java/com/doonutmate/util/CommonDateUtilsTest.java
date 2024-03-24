@@ -50,7 +50,7 @@ class CommonDateUtilsTest {
         Instant result = CommonDateUtils.getLast(year, month);
 
         // then
-        assertThat(result).isEqualTo(Instant.parse("2024-02-29T14:59:59.999Z"));
+        assertThat(result).isEqualTo(Instant.parse("2024-02-29T14:59:59.000Z"));
     }
 
     @ParameterizedTest

@@ -24,11 +24,18 @@ class ImageFacadeService(
 
     @Transactional
     fun save(multipartFile: MultipartFile, key: String, memberId: Long): String {
-        val imageUrl = saveImage(multipartFile, key, memberId)
-        deleteChallenge(memberId)
-        saveChallenge(memberId, imageUrl)
+        try {
+            val lock = challengeBusinessService.getLock(memberId)
+            require(lock == 1) { "락을 정상적으로 획득하지 못했습니다. memberId: $memberId" }
 
-        return imageUrl
+            val imageUrl = saveImage(multipartFile, key, memberId)
+            deleteChallenge(memberId)
+            saveChallenge(memberId, imageUrl)
+
+            return imageUrl
+        } finally {
+            challengeBusinessService.releaseLock(memberId)
+        }
     }
 
     private fun deleteChallenge(memberId: Long) {

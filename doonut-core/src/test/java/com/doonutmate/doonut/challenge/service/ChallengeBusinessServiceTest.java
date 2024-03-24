@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @Transactional
 @SpringBootTest
@@ -189,6 +190,30 @@ class ChallengeBusinessServiceTest {
         assertThat(service.get(savedId1).deleted()).isTrue();
         assertThat(service.get(savedId2).deleted()).isTrue();
         assertThat(service.get(savedId3).deleted()).isFalse();
+    }
+
+    @DisplayName("락을 정상적으로 획득하면 1을 반환한다.")
+    @Test
+    void getLock() {
+        // given
+        var memberId = 1L;
+
+        // when
+        var result = service.getLock(memberId);
+
+        // then
+        assertThat(result).isEqualTo(1);
+    }
+
+    @DisplayName("락을 정상적으로 반납한다.")
+    @Test
+    void releaseLock() {
+        // given
+        var memberId = 2L;
+        service.getLock(memberId);
+
+        // when & then
+        assertDoesNotThrow(() -> service.releaseLock(memberId));
     }
 
     private Challenge createChallenge(long memberId) {

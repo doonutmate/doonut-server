@@ -4,9 +4,11 @@ import com.doonutmate.example.model.Example;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 @SpringBootTest
 class ExampleBusinessServiceTest {
 
@@ -24,5 +26,20 @@ class ExampleBusinessServiceTest {
         // then
         var saved = service.get(savedEntityId);
         assertThat(saved.name()).isEqualTo(example.name());
+    }
+
+    @Test
+    void get() {
+        // given
+        var example = new Example(null, "name");
+        var savedEntityId = service.create(example);
+
+        // when
+        var actual = service.get(savedEntityId);
+
+        // then
+        assertThat(actual)
+                .extracting("id", "name")
+                .containsExactly(savedEntityId, "name");
     }
 }

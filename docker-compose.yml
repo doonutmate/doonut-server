@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-doonut-local
+    ports:
+      - "13306:3306" # HOST:CONTAINER
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_HOST=%
+      - TZ=Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max_connections=200
+      - --max_allowed_packet=100MB
+    volumes:
+      - "./db:/docker-entrypoint-initdb.d"
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4568:4566"
+    environment:
+      - SERVICES=s3
+    container_name: localstack-doonut
+    volumes:
+      - "./localstack-init:/docker-entrypoint-initaws.d"

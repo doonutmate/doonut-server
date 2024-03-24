@@ -1,4 +1,4 @@
-CREATE TABLE member
+CREATE TABLE IF NOT EXISTS member
 (
     id         BIGINT AUTO_INCREMENT NOT NULL COMMENT 'ID',
     name       VARCHAR(100)                         NOT NULL COMMENT '멤버 명',
@@ -9,4 +9,4 @@ CREATE TABLE member
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '생성 시간',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 시간',
     PRIMARY KEY (id)
-)
+);

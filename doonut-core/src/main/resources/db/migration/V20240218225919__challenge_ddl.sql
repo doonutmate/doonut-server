@@ -1,4 +1,4 @@
-CREATE TABLE challenge
+CREATE TABLE IF NOT EXISTS challenge
 (
     id             BIGINT AUTO_INCREMENT                NOT NULL COMMENT 'ID',
     member_id      BIGINT                               NOT NULL COMMENT '멤버 ID',
@@ -7,4 +7,4 @@ CREATE TABLE challenge
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP  NOT NULL COMMENT '생성 시간',
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP  NOT NULL COMMENT '수정 시간',
     primary key (id)
-)
+);

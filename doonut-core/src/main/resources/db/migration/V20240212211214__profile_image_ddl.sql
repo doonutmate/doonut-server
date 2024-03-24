@@ -1,4 +1,4 @@
-CREATE TABLE profile_image
+CREATE TABLE IF NOT EXISTS profile_image
 (
     id         BIGINT AUTO_INCREMENT NOT NULL COMMENT 'ID',
     member_id  BIGINT NULL COMMENT '멤버 ID',
@@ -7,4 +7,4 @@ CREATE TABLE profile_image
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '생성 시간',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '수정 시간',
     PRIMARY KEY (id)
-)
+);

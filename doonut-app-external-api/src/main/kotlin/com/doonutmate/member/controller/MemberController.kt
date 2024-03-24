@@ -39,10 +39,9 @@ class MemberController(
         @Authorization
         @Parameter(hidden = true)
         memberId: Long,
-        @RequestBody memberDeleteRequest: MemberDeleteRequest,
+        @RequestBody req: MemberDeleteRequest,
     ): ResponseEntity<Void> {
-        // TODO 회원탈퇴 사유 구글시트와 연동
-        memberAppService.delete(DeleteRequest(memberId, memberDeleteRequest.code, memberDeleteRequest.oauthType))
+        memberAppService.delete(DeleteRequest(memberId, req.code, req.oauthType), req.reason)
         return ResponseEntity.ok().build()
     }
 }

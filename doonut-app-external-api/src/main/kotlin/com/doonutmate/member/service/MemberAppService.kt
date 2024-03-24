@@ -1,20 +1,27 @@
 package com.doonutmate.member.service
 
+import com.doonutmate.doonut.member.model.MemberDeleteReason
 import com.doonutmate.doonut.member.service.MemberBusinessService
+import com.doonutmate.doonut.member.service.MemberDeleteReasonBusinessService
 import com.doonutmate.member.controller.dto.DeleteRequest
 import com.doonutmate.member.controller.dto.MyPageResponse
 import com.doonutmate.member.service.strategy.MemberDeleteStrategy
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MemberAppService(
     memberDeleteStrategy: List<MemberDeleteStrategy>,
     private val memberBusinessService: MemberBusinessService,
+    private val deleteReasonBusinessService: MemberDeleteReasonBusinessService,
 ) {
     private val memberDeleteStrategyMap = memberDeleteStrategy.associateBy { it.oauthType }
-    fun delete(req: DeleteRequest) {
+
+    @Transactional
+    fun delete(req: DeleteRequest, reason: String?) {
         memberDeleteStrategyMap[req.oauthType]
             ?.delete(req)
+        deleteReasonBusinessService.create(MemberDeleteReason.of(req.memberId, reason))
     }
 
     fun findMyInfo(memberId: Long): MyPageResponse {

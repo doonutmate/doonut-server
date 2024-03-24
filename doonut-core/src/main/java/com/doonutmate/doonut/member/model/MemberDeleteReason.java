@@ -8,4 +8,7 @@ public record MemberDeleteReason(
         Long memberId,
         String reason
 ) {
+    public static MemberDeleteReason of(Long memberId, String reason) {
+        return new MemberDeleteReason(null, memberId, reason);
+    }
 }

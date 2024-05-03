@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
+    <property name="LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] %green([%thread]) %highlight(%-5level) %boldWhite([%C.%M:%yellow(%L)]) - %msg%n"/>
+    <property name="SLACK_LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{36} - %msg%n"/>
+
+    <springProfile name="local,test">
+        <include resource="console-appender.xml"/>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <include resource="error-file-appender.xml"/>
+        <include resource="info-file-appender.xml"/>
+        <include resource="warn-file-appender.xml"/>
+        <include resource="slack/dev-slack-alarm-appender.xml"/>
+
+        <root level="INFO">
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-WARN"/>
+            <appender-ref ref="FILE-ERROR"/>
+            <appender-ref ref="DEV_ASYNC_SLACK"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <include resource="error-file-appender.xml"/>
+        <include resource="info-file-appender.xml"/>
+        <include resource="warn-file-appender.xml"/>
+        <include resource="slack/prod-slack-alarm-appender.xml"/>
+
+        <root level="INFO">
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-WARN"/>
+            <appender-ref ref="FILE-ERROR"/>
+            <appender-ref ref="PROD_ASYNC_SLACK"/>
+        </root>
+    </springProfile>
+</configuration>

@@ -1,9 +1,8 @@
-package com.doonutmate.doonut.calender.service;
+package com.doonutmate.doonut.calendar.service;
 
-import com.doonutmate.doonut.calender.mapper.CalenderMapper;
-import com.doonutmate.doonut.calender.model.Calender;
-import com.doonutmate.doonut.calender.repository.CalenderRepository;
-import com.doonutmate.doonut.challenge.model.Challenge;
+import com.doonutmate.doonut.calendar.repository.CalendarRepository;
+import com.doonutmate.doonut.calendar.mapper.CalendarMapper;
+import com.doonutmate.doonut.calendar.model.Calendar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,20 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class CalenderBusinessService {
-    private final CalenderRepository repository;
-    private final CalenderMapper mapper;
+public class CalendarBusinessService {
+    private final CalendarRepository repository;
+    private final CalendarMapper mapper;
 
     @Transactional
-    public Long create(Calender calender) {
-        var newEntity = mapper.toEntity(calender);
+    public Long create(Calendar calendar) {
+        var newEntity = mapper.toEntity(calendar);
 
         var savedEntity = repository.save(newEntity);
 
         return savedEntity.getId();
     }
 
-    public Calender get(Long id) {
+    public Calendar get(Long id) {
         return repository.findById(id)
                 .map(mapper::toModel)
                 .orElse(null);

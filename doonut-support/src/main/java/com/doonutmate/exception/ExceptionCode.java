@@ -1,8 +1,10 @@
-package com.doonutmate.oauth.exception
+package com.doonutmate.exception;
 
-import org.springframework.http.HttpStatus
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
-enum class ExceptionCode(val httpCode: HttpStatus, val message: String) {
+@Getter
+public enum ExceptionCode {
 
     /**
      * 400 BAD_REQUEST: 잘못된 요청
@@ -19,5 +21,13 @@ enum class ExceptionCode(val httpCode: HttpStatus, val message: String) {
      * @see org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
      */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다."),
-    NOT_MATCHED_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "Apple JWT 값의 alg, kid 정보가 올바르지 않습니다.")
+    NOT_MATCHED_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "Apple JWT 값의 alg, kid 정보가 올바르지 않습니다.");
+
+    private final HttpStatus httpStatus;
+    private final String message;
+
+    ExceptionCode(HttpStatus httpStatus, String message) {
+        this.httpStatus = httpStatus;
+        this.message = message;
+    }
 }

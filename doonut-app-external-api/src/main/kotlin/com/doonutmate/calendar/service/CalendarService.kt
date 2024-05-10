@@ -2,23 +2,19 @@ package com.doonutmate.calendar.service
 
 import com.doonutmate.doonut.calendar.model.Calendar
 import com.doonutmate.doonut.calendar.service.CalendarBusinessService
-import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.time.Instant
 
 @Service
 class CalendarService(
     private val service: CalendarBusinessService,
 ) {
-
-    fun getNextPage(cursor: Long?): List<Calendar> {
-        return fetchCalendars(cursor ?: service.randomCursor)
-    }
-
-    private fun fetchCalendars(cursor: Long?): List<Calendar> {
-        val calendars = service.findByCursor(cursor, PageRequest.of(0, 10))
-        if (calendars.isEmpty()) {
-            return service.findByCursor(service.initialCursor, PageRequest.of(0, 10))
+    fun getBoards(id: Long?, time: Instant?, page: Pageable): List<Calendar> {
+        return if (id == null && time == null) {
+            service.findInitialLatestCalendar(page)
+        } else {
+            service.findLatestCalendar(page, time, id)
         }
-        return calendars
     }
 }

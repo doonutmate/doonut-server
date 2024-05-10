@@ -5,15 +5,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.Instant;
 import java.util.List;
 
 public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> {
-    @Query("SELECT c FROM CalendarEntity c WHERE c.deleted = false")
-    List<CalendarEntity> findFirstByDeletedFalseOrderByIdAsc(Pageable pageable);
+    @Query("SELECT c FROM CalendarEntity c ORDER BY c.createdAt DESC, c.id DESC")
+    List<CalendarEntity> findInitialLatestCalendar(Pageable page);
 
-    @Query("SELECT count(c) FROM CalendarEntity c WHERE c.deleted = false")
-    long countByDeletedFalse();
-
-    @Query("SELECT c FROM CalendarEntity c WHERE c.deleted = false AND c.id > :cursor ORDER BY c.id ASC")
-    List<CalendarEntity> findByCursor(Long cursor, Pageable pageable);
+    @Query("SELECT c FROM CalendarEntity c WHERE (c.createdAt = :cursor AND c.id < :cursorId) OR c.createdAt < :cursor ORDER BY c.createdAt DESC, c.id DESC")
+    List<CalendarEntity> findLatestCalendar(Instant cursor, Long cursorId, Pageable page);
 }
+

@@ -1,3 +1,6 @@
 package com.doonutmate.oauth.exception
 
-class AuthorizationException(baseExceptionCode: ExceptionCode) : BaseException(baseExceptionCode.httpCode, baseExceptionCode.message)
+import com.doonutmate.exception.BaseException
+import com.doonutmate.exception.ExceptionCode
+
+class AuthorizationException(baseExceptionCode: ExceptionCode) : BaseException(baseExceptionCode.httpStatus, baseExceptionCode.message)

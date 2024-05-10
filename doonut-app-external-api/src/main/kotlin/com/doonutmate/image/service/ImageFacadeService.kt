@@ -6,7 +6,7 @@ import com.doonutmate.doonut.image.model.Image
 import com.doonutmate.doonut.image.service.ImageBusinessService
 import com.doonutmate.image.ImageMeta
 import com.doonutmate.image.ImageMetaSupporter
-import com.doonutmate.oauth.exception.InternalServerException
+import com.doonutmate.image.exception.ImageUploadException
 import com.doonutmate.util.CommonDateUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -51,7 +51,7 @@ class ImageFacadeService(
     }
 
     private fun validate(challenges: MutableList<Challenge>) {
-        if (challenges.size >= 2) throw InternalServerException()
+        if (challenges.size >= 2) throw ImageUploadException("하루에 하나의 이미지만 업로드할 수 있습니다.")
     }
 
     private fun saveImage(multipartFile: MultipartFile, key: String, memberId: Long): String {

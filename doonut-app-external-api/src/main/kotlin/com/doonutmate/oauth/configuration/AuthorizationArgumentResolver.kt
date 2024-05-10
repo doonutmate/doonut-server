@@ -1,8 +1,8 @@
 package com.doonutmate.oauth.configuration
 
+import com.doonutmate.exception.ExceptionCode
 import com.doonutmate.oauth.JwtTokenProvider
 import com.doonutmate.oauth.exception.AuthorizationException
-import com.doonutmate.oauth.exception.ExceptionCode
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component

@@ -31,6 +31,10 @@ public class CalendarBusinessService {
         return convertListEntityToDto(calendarEntityList);
     }
 
+    public boolean existsNextCalendarPage(Instant timeCursor, Long idCursor) {
+        return repository.existsLatestCalendar(timeCursor, idCursor);
+    }
+
     @Transactional
     public Long create(Calendar calendar) {
         var newEntity = mapper.toEntity(calendar);

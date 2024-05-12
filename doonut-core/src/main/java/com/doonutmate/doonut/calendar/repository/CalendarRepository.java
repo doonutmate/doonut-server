@@ -9,10 +9,14 @@ import java.time.Instant;
 import java.util.List;
 
 public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> {
-    @Query("SELECT c FROM CalendarEntity c ORDER BY c.createdAt DESC, c.id DESC")
+    @Query("SELECT c FROM CalendarEntity c ORDER BY c.updatedAt DESC, c.id DESC")
     List<CalendarEntity> findInitialLatestCalendar(Pageable page);
 
-    @Query("SELECT c FROM CalendarEntity c WHERE (c.createdAt = :cursor AND c.id < :cursorId) OR c.createdAt < :cursor ORDER BY c.createdAt DESC, c.id DESC")
+    @Query("SELECT c FROM CalendarEntity c WHERE (c.updatedAt = :cursor AND c.id < :cursorId) OR c.updatedAt < :cursor ORDER BY c.updatedAt DESC, c.id DESC")
     List<CalendarEntity> findLatestCalendar(Instant cursor, Long cursorId, Pageable page);
+
+    @Query("SELECT COUNT(c) > 0 FROM CalendarEntity c WHERE (c.updatedAt = :cursor AND c.id < :cursorId) OR c.updatedAt < :cursor")
+    boolean existsLatestCalendar(Instant cursor, Long cursorId);
+
 }
 

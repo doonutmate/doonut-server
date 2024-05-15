@@ -4,5 +4,4 @@ import org.springframework.data.domain.Slice
 
 data class CalendarResult<T>(
     val values: Slice<T>,
-    val hasNext: Boolean,
 )

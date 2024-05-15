@@ -13,15 +13,14 @@ class CalendarAppService(
     private val calendarBusinessService: CalendarBusinessService,
     private val calendarFacadeService: CalendarFacadeService,
 ) {
-    fun get(id: Long?, time: Instant?, page: Pageable): CalendarResult<CalendarResponse> {
-        val calendars: Slice<CalendarResponse> = getBoards(id, time, page)
-
-        return CalendarResult(calendars, calendars.hasNext())
+    fun get(time: Instant?, page: Pageable): CalendarResult<CalendarResponse> {
+        val calendars: Slice<CalendarResponse> = getBoards(time, page)
+        return CalendarResult(calendars)
     }
 
-    private fun getBoards(id: Long?, time: Instant?, page: Pageable): Slice<CalendarResponse> {
-        return if (id != null && time != null) {
-            calendarFacadeService.convertToList(calendarBusinessService.findLatestCalendar(page, time, id))
+    private fun getBoards(time: Instant?, page: Pageable): Slice<CalendarResponse> {
+        return if (time != null) {
+            calendarFacadeService.convertToList(calendarBusinessService.findLatestCalendar(page, time))
         } else {
             calendarFacadeService.convertToList(calendarBusinessService.findInitialLatestCalendar(page))
         }

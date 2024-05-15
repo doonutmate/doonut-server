@@ -28,13 +28,9 @@ public class CalendarBusinessService {
         return convertListEntityToDto(calendarEntityList);
     }
 
-    public Slice<Calendar> findLatestCalendar(Pageable pageable, Instant timeCursor, Long idCursor) {
-        Slice<CalendarEntity> calendarEntityList = repository.findLatestCalendar(timeCursor, idCursor, pageable);
+    public Slice<Calendar> findLatestCalendar(Pageable pageable, Instant timeCursor) {
+        Slice<CalendarEntity> calendarEntityList = repository.findLatestCalendar(timeCursor, pageable);
         return convertListEntityToDto(calendarEntityList);
-    }
-
-    public boolean existsNextCalendarPage(Instant timeCursor, Long idCursor) {
-        return repository.existsLatestCalendar(timeCursor, idCursor);
     }
 
     @Transactional

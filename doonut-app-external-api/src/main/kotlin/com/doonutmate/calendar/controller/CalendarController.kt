@@ -23,7 +23,7 @@ class CalendarController(
 ) {
     @Operation(
         summary = "커뮤니티 캘린더 모아보기 ",
-        description = "첫요청시 time은 null, 그이후는 이전 조회 캘린더의 마지막 updatedAt을 넣는다. 다음 조회가 불가능한 경우 last가 false",
+        description = "첫요청시 time은 null, 그이후는 이전 조회 캘린더의 마지막 updatedAt을 넣는다. 다음 조회가 불가능한 경우 last가 true",
     )
     @GetMapping("/{size}")
     fun get(

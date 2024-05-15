@@ -11,7 +11,7 @@ data class CalendarResponse(
     val memberName: String,
     val calendarName: String,
     val updatedAt: Instant,
-    val firstUploadedAt: Instant,
-    val lastUploadedAt: Instant,
+    val firstUploadedAt: String,
+    val lastUploadedAt: String,
     val imageUrl: List<ProfileImage>
 )

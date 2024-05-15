@@ -6,6 +6,8 @@ import com.doonutmate.doonut.calendar.mapper.CalendarMapper;
 import com.doonutmate.doonut.calendar.model.Calendar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +23,13 @@ public class CalendarBusinessService {
     private final CalendarRepository repository;
     private final CalendarMapper mapper;
 
-    public List<Calendar> findInitialLatestCalendar(Pageable pageable) {
-        List<CalendarEntity> calendarEntityList = repository.findInitialLatestCalendar(pageable);
+    public Slice<Calendar> findInitialLatestCalendar(Pageable pageable) {
+        Slice<CalendarEntity> calendarEntityList = repository.findInitialLatestCalendar(pageable);
         return convertListEntityToDto(calendarEntityList);
     }
 
-    public List<Calendar> findLatestCalendar(Pageable pageable, Instant timeCursor, Long idCursor) {
-        List<CalendarEntity> calendarEntityList = repository.findLatestCalendar(timeCursor, idCursor, pageable);
+    public Slice<Calendar> findLatestCalendar(Pageable pageable, Instant timeCursor, Long idCursor) {
+        Slice<CalendarEntity> calendarEntityList = repository.findLatestCalendar(timeCursor, idCursor, pageable);
         return convertListEntityToDto(calendarEntityList);
     }
 
@@ -50,11 +52,13 @@ public class CalendarBusinessService {
                 .orElse(null);
     }
 
-    public List<Calendar> convertListEntityToDto(List<CalendarEntity> calendarEntityList) {
-        return calendarEntityList.stream()
+    public Slice<Calendar> convertListEntityToDto(Slice<CalendarEntity> calendarEntityList) {
+        List<Calendar> content = calendarEntityList.getContent().stream()
                 .map(calendarEntity -> get(calendarEntity.getId()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+
+        return new SliceImpl<>(content, calendarEntityList.getPageable(), calendarEntityList.hasNext());
     }
 
     @Transactional

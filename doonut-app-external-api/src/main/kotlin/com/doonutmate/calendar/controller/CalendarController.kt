@@ -28,9 +28,9 @@ class CalendarController(
     fun get(
         @RequestParam(required = false) id: Long?,
         @RequestParam(required = false) time: Instant?,
-        @Authorization
-        @Parameter(hidden = true)
-        memberId: Long,
+//        @Authorization
+//        @Parameter(hidden = true)
+//        memberId: Long,
     ): CalendarResult<CalendarResponse> {
         return calendarAppService.get(id, time, PageRequest.of(0, 10))
     }

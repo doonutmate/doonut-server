@@ -7,6 +7,7 @@ import com.doonutmate.doonut.member.model.ImageType
 import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.ProfileImage
 import com.doonutmate.doonut.member.service.MemberBusinessService
+import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -18,7 +19,7 @@ class CalendarFacadeService(
     private val timeZoneConverter: TimeZoneConverter,
 ) {
 
-    fun convertToList(calendars: List<Calendar>): List<CalendarResponse> {
+    fun convertToList(calendars: Slice<Calendar>): Slice<CalendarResponse> {
         return calendars.map { calendar ->
             convert(calendar)
         }

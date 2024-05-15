@@ -4,6 +4,7 @@ import com.doonutmate.calendar.controller.dto.CalendarResponse
 import com.doonutmate.calendar.controller.dto.CalendarResult
 import com.doonutmate.doonut.calendar.service.CalendarBusinessService
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -13,22 +14,16 @@ class CalendarAppService(
     private val calendarFacadeService: CalendarFacadeService,
 ) {
     fun get(id: Long?, time: Instant?, page: Pageable): CalendarResult<CalendarResponse> {
-        val calendars: List<CalendarResponse> = getBoards(id, time, page)
-        val lastId: Long? = calendars.lastOrNull()?.id
-        val lastUpdatedAt: Instant? = calendars.lastOrNull()?.updatedAt
+        val calendars: Slice<CalendarResponse> = getBoards(id, time, page)
 
-        return CalendarResult(calendars, hasNext(lastId, lastUpdatedAt))
+        return CalendarResult(calendars, calendars.hasNext())
     }
 
-    private fun getBoards(id: Long?, time: Instant?, page: Pageable): List<CalendarResponse> {
+    private fun getBoards(id: Long?, time: Instant?, page: Pageable): Slice<CalendarResponse> {
         return if (id != null && time != null) {
             calendarFacadeService.convertToList(calendarBusinessService.findLatestCalendar(page, time, id))
         } else {
             calendarFacadeService.convertToList(calendarBusinessService.findInitialLatestCalendar(page))
         }
-    }
-
-    private fun hasNext(id: Long?, time: Instant?): Boolean {
-        return if (id == null && time == null) false else calendarBusinessService.existsNextCalendarPage(time, id)
     }
 }

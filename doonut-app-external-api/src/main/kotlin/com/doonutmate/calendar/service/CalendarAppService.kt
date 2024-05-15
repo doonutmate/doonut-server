@@ -14,8 +14,8 @@ class CalendarAppService(
 ) {
     fun get(id: Long?, time: Instant?, page: Pageable): CalendarResult<CalendarResponse> {
         val calendars: List<CalendarResponse> = getBoards(id, time, page)
-        val lastId: Long? = if (calendars.isEmpty()) null else calendars[calendars.size - 1].id
-        val lastUpdatedAt: Instant? = if (calendars.isEmpty()) null else calendars[calendars.size - 1].updatedAt
+        val lastId: Long? = calendars.lastOrNull()?.id
+        val lastUpdatedAt: Instant? = calendars.lastOrNull()?.updatedAt
 
         return CalendarResult(calendars, hasNext(lastId, lastUpdatedAt))
     }

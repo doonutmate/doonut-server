@@ -16,7 +16,7 @@ import java.time.Instant
 
 @RestController
 @Tag(name = "Calendar", description = "캘린더 API")
-@RequestMapping("/calendar")
+@RequestMapping("/calendars")
 class CalendarController(
     private val calendarAppService: CalendarAppService,
 ) {

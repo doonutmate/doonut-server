@@ -8,16 +8,16 @@ import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
-class CalendarService(
+class CalendarAppService(
     private val calendarBusinessService: CalendarBusinessService,
     private val calendarFacadeService: CalendarFacadeService,
 ) {
     fun get(id: Long?, time: Instant?, page: Pageable): CalendarResult<CalendarResponse> {
-        val calendarList: List<CalendarResponse> = getBoards(id, time, page)
-        val lastIdOfList: Long? = if (calendarList.isEmpty()) null else calendarList[calendarList.size - 1].id
-        val lastTimeOfList: Instant? = if (calendarList.isEmpty()) null else calendarList[calendarList.size - 1].updatedAt
+        val calendars: List<CalendarResponse> = getBoards(id, time, page)
+        val lastId: Long? = if (calendars.isEmpty()) null else calendars[calendars.size - 1].id
+        val lastUpdatedAt: Instant? = if (calendars.isEmpty()) null else calendars[calendars.size - 1].updatedAt
 
-        return CalendarResult(calendarList, hasNext(lastIdOfList, lastTimeOfList))
+        return CalendarResult(calendars, hasNext(lastId, lastUpdatedAt))
     }
 
     private fun getBoards(id: Long?, time: Instant?, page: Pageable): List<CalendarResponse> {

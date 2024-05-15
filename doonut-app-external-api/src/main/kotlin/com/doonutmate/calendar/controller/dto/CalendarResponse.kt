@@ -1,6 +1,5 @@
 package com.doonutmate.calendar.controller.dto
 
-import com.doonutmate.doonut.member.model.ProfileImage
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.Instant
 
@@ -13,5 +12,5 @@ data class CalendarResponse(
     val updatedAt: Instant,
     val firstUploadedAt: String,
     val lastUploadedAt: String,
-    val imageUrl: List<ProfileImage>
+    val profileImage: String?,
 )

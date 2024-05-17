@@ -23,21 +23,22 @@ public class CalendarBusinessService {
     private final CalendarRepository repository;
     private final CalendarMapper mapper;
 
-    public Slice<Calendar> findInitialLatestCalendar(Pageable pageable) {
+
+    public Slice<Calendar> findCalendars(Pageable pageable, Instant timeCursor) {
+        return (timeCursor != null) ?
+                findLatestCalendar(pageable, timeCursor) :
+                findInitialLatestCalendar(pageable);
+    }
+
+    private Slice<Calendar> findInitialLatestCalendar(Pageable pageable) {
         Slice<CalendarEntity> calendarEntityList = repository.findInitialLatestCalendar(pageable);
         return convertListEntityToDto(calendarEntityList);
     }
 
-    public Slice<Calendar> findLatestCalendar(Pageable pageable, Instant timeCursor) {
+    private Slice<Calendar> findLatestCalendar(Pageable pageable, Instant timeCursor) {
         Slice<CalendarEntity> calendarEntityList = repository.findLatestCalendar(timeCursor, pageable);
         return convertListEntityToDto(calendarEntityList);
     }
-
-//       return if (time != null) {
-//        calendarFacadeService.convertToList(calendarBusinessService.findLatestCalendar(page, time))
-//    } else {
-//        calendarFacadeService.convertToList(calendarBusinessService.findInitialLatestCalendar(page))
-//    }
 
     @Transactional
     public Long create(Calendar calendar) {

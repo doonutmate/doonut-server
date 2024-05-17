@@ -22,11 +22,7 @@ class CalendarAppService(
     }
 
     private fun getBoards(time: Instant?, page: Pageable): Slice<CalendarResponse> {
-        return if (time != null) {
-            calendarFacadeService.convertToList(calendarBusinessService.findLatestCalendar(page, time))
-        } else {
-            calendarFacadeService.convertToList(calendarBusinessService.findInitialLatestCalendar(page))
-        }
+        return calendarFacadeService.convertToList(calendarBusinessService.findCalendars(page, time))
     }
 
     private fun getBranchPageSize(size: Int?): Pageable {

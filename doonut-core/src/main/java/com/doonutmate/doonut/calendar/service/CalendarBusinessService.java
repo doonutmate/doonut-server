@@ -25,18 +25,9 @@ public class CalendarBusinessService {
 
 
     public Slice<Calendar> findCalendars(Pageable pageable, Instant timeCursor) {
-        return (timeCursor != null) ?
-                findLatestCalendar(pageable, timeCursor) :
-                findInitialLatestCalendar(pageable);
-    }
-
-    private Slice<Calendar> findInitialLatestCalendar(Pageable pageable) {
-        Slice<CalendarEntity> calendarEntityList = repository.findInitialLatestCalendar(pageable);
-        return convertListEntityToDto(calendarEntityList);
-    }
-
-    private Slice<Calendar> findLatestCalendar(Pageable pageable, Instant timeCursor) {
-        Slice<CalendarEntity> calendarEntityList = repository.findLatestCalendar(timeCursor, pageable);
+        Slice<CalendarEntity> calendarEntityList = (timeCursor != null)
+                ? repository.findLatestCalendar(timeCursor, pageable)
+                : repository.findInitialLatestCalendar(pageable);
         return convertListEntityToDto(calendarEntityList);
     }
 

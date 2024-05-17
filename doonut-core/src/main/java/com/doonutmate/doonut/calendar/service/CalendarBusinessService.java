@@ -33,6 +33,12 @@ public class CalendarBusinessService {
         return convertListEntityToDto(calendarEntityList);
     }
 
+//       return if (time != null) {
+//        calendarFacadeService.convertToList(calendarBusinessService.findLatestCalendar(page, time))
+//    } else {
+//        calendarFacadeService.convertToList(calendarBusinessService.findInitialLatestCalendar(page))
+//    }
+
     @Transactional
     public Long create(Calendar calendar) {
         var newEntity = mapper.toEntity(calendar);

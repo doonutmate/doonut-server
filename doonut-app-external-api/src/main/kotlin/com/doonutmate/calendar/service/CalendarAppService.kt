@@ -15,10 +15,10 @@ class CalendarAppService(
     private val calendarFacadeService: CalendarFacadeService,
 ) {
     fun get(time: Instant?, size: Int?): CalendarResult<CalendarResponse> {
-        val pageable: Pageable = branchPageSize(size)
+        val pageable: Pageable = getBranchPageSize(size)
 
         val calendars: Slice<CalendarResponse> = getBoards(time, pageable)
-        return CalendarResult(calendars)
+        return CalendarResult(calendars.toList(), calendars.hasNext())
     }
 
     private fun getBoards(time: Instant?, page: Pageable): Slice<CalendarResponse> {
@@ -29,7 +29,7 @@ class CalendarAppService(
         }
     }
 
-    private fun branchPageSize(size: Int?): Pageable {
+    private fun getBranchPageSize(size: Int?): Pageable {
         val pageSize: Int = size ?: DEFAULT_PAGE_SIZE
         return PageRequest.of(0, pageSize)
     }

@@ -1,11 +1,20 @@
 package com.doonutmate.doonut.calendar.service;
 
+import com.doonutmate.doonut.calendar.entity.CalendarEntity;
 import com.doonutmate.doonut.calendar.repository.CalendarRepository;
 import com.doonutmate.doonut.calendar.mapper.CalendarMapper;
 import com.doonutmate.doonut.calendar.model.Calendar;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -13,6 +22,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class CalendarBusinessService {
     private final CalendarRepository repository;
     private final CalendarMapper mapper;
+
+
+    public Slice<Calendar> findCalendars(Pageable pageable, Instant timeCursor) {
+        Slice<CalendarEntity> calendarEntityList = (timeCursor != null)
+                ? repository.findLatestCalendar(timeCursor, pageable)
+                : repository.findInitialLatestCalendar(pageable);
+        return convertListEntityToDto(calendarEntityList);
+    }
+
+    private Slice<Calendar> convertListEntityToDto(Slice<CalendarEntity> calendarEntityList) {
+        List<Calendar> content = calendarEntityList.getContent().stream()
+                .map(calendarEntity -> get(calendarEntity.getId()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return new SliceImpl<>(content, calendarEntityList.getPageable(), calendarEntityList.hasNext());
+    }
 
     @Transactional
     public Long create(Calendar calendar) {

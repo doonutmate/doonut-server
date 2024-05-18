@@ -21,10 +21,12 @@ class CalendarController(
 ) {
     @Operation(
         summary = "커뮤니티 캘린더 모아보기 ",
-        description = "1. 첫요청시 time은 null \n" +
-            "2. 이후 요청시 마지막 속성의 updatedAt을 time 파라미터로 사용\n" +
-            "3. 다음 조회가 불가능한 경우 hasNext가 false\n" +
-            "4. size가 null이면 10, null이 아니면 size크기만큼 조회됨",
+        description = """ 
+            1. 첫요청시 time은 null
+            2. 이후 요청시 마지막 속성의 updatedAt을 time 파라미터로 사용
+            3. 다음 조회가 불가능한 경우 hasNext가 false
+            4. size가 null이면 10, null이 아니면 size크기만큼 조회됨
+            """,
     )
     @GetMapping("")
     fun get(

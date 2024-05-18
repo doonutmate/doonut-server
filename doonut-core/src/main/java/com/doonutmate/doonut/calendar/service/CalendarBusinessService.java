@@ -31,6 +31,15 @@ public class CalendarBusinessService {
         return convertListEntityToDto(calendarEntityList);
     }
 
+    private Slice<Calendar> convertListEntityToDto(Slice<CalendarEntity> calendarEntityList) {
+        List<Calendar> content = calendarEntityList.getContent().stream()
+                .map(calendarEntity -> get(calendarEntity.getId()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return new SliceImpl<>(content, calendarEntityList.getPageable(), calendarEntityList.hasNext());
+    }
+
     @Transactional
     public Long create(Calendar calendar) {
         var newEntity = mapper.toEntity(calendar);
@@ -44,15 +53,6 @@ public class CalendarBusinessService {
         return repository.findById(id)
                 .map(mapper::toModel)
                 .orElse(null);
-    }
-
-    public Slice<Calendar> convertListEntityToDto(Slice<CalendarEntity> calendarEntityList) {
-        List<Calendar> content = calendarEntityList.getContent().stream()
-                .map(calendarEntity -> get(calendarEntity.getId()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        return new SliceImpl<>(content, calendarEntityList.getPageable(), calendarEntityList.hasNext());
     }
 
     @Transactional

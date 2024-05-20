@@ -31,11 +31,11 @@ class CalendarController(
     @GetMapping("")
     fun get(
         @RequestParam(required = false) time: Instant?,
-        @RequestParam size: Int?,
+        @RequestParam(required = false, defaultValue = "10") size: Int?,
         @Authorization
         @Parameter(hidden = true)
         memberId: Long,
     ): CalendarResult<CalendarResponse> {
-        return calendarAppService.get(time, size)
+        return calendarAppService.get(time, size, memberId)
     }
 }

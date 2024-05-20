@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +38,5 @@ public class CalendarReportReasonEntity extends BaseTimeEntity {
     Long calendarId;
 
     @Column(nullable = false, length = 200)
-    @Size(min = 10, max = 200)
     String reason;
 }

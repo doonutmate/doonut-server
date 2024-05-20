@@ -47,4 +47,8 @@ public class ProfileImageEntity extends BaseTimeEntity {
 
     @Column(nullable = false, length = 2000)
     private String imageUrl;
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

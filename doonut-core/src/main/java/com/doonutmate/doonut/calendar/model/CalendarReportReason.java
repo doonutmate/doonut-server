@@ -9,7 +9,7 @@ public record CalendarReportReason(
         Long calendarId,
         String reason
 ) {
-    public CalendarReportReason of(Long reporterId, Long calendarId, String reason) {
+    public static CalendarReportReason of(Long reporterId, Long calendarId, String reason) {
         return new CalendarReportReason(null, reporterId, calendarId, reason);
     }
 }

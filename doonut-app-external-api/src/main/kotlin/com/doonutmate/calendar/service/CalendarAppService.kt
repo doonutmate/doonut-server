@@ -3,7 +3,9 @@ package com.doonutmate.calendar.service
 import com.doonutmate.calendar.controller.dto.CalendarResponse
 import com.doonutmate.calendar.controller.dto.CalendarResult
 import com.doonutmate.calendar.exception.CalendarException
+import com.doonutmate.doonut.calendar.model.CalendarReportReason
 import com.doonutmate.doonut.calendar.service.CalendarBusinessService
+import com.doonutmate.doonut.calendar.service.CalendarReportReasonBusinessService
 import com.doonutmate.exception.ErrorCode
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -15,6 +17,8 @@ import java.time.Instant
 class CalendarAppService(
     private val calendarBusinessService: CalendarBusinessService,
     private val calendarFacadeService: CalendarFacadeService,
+    private val reportReasonBusinessService: CalendarReportReasonBusinessService,
+
 ) {
     fun get(time: Instant?, size: Int?, memberId: Long): CalendarResult<CalendarResponse> {
         validate(memberId)
@@ -42,8 +46,24 @@ class CalendarAppService(
         return PageRequest.of(0, pageSize)
     }
 
+    fun report(reportReason: CalendarReportReason): Long {
+        validate(reportReason.calendarId, reportReason.reason)
+        return reportReasonBusinessService.create(reportReason)
+    }
+
+    private fun validate(calendarId: Long, reason: String) {
+        calendarBusinessService.get(calendarId)
+            ?: throw CalendarException("캘린더를 찾을 수 없습니다. calendarId: $calendarId")
+
+        if (reason.length < REASON_MIN_SIZE || reason.length > REASON_MAX_SIZE) {
+            throw CalendarException(ErrorCode.REASON_SIZE_INVALID, "신고 사유는 10자 에서 200자 내외여야 합니다")
+        }
+    }
+
     companion object {
         private const val DEFAULT_PAGE_SIZE = 10
         private const val COMMUNITY_ACCESS_MINIMUM_COUNT = 3
+        private const val REASON_MIN_SIZE = 10
+        private const val REASON_MAX_SIZE = 200
     }
 }

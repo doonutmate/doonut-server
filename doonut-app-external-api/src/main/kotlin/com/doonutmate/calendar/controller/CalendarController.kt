@@ -1,13 +1,18 @@
 package com.doonutmate.calendar.controller
 
+import com.doonutmate.calendar.controller.dto.CalendarReportRequest
 import com.doonutmate.calendar.controller.dto.CalendarResponse
 import com.doonutmate.calendar.controller.dto.CalendarResult
 import com.doonutmate.calendar.service.CalendarAppService
+import com.doonutmate.doonut.calendar.model.CalendarReportReason
 import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -37,5 +42,17 @@ class CalendarController(
         memberId: Long,
     ): CalendarResult<CalendarResponse> {
         return calendarAppService.get(time, size, memberId)
+    }
+
+    @Operation(summary = "설문 신고", description = "멤버가 설문을 신고한다.")
+    @PostMapping("/report")
+    fun report(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+        @RequestBody req: CalendarReportRequest,
+    ): ResponseEntity<Unit> {
+        calendarAppService.report(CalendarReportReason.of(memberId, req.calendarId, req.reason))
+        return ResponseEntity.ok().build()
     }
 }

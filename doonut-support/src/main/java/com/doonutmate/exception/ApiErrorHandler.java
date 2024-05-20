@@ -19,8 +19,8 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
         var errorMessage = getErrorMessage(exception);
         var errorLocation = getErrorLocation(exception);
 
-        log.error("BaseException occurred: {} , Location: {}", errorMessage, errorLocation);
-        return create4xxErrorResponse(exception.getHttpStatus(), errorMessage, request);
+        log.warn("BaseException occurred: {} , Location: {}", errorMessage, errorLocation);
+        return create4xxErrorResponse(exception.getHttpStatus(), exception.getErrorCode(), errorMessage, request);
     }
 
     @ExceptionHandler({RuntimeException.class})
@@ -52,8 +52,8 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
         return exception.getStackTrace()[0];
     }
 
-    private ResponseEntity<ErrorResponse> create4xxErrorResponse(HttpStatus httpStatus, String errorMessage, HttpServletRequest request) {
-        var errorResponse = ErrorResponse.of(httpStatus, errorMessage, request.getRequestURI());
+    private ResponseEntity<ErrorResponse> create4xxErrorResponse(HttpStatus httpStatus, ErrorCode errorCode, String errorMessage, HttpServletRequest request) {
+        var errorResponse = ErrorResponse.of(httpStatus, errorCode, errorMessage, request.getRequestURI());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 

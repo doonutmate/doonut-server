@@ -3,6 +3,7 @@ package com.doonutmate.member.controller
 import com.doonutmate.member.controller.dto.DeleteRequest
 import com.doonutmate.member.controller.dto.MemberDeleteRequest
 import com.doonutmate.member.controller.dto.MyPageResponse
+import com.doonutmate.member.controller.dto.UpdateRequest
 import com.doonutmate.member.service.MemberAppService
 import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -43,5 +45,16 @@ class MemberController(
     ): ResponseEntity<Void> {
         memberAppService.delete(DeleteRequest(memberId, req.code, req.oauthType), req.reason)
         return ResponseEntity.ok().build()
+    }
+
+    @Operation(summary = "프로필 수정", description = "멤버가 프로필을 수정한다.")
+    @PutMapping("/profile")
+    fun updateProfile(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+        @RequestBody req: UpdateRequest,
+    ): Long {
+        return memberAppService.updateMyPage(memberId, req)
     }
 }

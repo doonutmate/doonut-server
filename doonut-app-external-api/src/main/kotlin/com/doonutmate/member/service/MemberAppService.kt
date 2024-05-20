@@ -5,6 +5,7 @@ import com.doonutmate.doonut.member.service.MemberBusinessService
 import com.doonutmate.doonut.member.service.MemberDeleteReasonBusinessService
 import com.doonutmate.member.controller.dto.DeleteRequest
 import com.doonutmate.member.controller.dto.MyPageResponse
+import com.doonutmate.member.controller.dto.UpdateRequest
 import com.doonutmate.member.service.strategy.MemberDeleteStrategy
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,6 +17,11 @@ class MemberAppService(
     private val deleteReasonBusinessService: MemberDeleteReasonBusinessService,
 ) {
     private val memberDeleteStrategyMap = memberDeleteStrategy.associateBy { it.oauthType }
+
+    @Transactional
+    fun updateMyPage(memberId: Long, req: UpdateRequest): Long {
+        return memberBusinessService.updateMemberProfile(memberId, req.name, req.imageUrl)
+    }
 
     @Transactional
     fun delete(req: DeleteRequest, reason: String?) {

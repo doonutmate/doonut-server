@@ -45,7 +45,7 @@ class CalendarController(
     }
 
     @Operation(summary = "설문 신고", description = "멤버가 설문을 신고한다.")
-    @PostMapping("/report")
+    @PostMapping("/reports")
     fun report(
         @Authorization
         @Parameter(hidden = true)

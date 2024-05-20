@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.Instant;
+import java.util.Optional;
 
 public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> {
     @Query("SELECT c FROM CalendarEntity c ORDER BY c.updatedAt DESC")
@@ -15,4 +16,5 @@ public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> 
     @Query("SELECT c FROM CalendarEntity c WHERE c.updatedAt < :cursor ORDER BY c.updatedAt DESC")
     Slice<CalendarEntity> findLatestCalendar(Instant cursor, Pageable page);
 
+    Optional<CalendarEntity> findByMemberId(Long memberId);
 }

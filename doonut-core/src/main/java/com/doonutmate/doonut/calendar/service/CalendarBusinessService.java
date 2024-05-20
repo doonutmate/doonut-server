@@ -55,6 +55,12 @@ public class CalendarBusinessService {
                 .orElse(null);
     }
 
+    public Calendar getByMemberId(Long memberId) {
+        return repository.findByMemberId(memberId)
+                .map(mapper::toModel)
+                .orElse(null);
+    }
+
     @Transactional
     public void delete(Long id) {
         var entity = repository.findById(id)

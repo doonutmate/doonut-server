@@ -47,23 +47,17 @@ class CalendarAppService(
     }
 
     fun report(reportReason: CalendarReportReason): Long {
-        validate(reportReason.calendarId, reportReason.reason)
+        validateExistsCalendar(reportReason.calendarId)
         return reportReasonBusinessService.create(reportReason)
     }
 
-    private fun validate(calendarId: Long, reason: String) {
+    private fun validateExistsCalendar(calendarId: Long) {
         calendarBusinessService.get(calendarId)
             ?: throw CalendarException("캘린더를 찾을 수 없습니다. calendarId: $calendarId")
-
-        if (reason.length < REASON_MIN_SIZE || reason.length > REASON_MAX_SIZE) {
-            throw CalendarException(ErrorCode.REASON_SIZE_INVALID, "신고 사유는 10자 에서 200자 내외여야 합니다")
-        }
     }
 
     companion object {
         private const val DEFAULT_PAGE_SIZE = 10
         private const val COMMUNITY_ACCESS_MINIMUM_COUNT = 3
-        private const val REASON_MIN_SIZE = 10
-        private const val REASON_MAX_SIZE = 200
     }
 }

@@ -14,8 +14,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -41,13 +41,14 @@ public class MemberBusinessService {
     public Long create(Member member, String imageUrl) {
         var newEntity = mapper.toEntity(member);
 
-        var profileImageEntity = profileImageMapper.toEntity(ProfileImage.builder()
-                .imageType(ImageType.REPRESENTATIVE)
-                .imageUrl(imageUrl)
-                .build());
+        var profileImageEntity = createRepresentativeProfileImage(imageUrl, newEntity);
 
-        profileImageEntity.setMember(newEntity);
         newEntity.setProfileImages(List.of(profileImageEntity));
+
+        List<ProfileImageEntity> profileImages = new ArrayList<>();
+        profileImages.add(profileImageEntity);
+        newEntity.setProfileImages(profileImages);
+
         var savedEntity = repository.save(newEntity);
 
         return savedEntity.getId();
@@ -55,23 +56,35 @@ public class MemberBusinessService {
 
     @Transactional
     public Long updateMemberProfile(Long memberId, String name, String imageUrl) {
-        MemberEntity newMemberEntity = mapper.toEntity(get(memberId));
-        List<ProfileImageEntity> updatedProfileImages = updateRepresentativeImageUrl(newMemberEntity.getProfileImages(), imageUrl);
+        MemberEntity newEntity = repository.findById(memberId).get();
+        List<ProfileImageEntity> profileImages = deleteRepresentativeImage(newEntity.getProfileImages());
 
-        newMemberEntity.updateMyPage(name, updatedProfileImages);
-        Member savedMember = mapper.toModel(newMemberEntity);
-        return create(savedMember);
+        var profileImageEntity = createRepresentativeProfileImage(imageUrl, newEntity);
+        profileImages.add(profileImageEntity);
+
+        newEntity.updateMyPage(name, profileImages);
+
+        var savedEntity = repository.save(newEntity);
+        return savedEntity.getId();
     }
 
-    private List<ProfileImageEntity> updateRepresentativeImageUrl(List<ProfileImageEntity> profileImages, String imageUrl) {
-        return profileImages.stream()
-                .map(profileImageEntity -> {
-                    if (profileImageEntity.getImageType().equals(ImageType.REPRESENTATIVE)) {
-                        profileImageEntity.setImageUrl(imageUrl);
-                    }
-                    return profileImageEntity;
-                })
-                .collect(Collectors.toList());
+    private List<ProfileImageEntity> deleteRepresentativeImage(List<ProfileImageEntity> profileImages) {
+        profileImages.forEach(profileImage -> {
+            if (profileImage.getImageType().equals(ImageType.REPRESENTATIVE) && !profileImage.isDeleted()) {
+                profileImage.delete();
+            }
+        });
+        return profileImages;
+    }
+
+    private ProfileImageEntity createRepresentativeProfileImage(String imageUrl, MemberEntity entity) {
+        var profileImage = profileImageMapper.toEntity(ProfileImage.builder()
+                .imageType(ImageType.REPRESENTATIVE)
+                .imageUrl(imageUrl)
+                .build());
+
+        profileImage.setMember(entity);
+        return profileImage;
     }
 
     public Member get(Long id) {

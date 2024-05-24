@@ -55,16 +55,17 @@ public class MemberBusinessService {
     }
 
     @Transactional
-    public Long updateMemberProfile(Long memberId, String name, String imageUrl) {
-        MemberEntity newEntity = repository.findById(memberId).get();
+    public Long updateProfile(Long memberId, String name, String imageUrl) {
+        MemberEntity newEntity = getEntity(memberId);
         List<ProfileImageEntity> profileImages = deleteRepresentativeImage(newEntity.getProfileImages());
 
         var profileImageEntity = createRepresentativeProfileImage(imageUrl, newEntity);
         profileImages.add(profileImageEntity);
 
-        newEntity.updateMyPage(name, profileImages);
+        newEntity.updateNameOrProfileImage(name, profileImages);
 
         var savedEntity = repository.save(newEntity);
+
         return savedEntity.getId();
     }
 
@@ -85,6 +86,11 @@ public class MemberBusinessService {
 
         profileImage.setMember(entity);
         return profileImage;
+    }
+
+    public MemberEntity getEntity(Long id){
+        return repository.findById(id)
+                .orElse(null);
     }
 
     public Member get(Long id) {

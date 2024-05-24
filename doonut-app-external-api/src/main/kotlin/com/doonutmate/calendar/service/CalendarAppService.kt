@@ -3,7 +3,9 @@ package com.doonutmate.calendar.service
 import com.doonutmate.calendar.controller.dto.CalendarResponse
 import com.doonutmate.calendar.controller.dto.CalendarResult
 import com.doonutmate.calendar.exception.CalendarException
+import com.doonutmate.doonut.calendar.model.CalendarReportReason
 import com.doonutmate.doonut.calendar.service.CalendarBusinessService
+import com.doonutmate.doonut.calendar.service.CalendarReportReasonBusinessService
 import com.doonutmate.exception.ErrorCode
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -15,6 +17,8 @@ import java.time.Instant
 class CalendarAppService(
     private val calendarBusinessService: CalendarBusinessService,
     private val calendarFacadeService: CalendarFacadeService,
+    private val reportReasonBusinessService: CalendarReportReasonBusinessService,
+
 ) {
     fun get(time: Instant?, size: Int?, memberId: Long): CalendarResult<CalendarResponse> {
         validate(memberId)
@@ -40,6 +44,16 @@ class CalendarAppService(
     private fun getBranchPageSize(size: Int?): Pageable {
         val pageSize: Int = size ?: DEFAULT_PAGE_SIZE
         return PageRequest.of(0, pageSize)
+    }
+
+    fun report(reportReason: CalendarReportReason): Long {
+        validateExistsCalendar(reportReason.calendarId)
+        return reportReasonBusinessService.create(reportReason)
+    }
+
+    private fun validateExistsCalendar(calendarId: Long) {
+        calendarBusinessService.get(calendarId)
+            ?: throw CalendarException("캘린더를 찾을 수 없습니다. calendarId: $calendarId")
     }
 
     companion object {

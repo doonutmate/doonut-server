@@ -65,6 +65,6 @@ class MemberController(
         @RequestPart("multipartFile") multipartFile: MultipartFile,
         @RequestParam("name") name: String,
     ): Long {
-        return memberProfileFacadeService.updateMyPage(memberId, name, multipartFile)
+        return memberProfileFacadeService.updateProfile(memberId, name, multipartFile)
     }
 }

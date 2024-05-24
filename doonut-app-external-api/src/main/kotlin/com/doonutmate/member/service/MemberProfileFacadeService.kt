@@ -1,5 +1,6 @@
 package com.doonutmate.member.service
 
+import com.doonutmate.doonut.member.service.MemberBusinessService
 import com.doonutmate.image.controller.dto.ImageUploadResponse
 import com.doonutmate.image.service.ImageAppService
 import org.springframework.stereotype.Service
@@ -10,12 +11,12 @@ import org.springframework.web.multipart.MultipartFile
 @Service
 class MemberProfileFacadeService(
     private val imageAppService: ImageAppService,
-    private val memberAppService: MemberAppService,
+    private val memberBusinessService: MemberBusinessService,
 ) {
 
     @Transactional
-    fun updateMyPage(memberId: Long, name: String, multipartFile: MultipartFile): Long {
+    fun updateProfile(memberId: Long, name: String, multipartFile: MultipartFile): Long {
         val imageDto: ImageUploadResponse = imageAppService.saveFile(multipartFile, memberId)
-        return memberAppService.updateProfile(memberId, name, imageDto.imageUrl)
+        return memberBusinessService.updateProfile(memberId, name, imageDto.imageUrl)
     }
 }

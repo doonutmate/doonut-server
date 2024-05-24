@@ -6,7 +6,6 @@ import lombok.Builder;
 public record ProfileImage(
         Long id,
         ImageType imageType,
-        String imageUrl,
-        boolean deleted
+        String imageUrl
 ) {
 }

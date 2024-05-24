@@ -32,8 +32,4 @@ class MemberAppService(
 
         return MyPageResponse(nickname = member.name, profileImageUrl = profileImageUrl)
     }
-
-    fun updateProfile(memberId: Long, name: String, imageUrl: String): Long {
-        return memberBusinessService.updateMemberProfile(memberId, name, imageUrl)
-    }
 }

@@ -4,7 +4,6 @@ import com.doonutmate.doonut.member.entity.MemberEntity;
 import com.doonutmate.doonut.member.entity.OauthInfo;
 import com.doonutmate.doonut.member.entity.ProfileImageEntity;
 import com.doonutmate.doonut.member.model.ImageType;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -35,8 +36,8 @@ public class MemberBusinessProfileServiceTest {
         member.updateNameOrProfileImage(EXPECTED_NAME, actualList);
 
         //then
-        Assertions.assertEquals(EXPECTED_URL, member.getProfileImages().getLast().getImageUrl());
-        Assertions.assertEquals(EXPECTED_NAME, member.getName());
+        assertEquals(EXPECTED_URL, member.getProfileImages().get(member.getProfileImages().size() - 1).getImageUrl());
+        assertEquals(EXPECTED_NAME, member.getName());
     }
 
     @DisplayName("deleted== false && ImageType.REPRESENTATIVE 프로필 이미지가 모두 소프트 딜리트 되어야 한다.")
@@ -57,7 +58,7 @@ public class MemberBusinessProfileServiceTest {
                 .filter(profileImage -> profileImage.getImageType().equals(ImageType.REPRESENTATIVE))
                 .allMatch(ProfileImageEntity::isDeleted);
 
-        Assertions.assertTrue(allDeleted, "삭제되지 않은 이미지가 있습니다");
+        assertTrue(allDeleted, "삭제되지 않은 이미지가 있습니다");
     }
 
     private List<ProfileImageEntity> generateProfileList() {

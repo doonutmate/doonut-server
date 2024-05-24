@@ -18,6 +18,23 @@ class CalendarBusinessServiceTest {
     private CalendarBusinessService service;
 
     @Test
+    void getId() {
+
+        // given
+        var id = 1L;
+        var expected = generateCalendar(2L);
+        var calendarId = service.create(expected);
+
+        // when
+        var actual = service.get(id);
+
+        // then
+        assertThat(actual)
+                .extracting("id", "memberId", "calendarName", "totalCount")
+                .containsExactly(calendarId, 2L, expected.calendarName(), expected.totalCount());
+    }
+
+    @Test
     void getByMemberId() {
 
         // given

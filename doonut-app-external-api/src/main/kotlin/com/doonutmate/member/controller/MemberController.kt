@@ -3,6 +3,7 @@ package com.doonutmate.member.controller
 import com.doonutmate.member.controller.dto.DeleteRequest
 import com.doonutmate.member.controller.dto.MemberDeleteRequest
 import com.doonutmate.member.controller.dto.MyPageResponse
+import com.doonutmate.member.controller.dto.NameRequest
 import com.doonutmate.member.service.MemberAppService
 import com.doonutmate.member.service.MemberProfileFacadeService
 import com.doonutmate.oauth.configuration.Authorization
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
@@ -62,9 +62,10 @@ class MemberController(
         @Authorization
         @Parameter(hidden = true)
         memberId: Long,
+        @RequestPart("nameRequest") nameRequest: NameRequest,
         @RequestPart("multipartFile") multipartFile: MultipartFile,
-        @RequestParam("name") name: String,
+
     ): Long {
-        return memberProfileFacadeService.updateProfile(memberId, name, multipartFile)
+        return memberProfileFacadeService.updateProfile(memberId, nameRequest.nickname, multipartFile)
     }
 }

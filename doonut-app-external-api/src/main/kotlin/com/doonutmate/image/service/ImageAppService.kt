@@ -49,6 +49,19 @@ class ImageAppService(
         return imageFacadeService.save(multipartFile, key, memberId)
     }
 
+    fun saveProfileImage(multipartFile: MultipartFile, memberId: Long): ImageUploadResponse {
+        val randomKey = resolveObjectKey(multipartFile)
+
+        saveFileToS3(multipartFile, randomKey)
+        val imageUrl = saveProfileImageToDb(multipartFile, randomKey, memberId)
+
+        return ImageUploadResponse(imageUrl)
+    }
+
+    private fun saveProfileImageToDb(multipartFile: MultipartFile, key: String, memberId: Long): String {
+        return imageFacadeService.exposeSaveImage(multipartFile, key, memberId)
+    }
+
     private fun resolveObjectKey(multipartFile: MultipartFile): String {
         val randomUUID = UUID.randomUUID().toString()
         val extension = ImageMetaSupporter.getExtension(multipartFile.originalFilename)

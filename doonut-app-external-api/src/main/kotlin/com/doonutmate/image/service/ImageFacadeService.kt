@@ -54,6 +54,10 @@ class ImageFacadeService(
         if (challenges.size >= 2) throw ImageUploadException("하루에 하나의 이미지만 업로드할 수 있습니다.")
     }
 
+    fun exposeSaveImage(multipartFile: MultipartFile, key: String, memberId: Long): String {
+        return saveImage(multipartFile, key, memberId)
+    }
+
     private fun saveImage(multipartFile: MultipartFile, key: String, memberId: Long): String {
         val imageMeta: ImageMeta = ImageMetaSupporter.extract(multipartFile)
         val imageUrl = getImageUrl(key)

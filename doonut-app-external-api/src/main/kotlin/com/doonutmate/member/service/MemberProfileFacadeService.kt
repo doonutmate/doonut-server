@@ -16,7 +16,8 @@ class MemberProfileFacadeService(
 
     @Transactional
     fun updateProfile(memberId: Long, name: String, multipartFile: MultipartFile): Long {
-        val imageDto: ImageUploadResponse = imageAppService.saveFile(multipartFile, memberId)
+        val imageDto: ImageUploadResponse = imageAppService.saveProfileImage(multipartFile, memberId)
+
         return memberBusinessService.updateProfile(memberId, name, imageDto.imageUrl)
     }
 }

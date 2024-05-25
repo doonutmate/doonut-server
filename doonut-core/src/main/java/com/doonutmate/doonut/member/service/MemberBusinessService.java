@@ -30,41 +30,41 @@ public class MemberBusinessService {
 
     @Transactional
     public Long create(Member member) {
-        var newEntity = mapper.toEntity(member);
+        var fetchedEntity = mapper.toEntity(member);
 
-        var savedEntity = repository.save(newEntity);
+        var savedEntity = repository.save(fetchedEntity);
 
         return savedEntity.getId();
     }
 
     @Transactional
     public Long create(Member member, String imageUrl) {
-        var newEntity = mapper.toEntity(member);
+        var fetchedEntity = mapper.toEntity(member);
 
-        var profileImageEntity = createRepresentativeProfileImage(imageUrl, newEntity);
+        var profileImageEntity = createRepresentativeProfileImage(imageUrl, fetchedEntity);
 
-        newEntity.setProfileImages(List.of(profileImageEntity));
+        fetchedEntity.setProfileImages(List.of(profileImageEntity));
 
         List<ProfileImageEntity> profileImages = new ArrayList<>();
         profileImages.add(profileImageEntity);
-        newEntity.setProfileImages(profileImages);
+        fetchedEntity.setProfileImages(profileImages);
 
-        var savedEntity = repository.save(newEntity);
+        var savedEntity = repository.save(fetchedEntity);
 
         return savedEntity.getId();
     }
 
     @Transactional
     public Long updateProfile(Long memberId, String name, String imageUrl) {
-        MemberEntity newEntity = getEntity(memberId);
-        List<ProfileImageEntity> profileImages = deleteRepresentativeImage(newEntity.getProfileImages());
+        MemberEntity fetchedEntity = getEntity(memberId);
+        List<ProfileImageEntity> profileImages = deleteRepresentativeImage(fetchedEntity.getProfileImages());
 
-        var profileImageEntity = createRepresentativeProfileImage(imageUrl, newEntity);
+        var profileImageEntity = createRepresentativeProfileImage(imageUrl, fetchedEntity);
         profileImages.add(profileImageEntity);
 
-        newEntity.updateNameOrProfileImage(name, profileImages);
+        fetchedEntity.updateNameOrProfileImage(name, profileImages);
 
-        var savedEntity = repository.save(newEntity);
+        var savedEntity = repository.save(fetchedEntity);
 
         return savedEntity.getId();
     }

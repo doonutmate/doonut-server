@@ -5,6 +5,16 @@ plugins {
     id("org.flywaydb.flyway") version "10.13.0"
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.flywaydb:flyway-core:10.13.0")
+        classpath("org.flywaydb:flyway-mysql:10.13.0")
+    }
+}
+
 group = "com.doonutmate"
 version = "0.0.1-SNAPSHOT"
 
@@ -37,8 +47,8 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
 
     // flyway
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-mysql")
+    implementation("org.flywaydb:flyway-core:10.13.0")
+    implementation("org.flywaydb:flyway-mysql:10.13.0")
 
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")

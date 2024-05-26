@@ -62,7 +62,7 @@ public class MemberBusinessService {
         var profileImageEntity = createRepresentativeProfileImage(imageUrl, fetchedEntity);
         profileImages.add(profileImageEntity);
 
-        fetchedEntity.updateNameOrProfileImage(name, profileImages);
+        fetchedEntity.updateNameAndProfileImage(name, profileImages);
 
         var savedEntity = repository.save(fetchedEntity);
 

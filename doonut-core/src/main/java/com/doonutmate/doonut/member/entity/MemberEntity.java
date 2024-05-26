@@ -59,7 +59,7 @@ public class MemberEntity extends BaseTimeEntity {
         deleted = true;
     }
 
-    public void updateNameOrProfileImage(String name, List<ProfileImageEntity> newProfileImages) {
+    public void updateNameAndProfileImage(String name, List<ProfileImageEntity> newProfileImages) {
         this.name = name;
         this.profileImages = newProfileImages;
     }

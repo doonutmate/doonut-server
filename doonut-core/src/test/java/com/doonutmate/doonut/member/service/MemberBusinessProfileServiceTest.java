@@ -33,7 +33,7 @@ public class MemberBusinessProfileServiceTest {
 
         //when
         actualList.add(profileImage);
-        member.updateNameOrProfileImage(EXPECTED_NAME, actualList);
+        member.updateNameAndProfileImage(EXPECTED_NAME, actualList);
 
         //then
         assertEquals(EXPECTED_URL, member.getProfileImages().get(member.getProfileImages().size() - 1).getImageUrl());

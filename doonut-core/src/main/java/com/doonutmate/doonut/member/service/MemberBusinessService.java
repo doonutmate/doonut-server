@@ -1,5 +1,7 @@
 package com.doonutmate.doonut.member.service;
 
+import com.doonutmate.doonut.member.entity.MemberEntity;
+import com.doonutmate.doonut.member.entity.ProfileImageEntity;
 import com.doonutmate.doonut.member.event.MemberDeleteEvent;
 import com.doonutmate.doonut.member.mapper.MemberMapper;
 import com.doonutmate.doonut.member.mapper.ProfileImageMapper;
@@ -12,6 +14,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,27 +30,67 @@ public class MemberBusinessService {
 
     @Transactional
     public Long create(Member member) {
-        var newEntity = mapper.toEntity(member);
+        var fetchedEntity = mapper.toEntity(member);
 
-        var savedEntity = repository.save(newEntity);
+        var savedEntity = repository.save(fetchedEntity);
 
         return savedEntity.getId();
     }
 
     @Transactional
     public Long create(Member member, String imageUrl) {
-        var newEntity = mapper.toEntity(member);
+        var fetchedEntity = mapper.toEntity(member);
 
-        var profileImageEntity = profileImageMapper.toEntity(ProfileImage.builder()
+        var profileImageEntity = createRepresentativeProfileImage(imageUrl, fetchedEntity);
+
+        fetchedEntity.setProfileImages(List.of(profileImageEntity));
+
+        List<ProfileImageEntity> profileImages = new ArrayList<>();
+        profileImages.add(profileImageEntity);
+        fetchedEntity.setProfileImages(profileImages);
+
+        var savedEntity = repository.save(fetchedEntity);
+
+        return savedEntity.getId();
+    }
+
+    @Transactional
+    public Long updateProfile(Long memberId, String name, String imageUrl) {
+        MemberEntity fetchedEntity = getEntity(memberId);
+        List<ProfileImageEntity> profileImages = deleteRepresentativeImage(fetchedEntity.getProfileImages());
+
+        var profileImageEntity = createRepresentativeProfileImage(imageUrl, fetchedEntity);
+        profileImages.add(profileImageEntity);
+
+        fetchedEntity.updateNameAndProfileImage(name, profileImages);
+
+        var savedEntity = repository.save(fetchedEntity);
+
+        return savedEntity.getId();
+    }
+
+    private List<ProfileImageEntity> deleteRepresentativeImage(List<ProfileImageEntity> profileImages) {
+        profileImages.forEach(profileImage -> {
+            if (profileImage.getImageType().equals(ImageType.REPRESENTATIVE) && !profileImage.isDeleted()) {
+                profileImage.delete();
+            }
+        });
+        return profileImages;
+    }
+
+    private ProfileImageEntity createRepresentativeProfileImage(String imageUrl, MemberEntity entity) {
+        var profileImage = profileImageMapper.toEntity(ProfileImage.builder()
                 .imageType(ImageType.REPRESENTATIVE)
                 .imageUrl(imageUrl)
                 .build());
 
-        profileImageEntity.setMember(newEntity);
-        newEntity.setProfileImages(List.of(profileImageEntity));
-        var savedEntity = repository.save(newEntity);
+        profileImage.setMember(entity);
+        return profileImage;
+    }
 
-        return savedEntity.getId();
+    public MemberEntity getEntity(Long id){
+        return repository.findById(id)
+                .orElse(null);
     }
 
     public Member get(Long id) {
@@ -61,6 +104,7 @@ public class MemberBusinessService {
                 .map(mapper::toModel)
                 .orElse(null);
     }
+
 
     @Transactional
     public void delete(Long id) {

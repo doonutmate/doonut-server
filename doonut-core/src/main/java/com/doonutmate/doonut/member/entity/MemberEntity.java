@@ -45,7 +45,7 @@ public class MemberEntity extends BaseTimeEntity {
 
     @Setter
     @Builder.Default
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<ProfileImageEntity> profileImages = new ArrayList<>();
 
     @Embedded
@@ -57,5 +57,10 @@ public class MemberEntity extends BaseTimeEntity {
 
     public void delete() {
         deleted = true;
+    }
+
+    public void updateNameAndProfileImage(String name, List<ProfileImageEntity> newProfileImages) {
+        this.name = name;
+        this.profileImages = newProfileImages;
     }
 }

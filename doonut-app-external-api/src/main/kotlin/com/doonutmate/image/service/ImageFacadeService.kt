@@ -23,7 +23,7 @@ class ImageFacadeService(
     private val imageHostUrlPrefix: String? = null
 
     @Transactional
-    fun save(multipartFile: MultipartFile, key: String, memberId: Long): String {
+    fun saveImageAndChallenge(multipartFile: MultipartFile, key: String, memberId: Long): String {
         try {
             val lock = challengeBusinessService.getLock(memberId)
             require(lock == 1) { "락을 정상적으로 획득하지 못했습니다. memberId: $memberId" }
@@ -54,7 +54,7 @@ class ImageFacadeService(
         if (challenges.size >= 2) throw ImageUploadException("하루에 하나의 이미지만 업로드할 수 있습니다.")
     }
 
-    private fun saveImage(multipartFile: MultipartFile, key: String, memberId: Long): String {
+    fun saveImage(multipartFile: MultipartFile, key: String, memberId: Long): String {
         val imageMeta: ImageMeta = ImageMetaSupporter.extract(multipartFile)
         val imageUrl = getImageUrl(key)
         val newImage = Image.builder()

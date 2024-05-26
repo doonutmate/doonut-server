@@ -26,16 +26,16 @@ class ImageAppService(
     @Value("\${spring.profiles.active:local}")
     private val activeProfile: String? = null
 
-    fun saveFile(multipartFile: MultipartFile, memberId: Long): ImageUploadResponse {
+    fun uploadImage(multipartFile: MultipartFile, memberId: Long): ImageUploadResponse {
         val randomKey = resolveObjectKey(multipartFile)
 
-        saveFileToS3(multipartFile, randomKey)
-        val imageUrl = saveFileToDb(multipartFile, randomKey, memberId)
+        saveImageToS3(multipartFile, randomKey)
+        val imageUrl = saveImageAndChallengeToDb(multipartFile, randomKey, memberId)
 
         return ImageUploadResponse(imageUrl)
     }
 
-    private fun saveFileToS3(multipartFile: MultipartFile, key: String) {
+    private fun saveImageToS3(multipartFile: MultipartFile, key: String) {
         val metadata = ObjectMetadata()
         metadata.contentLength = multipartFile.size
         metadata.contentType = multipartFile.contentType
@@ -45,8 +45,21 @@ class ImageAppService(
         amazonS3.getUrl(bucket, key).toString()
     }
 
-    private fun saveFileToDb(multipartFile: MultipartFile, key: String, memberId: Long): String {
-        return imageFacadeService.save(multipartFile, key, memberId)
+    private fun saveImageAndChallengeToDb(multipartFile: MultipartFile, key: String, memberId: Long): String {
+        return imageFacadeService.saveImageAndChallenge(multipartFile, key, memberId)
+    }
+
+    fun saveProfileImage(multipartFile: MultipartFile, memberId: Long): ImageUploadResponse {
+        val randomKey = resolveObjectKey(multipartFile)
+
+        saveImageToS3(multipartFile, randomKey)
+        val imageUrl = saveProfileImageToDb(multipartFile, randomKey, memberId)
+
+        return ImageUploadResponse(imageUrl)
+    }
+
+    private fun saveProfileImageToDb(multipartFile: MultipartFile, key: String, memberId: Long): String {
+        return imageFacadeService.saveImage(multipartFile, key, memberId)
     }
 
     private fun resolveObjectKey(multipartFile: MultipartFile): String {

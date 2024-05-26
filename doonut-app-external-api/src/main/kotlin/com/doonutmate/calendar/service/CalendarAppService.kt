@@ -18,13 +18,12 @@ class CalendarAppService(
     private val calendarBusinessService: CalendarBusinessService,
     private val calendarFacadeService: CalendarFacadeService,
     private val reportReasonBusinessService: CalendarReportReasonBusinessService,
-
 ) {
-    fun get(time: Instant?, size: Int?, memberId: Long): CalendarResult<CalendarResponse> {
-        validate(memberId)
-        val pageable: Pageable = getBranchPageSize(size)
 
-        val calendars: Slice<CalendarResponse> = getBoards(time, pageable)
+    fun get(time: Instant?, size: Int, memberId: Long): CalendarResult<CalendarResponse> {
+        validate(memberId)
+
+        val calendars: Slice<CalendarResponse> = getBoards(time, PageRequest.of(0, size))
         return CalendarResult(calendars.toList(), calendars.hasNext())
     }
 
@@ -41,11 +40,6 @@ class CalendarAppService(
         return calendarFacadeService.convertToList(calendarBusinessService.findCalendars(page, time))
     }
 
-    private fun getBranchPageSize(size: Int?): Pageable {
-        val pageSize: Int = size ?: DEFAULT_PAGE_SIZE
-        return PageRequest.of(0, pageSize)
-    }
-
     fun report(reportReason: CalendarReportReason): Long {
         validateExistsCalendar(reportReason.calendarId)
         return reportReasonBusinessService.create(reportReason)
@@ -57,7 +51,6 @@ class CalendarAppService(
     }
 
     companion object {
-        private const val DEFAULT_PAGE_SIZE = 10
         private const val COMMUNITY_ACCESS_MINIMUM_COUNT = 3
     }
 }

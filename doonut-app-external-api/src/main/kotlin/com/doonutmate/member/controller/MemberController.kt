@@ -10,6 +10,7 @@ import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -62,7 +63,9 @@ class MemberController(
         @Authorization
         @Parameter(hidden = true)
         memberId: Long,
-        @RequestPart("nameRequest") nameRequest: NameRequest,
+        @Valid
+        @RequestPart("nameRequest")
+        nameRequest: NameRequest,
         @RequestPart("multipartFile") multipartFile: MultipartFile,
 
     ): Long {

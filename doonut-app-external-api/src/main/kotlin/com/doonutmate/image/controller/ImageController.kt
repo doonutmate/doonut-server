@@ -32,6 +32,6 @@ class ImageController(
 
         @RequestPart("multipartFile") multipartFile: MultipartFile,
     ): ImageUploadResponse {
-        return imageAppService.saveFile(multipartFile, memberId)
+        return imageAppService.uploadImage(multipartFile, memberId)
     }
 }

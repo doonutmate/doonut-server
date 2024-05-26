@@ -25,6 +25,7 @@ class CalendarRepositoryTest {
     void findInitialLatestCalendar1() {
 
         // given
+        var memberId = 10L;
         var now = Instant.now();
         var entity1 = CalendarEntity.builder()
                 .memberId(1L)
@@ -53,7 +54,7 @@ class CalendarRepositoryTest {
         repository.saveAll(List.of(entity1, entity2, entity3));
 
         // when
-        var actual = repository.findInitialLatestCalendar(Pageable.ofSize(10));
+        var actual = repository.findInitialLatestCalendar(Pageable.ofSize(10), memberId);
 
         // then
         assertThat(actual.getContent())
@@ -67,6 +68,7 @@ class CalendarRepositoryTest {
     void findInitialLatestCalendar2() {
 
         // given
+        var memberId = 10L;
         var now = Instant.now();
         var entity1 = CalendarEntity.builder()
                 .memberId(1L)
@@ -95,7 +97,7 @@ class CalendarRepositoryTest {
         repository.saveAll(List.of(entity1, entity2, entity3));
 
         // when
-        var actual = repository.findInitialLatestCalendar(Pageable.ofSize(10));
+        var actual = repository.findInitialLatestCalendar(Pageable.ofSize(10), memberId);
 
         // then
         assertThat(actual.getContent())
@@ -105,10 +107,34 @@ class CalendarRepositoryTest {
     }
 
     @Test
+    @DisplayName("첫 캘린더를 조회할 때 자신의 캘린더는 제외한다.")
+    void findInitialLatestCalendar3() {
+
+        // given
+        var now = Instant.now();
+        var entity = CalendarEntity.builder()
+                .memberId(1L)
+                .calendarName("캘린더명")
+                .totalCount(3)
+                .firstUploadedAt(now.plusSeconds(10))
+                .lastUploadedAt(now.plusSeconds(20))
+                .deleted(false)
+                .build();
+        repository.save(entity);
+
+        // when
+        var actual = repository.findInitialLatestCalendar(Pageable.ofSize(10), entity.getMemberId());
+
+        // then
+        assertThat(actual.getContent()).isEmpty();
+    }
+
+    @Test
     @DisplayName("최신 캘린더를 조회할 때 totalCount가 3 이상인 캘린더만을 가져온다.")
     void findLatestCalendar1() {
 
         // given
+        var memberId = 10L;
         var now = Instant.now();
         var entity1 = CalendarEntity.builder()
                 .memberId(1L)
@@ -137,7 +163,7 @@ class CalendarRepositoryTest {
         repository.saveAll(List.of(entity1, entity2, entity3));
 
         // when
-        var actual = repository.findLatestCalendar(Instant.now(), Pageable.ofSize(10));
+        var actual = repository.findLatestCalendar(Instant.now(), Pageable.ofSize(10), memberId);
 
         // then
         assertThat(actual.getContent())
@@ -151,6 +177,7 @@ class CalendarRepositoryTest {
     void findLatestCalendar2() {
 
         // given
+        var memberId = 10L;
         var now = Instant.now();
         var entity1 = CalendarEntity.builder()
                 .memberId(1L)
@@ -179,12 +206,35 @@ class CalendarRepositoryTest {
         repository.saveAll(List.of(entity1, entity2, entity3));
 
         // when
-        var actual = repository.findLatestCalendar(Instant.now(), Pageable.ofSize(10));
+        var actual = repository.findLatestCalendar(Instant.now(), Pageable.ofSize(10), memberId);
 
         // then
         assertThat(actual.getContent())
                 .hasSize(1)
                 .extracting("calendarName")
                 .containsExactly(entity3.getCalendarName());
+    }
+
+    @Test
+    @DisplayName("최신 캘린더를 조회할 때 자신의 캘린더는 제외한다.")
+    void findLatestCalendar3() {
+
+        // given
+        var now = Instant.now();
+        var entity = CalendarEntity.builder()
+                .memberId(1L)
+                .calendarName("캘린더명")
+                .totalCount(3)
+                .firstUploadedAt(now.plusSeconds(10))
+                .lastUploadedAt(now.plusSeconds(20))
+                .deleted(false)
+                .build();
+        repository.save(entity);
+
+        // when
+        var actual = repository.findLatestCalendar(Instant.now(), Pageable.ofSize(10), entity.getMemberId());
+
+        // then
+        assertThat(actual.getContent()).isEmpty();
     }
 }

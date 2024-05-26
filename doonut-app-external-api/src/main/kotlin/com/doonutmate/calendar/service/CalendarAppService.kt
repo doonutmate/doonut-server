@@ -23,7 +23,7 @@ class CalendarAppService(
     fun get(time: Instant?, size: Int, memberId: Long): CalendarResult<CalendarResponse> {
         validate(memberId)
 
-        val calendars: Slice<CalendarResponse> = getBoards(time, PageRequest.of(0, size))
+        val calendars: Slice<CalendarResponse> = getBoards(time, PageRequest.of(0, size), memberId)
         return CalendarResult(calendars.toList(), calendars.hasNext())
     }
 
@@ -36,8 +36,8 @@ class CalendarAppService(
         }
     }
 
-    private fun getBoards(time: Instant?, page: Pageable): Slice<CalendarResponse> {
-        return calendarFacadeService.convertToList(calendarBusinessService.findCalendars(page, time))
+    private fun getBoards(time: Instant?, page: Pageable, memberId: Long): Slice<CalendarResponse> {
+        return calendarFacadeService.convertToList(calendarBusinessService.findCalendars(page, time, memberId))
     }
 
     fun report(reportReason: CalendarReportReason): Long {

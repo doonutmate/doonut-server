@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.0"
     id("io.spring.dependency-management") version "1.1.3"
+    id("org.flywaydb.flyway") version "10.13.0"
 }
 
 group = "com.doonutmate"

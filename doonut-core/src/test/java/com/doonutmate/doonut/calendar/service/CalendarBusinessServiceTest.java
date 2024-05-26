@@ -21,12 +21,11 @@ class CalendarBusinessServiceTest {
     void getId() {
 
         // given
-        var id = 1L;
         var expected = generateCalendar(2L);
         var calendarId = service.create(expected);
 
         // when
-        var actual = service.get(id);
+        var actual = service.get(calendarId);
 
         // then
         assertThat(actual)

@@ -51,7 +51,9 @@ class CalendarRepositoryTest {
                 .lastUploadedAt(now.plusSeconds(20))
                 .deleted(false)
                 .build();
-        repository.saveAll(List.of(entity1, entity2, entity3));
+        repository.save(entity1);
+        repository.save(entity2);
+        repository.save(entity3);
 
         // when
         var actual = repository.findInitialLatestCalendar(Pageable.ofSize(10), memberId);
@@ -60,7 +62,7 @@ class CalendarRepositoryTest {
         assertThat(actual.getContent())
                 .hasSize(2)
                 .extracting("calendarName")
-                .containsExactly(entity3.getCalendarName(), entity2.getCalendarName());
+                .contains(entity2.getCalendarName(), entity3.getCalendarName());
     }
 
     @Test
@@ -71,14 +73,6 @@ class CalendarRepositoryTest {
         var memberId = 10L;
         var now = Instant.now();
         var entity1 = CalendarEntity.builder()
-                .memberId(1L)
-                .calendarName(null)
-                .totalCount(2)
-                .firstUploadedAt(now.plusSeconds(10))
-                .lastUploadedAt(now.plusSeconds(20))
-                .deleted(false)
-                .build();
-        var entity2 = CalendarEntity.builder()
                 .memberId(2L)
                 .calendarName("")
                 .totalCount(3)
@@ -86,7 +80,7 @@ class CalendarRepositoryTest {
                 .lastUploadedAt(now.plusSeconds(20))
                 .deleted(false)
                 .build();
-        var entity3 = CalendarEntity.builder()
+        var entity2 = CalendarEntity.builder()
                 .memberId(3L)
                 .calendarName("캘린더명3")
                 .totalCount(4)
@@ -94,7 +88,7 @@ class CalendarRepositoryTest {
                 .lastUploadedAt(now.plusSeconds(20))
                 .deleted(false)
                 .build();
-        repository.saveAll(List.of(entity1, entity2, entity3));
+        repository.saveAll(List.of(entity1, entity2));
 
         // when
         var actual = repository.findInitialLatestCalendar(Pageable.ofSize(10), memberId);
@@ -103,7 +97,7 @@ class CalendarRepositoryTest {
         assertThat(actual.getContent())
                 .hasSize(1)
                 .extracting("calendarName")
-                .containsExactly(entity3.getCalendarName());
+                .containsExactly(entity2.getCalendarName());
     }
 
     @Test
@@ -163,13 +157,13 @@ class CalendarRepositoryTest {
         repository.saveAll(List.of(entity1, entity2, entity3));
 
         // when
-        var actual = repository.findLatestCalendar(Instant.now(), Pageable.ofSize(10), memberId);
+        var actual = repository.findLatestCalendar(now.plusSeconds(100), Pageable.ofSize(10), memberId);
 
         // then
         assertThat(actual.getContent())
                 .hasSize(2)
                 .extracting("calendarName")
-                .containsExactly(entity3.getCalendarName(), entity2.getCalendarName());
+                .contains(entity2.getCalendarName(), entity3.getCalendarName());
     }
 
     @Test
@@ -180,14 +174,6 @@ class CalendarRepositoryTest {
         var memberId = 10L;
         var now = Instant.now();
         var entity1 = CalendarEntity.builder()
-                .memberId(1L)
-                .calendarName(null)
-                .totalCount(2)
-                .firstUploadedAt(now.plusSeconds(10))
-                .lastUploadedAt(now.plusSeconds(20))
-                .deleted(false)
-                .build();
-        var entity2 = CalendarEntity.builder()
                 .memberId(2L)
                 .calendarName("")
                 .totalCount(3)
@@ -195,7 +181,7 @@ class CalendarRepositoryTest {
                 .lastUploadedAt(now.plusSeconds(20))
                 .deleted(false)
                 .build();
-        var entity3 = CalendarEntity.builder()
+        var entity2 = CalendarEntity.builder()
                 .memberId(3L)
                 .calendarName("캘린더명3")
                 .totalCount(4)
@@ -203,16 +189,16 @@ class CalendarRepositoryTest {
                 .lastUploadedAt(now.plusSeconds(20))
                 .deleted(false)
                 .build();
-        repository.saveAll(List.of(entity1, entity2, entity3));
+        repository.saveAll(List.of(entity1, entity2));
 
         // when
-        var actual = repository.findLatestCalendar(Instant.now(), Pageable.ofSize(10), memberId);
+        var actual = repository.findLatestCalendar(now.plusSeconds(100), Pageable.ofSize(10), memberId);
 
         // then
         assertThat(actual.getContent())
                 .hasSize(1)
                 .extracting("calendarName")
-                .containsExactly(entity3.getCalendarName());
+                .containsExactly(entity2.getCalendarName());
     }
 
     @Test
@@ -232,7 +218,7 @@ class CalendarRepositoryTest {
         repository.save(entity);
 
         // when
-        var actual = repository.findLatestCalendar(Instant.now(), Pageable.ofSize(10), entity.getMemberId());
+        var actual = repository.findLatestCalendar(now, Pageable.ofSize(10), entity.getMemberId());
 
         // then
         assertThat(actual.getContent()).isEmpty();

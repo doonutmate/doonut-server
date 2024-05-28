@@ -3,6 +3,7 @@ package com.doonutmate.calendar.service
 import com.doonutmate.calendar.controller.dto.CalendarResponse
 import com.doonutmate.calendar.controller.dto.CalendarResult
 import com.doonutmate.calendar.exception.CalendarException
+import com.doonutmate.doonut.calendar.model.Calendar
 import com.doonutmate.doonut.calendar.model.CalendarReportReason
 import com.doonutmate.doonut.calendar.service.CalendarBusinessService
 import com.doonutmate.doonut.calendar.service.CalendarReportReasonBusinessService
@@ -46,6 +47,20 @@ class CalendarAppService(
         return PageRequest.of(0, pageSize)
     }
 
+    fun getCalendar(memberId: Long): Calendar {
+        validate(memberId)
+        return calendarBusinessService.getByMemberId(memberId)
+    }
+
+    fun updateCalendar(memberId: Long, title: String): Boolean {
+        try {
+            val updateCount = calendarBusinessService.updateCalendarName(memberId, title)
+            return updateCount > NOT_UPDATED
+        } catch (e: CalendarException) {
+            throw CalendarException(ErrorCode.NOT_UPDATED, "캘린더가 업데이트되지 않았습니다.")
+        }
+    }
+
     fun report(reportReason: CalendarReportReason): Long {
         validateExistsCalendar(reportReason.calendarId)
         return reportReasonBusinessService.create(reportReason)
@@ -59,5 +74,6 @@ class CalendarAppService(
     companion object {
         private const val DEFAULT_PAGE_SIZE = 10
         private const val COMMUNITY_ACCESS_MINIMUM_COUNT = 3
+        private const val NOT_UPDATED = 0
     }
 }

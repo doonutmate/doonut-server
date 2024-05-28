@@ -10,11 +10,26 @@ import java.time.Instant;
 import java.util.Optional;
 
 public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> {
-    @Query("SELECT c FROM CalendarEntity c ORDER BY c.updatedAt DESC")
-    Slice<CalendarEntity> findInitialLatestCalendar(Pageable page);
 
-    @Query("SELECT c FROM CalendarEntity c WHERE c.updatedAt < :cursor ORDER BY c.updatedAt DESC")
-    Slice<CalendarEntity> findLatestCalendar(Instant cursor, Pageable page);
+    @Query("""
+            SELECT c
+            FROM CalendarEntity c
+            WHERE LENGTH(c.calendarName) >= 1
+            AND c.totalCount >= 3
+            AND c.memberId != :memberId
+            ORDER BY c.updatedAt DESC
+             """)
+    Slice<CalendarEntity> findInitialLatestCalendar(Pageable page, Long memberId);
+
+    @Query("""
+            SELECT c FROM CalendarEntity c
+            WHERE c.updatedAt < :cursor
+            AND LENGTH(c.calendarName) >= 1
+            AND c.totalCount >= 3
+            AND c.memberId != :memberId
+            ORDER BY c.updatedAt DESC
+             """)
+    Slice<CalendarEntity> findLatestCalendar(Instant cursor, Pageable page, Long memberId);
 
     Optional<CalendarEntity> findByMemberId(Long memberId);
 }

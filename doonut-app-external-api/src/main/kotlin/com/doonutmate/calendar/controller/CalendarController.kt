@@ -36,7 +36,7 @@ class CalendarController(
     @GetMapping("")
     fun get(
         @RequestParam(required = false) time: Instant?,
-        @RequestParam(required = false, defaultValue = "10") size: Int?,
+        @RequestParam(required = false, defaultValue = "10") size: Int,
         @Authorization
         @Parameter(hidden = true)
         memberId: Long,

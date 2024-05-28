@@ -24,10 +24,10 @@ public class CalendarBusinessService {
     private final CalendarMapper mapper;
 
 
-    public Slice<Calendar> findCalendars(Pageable pageable, Instant timeCursor) {
+    public Slice<Calendar> findCalendars(Pageable pageable, Instant timeCursor, Long memberId) {
         Slice<CalendarEntity> calendarEntityList = (timeCursor != null)
-                ? repository.findLatestCalendar(timeCursor, pageable)
-                : repository.findInitialLatestCalendar(pageable);
+                ? repository.findLatestCalendar(timeCursor, pageable, memberId)
+                : repository.findInitialLatestCalendar(pageable, memberId);
         return convertListEntityToDto(calendarEntityList);
     }
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
+
 @RestController
 @Tag(name = "Calendar", description = "캘린더 API")
 @RequestMapping("/calendars")

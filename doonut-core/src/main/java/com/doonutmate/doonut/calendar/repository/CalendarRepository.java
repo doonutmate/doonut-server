@@ -6,7 +6,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -14,7 +13,6 @@ import java.util.Optional;
 public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> {
 
     @Modifying
-    @Transactional
     @Query("UPDATE CalendarEntity c SET c.calendarName = :newName WHERE c.memberId = :memberId")
     int updateCalendarNameByMemberId(Long memberId, String newName);
 

@@ -41,8 +41,8 @@ public class CalendarBusinessService {
     }
 
     @Transactional
-    public int updateCalendarName(Long memberId, String newName) {
-        return repository.updateCalendarNameByMemberId(memberId, newName);
+    public void updateCalendarName(Long memberId, String newName) {
+        repository.updateCalendarNameByMemberId(memberId, newName);
     }
 
     @Transactional

@@ -80,8 +80,9 @@ class CalendarController(
         @RequestBody
         req: CalendarNameRequest,
 
-    ): Boolean {
-        return calendarAppService.updateCalendar(memberId, req.title)
+    ): ResponseEntity<Void> {
+        calendarAppService.updateCalendar(memberId, req.title)
+        return ResponseEntity.ok().build()
     }
 
     // TODO 추후 캘린더가 복수가 될 가능성이 있을 떄, 수정해야하는 로직 (캘린더 조회, 캘린더 설정)

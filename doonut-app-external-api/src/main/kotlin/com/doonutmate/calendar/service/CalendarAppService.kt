@@ -46,10 +46,9 @@ class CalendarAppService(
         return calendarBusinessService.getByMemberId(memberId)
     }
 
-    fun updateCalendar(memberId: Long, title: String): Boolean {
+    fun updateCalendar(memberId: Long, title: String) {
         try {
-            val updateCount = calendarBusinessService.updateCalendarName(memberId, title)
-            return updateCount > NOT_UPDATED
+            calendarBusinessService.updateCalendarName(memberId, title)
         } catch (e: CalendarException) {
             throw CalendarException(ErrorCode.NOT_UPDATED, "캘린더가 업데이트되지 않았습니다.")
         }

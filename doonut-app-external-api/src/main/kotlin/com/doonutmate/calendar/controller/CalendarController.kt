@@ -60,7 +60,7 @@ class CalendarController(
         return ResponseEntity.ok().build()
     }
 
-    @Operation(summary = "캘린더 조회", description = "멤버가 자신의 캘린더 제목을 조회한다.(토큰사용)")
+    @Operation(summary = "캘린더 제목 조회")
     @GetMapping("/profile")
     fun getCalendarTitle(
         @Authorization
@@ -70,7 +70,7 @@ class CalendarController(
         return CalendarNameResponse(calendarAppService.getCalendar(memberId).calendarName)
     }
 
-    @Operation(summary = "캘린더 설정", description = "멤버가 캘린더 제목을 수정한다.(토큰사용)")
+    @Operation(summary = "캘린더 제목 설정")
     @PutMapping("/profile")
     fun updateCalendarTitle(
         @Authorization

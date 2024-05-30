@@ -34,7 +34,7 @@ public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> 
 
     @Modifying
     @Query("UPDATE CalendarEntity c SET c.calendarName = :newName WHERE c.memberId = :memberId")
-    int updateCalendarNameByMemberId(Long memberId, String newName);
+    void updateCalendarNameByMemberId(Long memberId, String newName);
 
     Optional<CalendarEntity> findByMemberId(Long memberId);
 }

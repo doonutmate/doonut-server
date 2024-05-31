@@ -8,6 +8,6 @@ import jakarta.validation.constraints.Size
 data class CalendarNameRequest(
     @Schema(title = "캘린더 제목")
     @field:NotBlank(message = "캘린더 제목은 공백 일 수 없습니다")
-    @field:Size(min = 1, max = 12, message = "캘린더 제목은 최소 1자에서 최대 8자입니다.")
+    @field:Size(min = 1, max = 12, message = "캘린더 제목은 최소 1자에서 최대 12자입니다.")
     val title: String,
 )

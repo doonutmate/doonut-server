@@ -47,11 +47,7 @@ class CalendarAppService(
     }
 
     fun updateCalendar(memberId: Long, title: String) {
-        try {
-            calendarBusinessService.updateCalendarName(memberId, title)
-        } catch (e: CalendarException) {
-            throw CalendarException(ErrorCode.NOT_UPDATED, "캘린더가 업데이트되지 않았습니다.")
-        }
+        calendarBusinessService.updateCalendarName(memberId, title)
     }
 
     fun report(reportReason: CalendarReportReason): Long {
@@ -66,6 +62,5 @@ class CalendarAppService(
 
     companion object {
         private const val COMMUNITY_ACCESS_MINIMUM_COUNT = 3
-        private const val NOT_UPDATED = 0
     }
 }

@@ -3,6 +3,7 @@ package com.doonutmate.calendar.service
 import com.doonutmate.calendar.controller.dto.CalendarResponse
 import com.doonutmate.calendar.controller.dto.CalendarResult
 import com.doonutmate.calendar.exception.CalendarException
+import com.doonutmate.doonut.calendar.model.Calendar
 import com.doonutmate.doonut.calendar.model.CalendarReportReason
 import com.doonutmate.doonut.calendar.service.CalendarBusinessService
 import com.doonutmate.doonut.calendar.service.CalendarReportReasonBusinessService
@@ -38,6 +39,15 @@ class CalendarAppService(
 
     private fun getBoards(time: Instant?, page: Pageable, memberId: Long): Slice<CalendarResponse> {
         return calendarFacadeService.convertToList(calendarBusinessService.findCalendars(page, time, memberId))
+    }
+
+    fun getCalendar(memberId: Long): Calendar {
+        validate(memberId)
+        return calendarBusinessService.getByMemberId(memberId)
+    }
+
+    fun updateCalendar(memberId: Long, title: String) {
+        calendarBusinessService.updateCalendarName(memberId, title)
     }
 
     fun report(reportReason: CalendarReportReason): Long {

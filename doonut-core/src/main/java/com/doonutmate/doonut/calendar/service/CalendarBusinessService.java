@@ -41,6 +41,11 @@ public class CalendarBusinessService {
     }
 
     @Transactional
+    public void updateCalendarName(Long memberId, String newName) {
+        repository.updateCalendarNameByMemberId(memberId, newName);
+    }
+
+    @Transactional
     public Long create(Calendar calendar) {
         var newEntity = mapper.toEntity(calendar);
 

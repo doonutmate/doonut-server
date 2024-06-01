@@ -4,6 +4,7 @@ import com.doonutmate.doonut.calendar.entity.CalendarEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.Instant;
@@ -30,6 +31,10 @@ public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> 
             ORDER BY c.updatedAt DESC
              """)
     Slice<CalendarEntity> findLatestCalendar(Instant cursor, Pageable page, Long memberId);
+
+    @Modifying
+    @Query("UPDATE CalendarEntity c SET c.calendarName = :newName WHERE c.memberId = :memberId")
+    void updateCalendarNameByMemberId(Long memberId, String newName);
 
     Optional<CalendarEntity> findByMemberId(Long memberId);
 }

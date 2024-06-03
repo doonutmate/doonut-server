@@ -1,7 +1,18 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.1.5"
-    id("io.spring.dependency-management") version "1.1.3"
+    id("org.springframework.boot") version "3.2.6"
+    id("io.spring.dependency-management") version "1.1.5"
+    id("org.flywaydb.flyway") version "10.13.0"
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.flywaydb:flyway-core:10.13.0")
+        classpath("org.flywaydb:flyway-mysql:10.13.0")
+    }
 }
 
 group = "com.doonutmate"
@@ -36,8 +47,8 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
 
     // flyway
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-mysql")
+    implementation("org.flywaydb:flyway-core:10.13.0")
+    implementation("org.flywaydb:flyway-mysql:10.13.0")
 
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")

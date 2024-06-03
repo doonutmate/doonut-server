@@ -10,7 +10,10 @@ class ChallengeConfig {
     fun getChallengeApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("챌린지")
-            .pathsToMatch("/challenge/**")
+            .pathsToMatch(
+                "/challenge/**",
+                "/members/**/challenges",
+            )
             .pathsToExclude("")
             .packagesToScan("com.doonutmate.challenge.controller")
             .build()

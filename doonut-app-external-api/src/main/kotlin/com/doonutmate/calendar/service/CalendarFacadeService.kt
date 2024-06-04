@@ -31,7 +31,6 @@ class CalendarFacadeService(
             calendar.totalCount,
             member.name,
             calendar.calendarName,
-            calendar.updatedAt,
             timeFormatConvert(calendar.firstUploadedAt),
             timeFormatConvert(calendar.lastUploadedAt),
             extractRepresentativeImage(member.profileImages)?.imageUrl,

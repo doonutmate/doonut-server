@@ -28,7 +28,7 @@ class MemberAppService(
         val member = memberBusinessService.get(memberId)
         requireNotNull(member) { "해당하는 멤버가 없습니다. memberId: $memberId" }
 
-        val profileImageUrl = member.profileImages?.getOrNull(0)?.imageUrl
+        val profileImageUrl = member.profileImages?.lastOrNull()?.imageUrl
 
         return MyPageResponse(nickname = member.name, profileImageUrl = profileImageUrl)
     }

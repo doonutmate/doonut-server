@@ -50,8 +50,8 @@ public class CalendarBusinessService {
         return Calendar.builder()
                 .memberId(memberId)
                 .calendarName(name + " 캘린더")
-                .firstUploadedAt(Instant.now())
-                .lastUploadedAt(Instant.now())
+                .firstUploadedAt(null)
+                .lastUploadedAt(null)
                 .build();
     }
 

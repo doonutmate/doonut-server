@@ -10,7 +10,6 @@ public record Calendar(
         Long memberId,
         String calendarName,
         int totalCount,
-        Instant updatedAt,
         Instant firstUploadedAt,
         Instant lastUploadedAt,
         boolean deleted

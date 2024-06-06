@@ -55,7 +55,6 @@ class CalendarBusinessServiceTest {
                 .memberId(memberId)
                 .calendarName("캘린더명")
                 .totalCount(10)
-                .updatedAt(Instant.now())
                 .firstUploadedAt(Instant.now())
                 .lastUploadedAt(Instant.now())
                 .deleted(false)

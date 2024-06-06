@@ -53,7 +53,7 @@ class MemberController(
         return ResponseEntity.ok().build()
     }
 
-    @Operation(summary = "프로필 수정", description = "멤버가 프로필을 수정한다.")
+    @Operation(summary = "프로필 수정", description = "멤버가 이름, 프로필 이미지를 수정한다.")
     @PutMapping(
         value = ["/profile"],
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
@@ -70,5 +70,19 @@ class MemberController(
 
     ): Long {
         return memberProfileFacadeService.updateProfile(memberId, nameRequest.nickname, multipartFile)
+    }
+
+    @Operation(summary = "프로필 수정", description = "멤버가 이름을 수정한다.")
+    @PutMapping("profile/name")
+    fun updateProfileName(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+        @Valid
+        @RequestBody
+        nameRequest: NameRequest,
+    ): ResponseEntity<Unit> {
+        memberProfileFacadeService.updateProfileName(memberId, nameRequest.nickname)
+        return ResponseEntity.ok().build()
     }
 }

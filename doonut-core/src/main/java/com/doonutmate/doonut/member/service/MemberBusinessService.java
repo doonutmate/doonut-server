@@ -88,7 +88,12 @@ public class MemberBusinessService {
         return profileImage;
     }
 
-    public MemberEntity getEntity(Long id){
+    @Transactional
+    public void updateProfileName(String name, Long memberId) {
+        repository.updateMemberNameByMemberId(memberId,name);
+    }
+
+    public MemberEntity getEntity(Long id) {
         return repository.findById(id)
                 .orElse(null);
     }

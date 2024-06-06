@@ -63,4 +63,5 @@ public class MemberEntity extends BaseTimeEntity {
         this.name = name;
         this.profileImages = newProfileImages;
     }
+
 }

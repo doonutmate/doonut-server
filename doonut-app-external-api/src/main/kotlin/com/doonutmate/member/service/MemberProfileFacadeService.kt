@@ -20,4 +20,9 @@ class MemberProfileFacadeService(
 
         return memberBusinessService.updateProfile(memberId, name, imageDto.imageUrl)
     }
+
+    @Transactional
+    fun updateProfileName(name: String, memberId: Long) {
+        memberBusinessService.updateProfileName(name, memberId)
+    }
 }

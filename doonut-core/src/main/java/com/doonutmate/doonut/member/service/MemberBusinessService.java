@@ -90,7 +90,7 @@ public class MemberBusinessService {
 
     @Transactional
     public void updateProfileName(String name, Long memberId) {
-        repository.updateMemberNameByMemberId(memberId,name);
+        repository.updateMemberNameByMemberId(name, memberId);
     }
 
     public MemberEntity getEntity(Long id) {

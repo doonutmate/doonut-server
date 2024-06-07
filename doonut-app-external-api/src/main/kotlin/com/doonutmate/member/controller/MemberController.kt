@@ -72,7 +72,7 @@ class MemberController(
         return memberProfileFacadeService.updateProfile(memberId, nameRequest.nickname, multipartFile)
     }
 
-    @Operation(summary = "프로필 수정", description = "멤버가 이름을 수정한다.")
+    @Operation(summary = "프로필명 수정", description = "멤버가 이름을 수정한다.")
     @PutMapping("profile/name")
     fun updateProfileName(
         @Authorization
@@ -82,7 +82,7 @@ class MemberController(
         @RequestBody
         nameRequest: NameRequest,
     ): ResponseEntity<Unit> {
-        memberProfileFacadeService.updateProfileName(memberId, nameRequest.nickname)
+        memberProfileFacadeService.updateProfileName(nameRequest.nickname, memberId)
         return ResponseEntity.ok().build()
     }
 }

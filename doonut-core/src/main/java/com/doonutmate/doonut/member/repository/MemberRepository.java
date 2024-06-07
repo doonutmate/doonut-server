@@ -18,5 +18,5 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
     @Modifying
     @Query("UPDATE MemberEntity m SET m.name = :newName WHERE m.id = :memberId")
-    void updateMemberNameByMemberId(Long memberId, String newName);
+    void updateMemberNameByMemberId(String newName, Long memberId);
 }

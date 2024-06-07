@@ -22,7 +22,7 @@ class MemberProfileFacadeService(
     }
 
     @Transactional
-    fun updateProfileName(memberId: Long, name: String) {
+    fun updateProfileName(name: String, memberId: Long) {
         memberBusinessService.updateProfileName(name, memberId)
     }
 }

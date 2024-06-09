@@ -32,7 +32,7 @@ public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> 
              """)
     Slice<CalendarEntity> findLatestCalendar(Instant cursor, Pageable page, Long memberId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE CalendarEntity c SET c.calendarName = :newName WHERE c.memberId = :memberId")
     void updateCalendarNameByMemberId(Long memberId, String newName);
 

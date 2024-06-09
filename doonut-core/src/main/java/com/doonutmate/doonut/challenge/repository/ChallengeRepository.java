@@ -34,7 +34,7 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
             """)
     List<ChallengeEntity> findAllByMemberIdAfter(Long memberId, Instant startAt);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("""
                 UPDATE ChallengeEntity c
                 SET c.deleted = true
@@ -43,10 +43,9 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
     void deleteAllByMemberId(Long memberId);
 
     /**
-     *
      * 3초 동안 락을 획득하지 못하면 0을 반환한다.
-     * @return
-     * 1 : 잠금을 획득하는데 성공하였을때
+     *
+     * @return 1 : 잠금을 획득하는데 성공하였을때
      * 0 : 3초 동안 잠금 획득에 실패했을때
      */
     @Query(value = "SELECT GET_LOCK(:key, 3)", nativeQuery = true)

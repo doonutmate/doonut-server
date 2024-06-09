@@ -1,7 +1,6 @@
 package com.doonutmate.doonut.calendar.service;
 
 import com.doonutmate.doonut.calendar.model.Calendar;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,9 +16,6 @@ class CalendarBusinessServiceTest {
 
     @Autowired
     private CalendarBusinessService service;
-
-    @Autowired
-    private EntityManager em;
 
     @Test
     void getId() {
@@ -44,7 +40,6 @@ class CalendarBusinessServiceTest {
         var memberId = 1L;
         service.create(generateCalendar(memberId));
         var newCalendarName = "새로운 캘린더명";
-        em.clear();
 
         // when
         service.updateCalendarName(memberId, newCalendarName);

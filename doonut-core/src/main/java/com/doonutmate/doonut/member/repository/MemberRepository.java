@@ -16,7 +16,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
             """)
     Optional<MemberEntity> findByOauthId(String oauthId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE MemberEntity m SET m.name = :newName WHERE m.id = :memberId")
     void updateMemberNameByMemberId(String newName, Long memberId);
 }

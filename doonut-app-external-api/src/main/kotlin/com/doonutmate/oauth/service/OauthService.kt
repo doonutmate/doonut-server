@@ -4,7 +4,8 @@ import com.doonutmate.doonut.calendar.model.Calendar
 import com.doonutmate.doonut.calendar.service.CalendarBusinessService
 import com.doonutmate.doonut.member.model.Member
 import com.doonutmate.doonut.member.model.OauthType
-import com.doonutmate.doonut.member.model.OauthType.*
+import com.doonutmate.doonut.member.model.OauthType.KAKAO
+import com.doonutmate.doonut.member.model.OauthType.APPLE
 import com.doonutmate.doonut.member.service.MemberBusinessService
 import com.doonutmate.oauth.JwtTokenProvider
 import com.doonutmate.oauth.apple.service.AppleOauthProvider
@@ -56,8 +57,7 @@ class OauthService(
     private fun createDefaultCalendar(memberId: Long) {
         val fetchedMember: Member = memberBusinessService.get(memberId)
 
-        val defaultCalendar: Calendar =
-            calendarBusinessService.createDefaultCalendar(memberId, fetchedMember.name)
+        val defaultCalendar = Calendar.createDefaultCalendar(memberId, fetchedMember.name)
         calendarBusinessService.create(defaultCalendar)
     }
 }

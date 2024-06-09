@@ -62,16 +62,6 @@ public class CalendarBusinessService {
     }
 
     @Transactional
-    public Calendar createDefaultCalendar(Long memberId, String name) {
-        return Calendar.builder()
-                .memberId(memberId)
-                .calendarName(name + " 캘린더")
-                .firstUploadedAt(null)
-                .lastUploadedAt(null)
-                .build();
-    }
-
-    @Transactional
     public void updateCalendarName(Long memberId, String newName) {
         repository.updateCalendarNameByMemberId(memberId, newName);
     }

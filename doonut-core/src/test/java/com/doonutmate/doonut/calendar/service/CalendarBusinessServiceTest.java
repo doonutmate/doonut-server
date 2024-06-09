@@ -1,6 +1,7 @@
 package com.doonutmate.doonut.calendar.service;
 
 import com.doonutmate.doonut.calendar.model.Calendar;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,9 @@ class CalendarBusinessServiceTest {
     @Autowired
     private CalendarBusinessService service;
 
+    @Autowired
+    private EntityManager em;
+
     @Test
     void getId() {
 
@@ -31,6 +35,46 @@ class CalendarBusinessServiceTest {
         assertThat(actual)
                 .extracting("id", "memberId", "calendarName", "totalCount")
                 .containsExactly(calendarId, 2L, expected.calendarName(), expected.totalCount());
+    }
+
+    @Test
+    void updateCalendarName() {
+
+        // given
+        var memberId = 1L;
+        service.create(generateCalendar(memberId));
+        var newCalendarName = "새로운 캘린더명";
+        em.clear();
+
+        // when
+        service.updateCalendarName(memberId, newCalendarName);
+
+        // then
+        var actual = service.getByMemberId(memberId);
+        assertThat(actual.calendarName()).isEqualTo(newCalendarName);
+    }
+
+    @Test
+    void update() {
+
+        // given
+        var memberId = 1L;
+        service.create(generateCalendar(memberId));
+        var calendar = service.getByMemberId(memberId);
+        var expected = calendar.toBuilder()
+                .totalCount(calendar.totalCount() + 1)
+                .firstUploadedAt(Instant.now().minusSeconds(500))
+                .lastUploadedAt(Instant.now().minusSeconds(100))
+                .build();
+
+        // when
+        service.update(expected);
+
+        // then
+        var actual = service.getByMemberId(memberId);
+        assertThat(actual)
+                .extracting("memberId", "calendarName", "totalCount", "firstUploadedAt", "lastUploadedAt")
+                .containsExactly(memberId, expected.calendarName(), expected.totalCount(), expected.firstUploadedAt(), expected.lastUploadedAt());
     }
 
     @Test

@@ -20,9 +20,21 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Service
 public class CalendarBusinessService {
+
     private final CalendarRepository repository;
     private final CalendarMapper mapper;
 
+    public Calendar get(Long id) {
+        return repository.findById(id)
+                .map(mapper::toModel)
+                .orElse(null);
+    }
+
+    public Calendar getByMemberId(Long memberId) {
+        return repository.findByMemberId(memberId)
+                .map(mapper::toModel)
+                .orElse(null);
+    }
 
     public Slice<Calendar> findCalendars(Pageable pageable, Instant timeCursor, Long memberId) {
         Slice<CalendarEntity> calendarEntityList = (timeCursor != null)
@@ -41,8 +53,12 @@ public class CalendarBusinessService {
     }
 
     @Transactional
-    public void updateCalendarName(Long memberId, String newName) {
-        repository.updateCalendarNameByMemberId(memberId, newName);
+    public Long create(Calendar calendar) {
+        var newEntity = mapper.toEntity(calendar);
+
+        var savedEntity = repository.save(newEntity);
+
+        return savedEntity.getId();
     }
 
     @Transactional
@@ -56,24 +72,18 @@ public class CalendarBusinessService {
     }
 
     @Transactional
-    public Long create(Calendar calendar) {
-        var newEntity = mapper.toEntity(calendar);
-
-        var savedEntity = repository.save(newEntity);
-
-        return savedEntity.getId();
+    public void updateCalendarName(Long memberId, String newName) {
+        repository.updateCalendarNameByMemberId(memberId, newName);
     }
 
-    public Calendar get(Long id) {
-        return repository.findById(id)
-                .map(mapper::toModel)
-                .orElse(null);
-    }
-
-    public Calendar getByMemberId(Long memberId) {
-        return repository.findByMemberId(memberId)
-                .map(mapper::toModel)
-                .orElse(null);
+    @Transactional
+    public void update(Calendar model) {
+        repository.findById(model.id())
+                .ifPresent(entity -> {
+                    entity.updateTotalCount(model.totalCount());
+                    entity.updateFirstUploadedAt(model.firstUploadedAt());
+                    entity.updateLastUploadedAt(model.lastUploadedAt());
+                });
     }
 
     @Transactional
@@ -82,5 +92,4 @@ public class CalendarBusinessService {
                 .orElseThrow();
         entity.delete();
     }
-
 }

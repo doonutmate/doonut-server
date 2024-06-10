@@ -1,6 +1,5 @@
 package com.doonutmate.doonut.calendar.entity;
 
-
 import com.doonutmate.doonut.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,6 +53,18 @@ public class CalendarEntity extends BaseTimeEntity {
     boolean deleted = false;
 
     public void delete() {
-        deleted = true;
+        this.deleted = true;
+    }
+
+    public void updateTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public void updateFirstUploadedAt(Instant firstUploadedAt) {
+        this.firstUploadedAt = firstUploadedAt;
+    }
+
+    public void updateLastUploadedAt(Instant lastUploadedAt) {
+        this.lastUploadedAt = lastUploadedAt;
     }
 }

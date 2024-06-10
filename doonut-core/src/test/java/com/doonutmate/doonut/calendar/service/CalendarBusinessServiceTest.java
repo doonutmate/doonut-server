@@ -34,6 +34,45 @@ class CalendarBusinessServiceTest {
     }
 
     @Test
+    void updateCalendarName() {
+
+        // given
+        var memberId = 1L;
+        service.create(generateCalendar(memberId));
+        var newCalendarName = "새로운 캘린더명";
+
+        // when
+        service.updateCalendarName(memberId, newCalendarName);
+
+        // then
+        var actual = service.getByMemberId(memberId);
+        assertThat(actual.calendarName()).isEqualTo(newCalendarName);
+    }
+
+    @Test
+    void update() {
+
+        // given
+        var memberId = 1L;
+        service.create(generateCalendar(memberId));
+        var calendar = service.getByMemberId(memberId);
+        var expected = calendar.toBuilder()
+                .totalCount(calendar.totalCount() + 1)
+                .firstUploadedAt(Instant.now().minusSeconds(500))
+                .lastUploadedAt(Instant.now().minusSeconds(100))
+                .build();
+
+        // when
+        service.update(expected);
+
+        // then
+        var actual = service.getByMemberId(memberId);
+        assertThat(actual)
+                .extracting("memberId", "calendarName", "totalCount", "firstUploadedAt", "lastUploadedAt")
+                .containsExactly(memberId, expected.calendarName(), expected.totalCount(), expected.firstUploadedAt(), expected.lastUploadedAt());
+    }
+
+    @Test
     void getByMemberId() {
 
         // given

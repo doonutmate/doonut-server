@@ -22,19 +22,15 @@ class CalendarAppService(
 ) {
 
     fun get(time: Instant?, size: Int, memberId: Long): CalendarResult<CalendarResponse> {
-        validate(memberId)
-
-        val calendars: Slice<CalendarResponse> = getBoards(time, PageRequest.of(0, size), memberId)
-        return CalendarResult(calendars.toList(), calendars.hasNext())
-    }
-
-    private fun validate(memberId: Long) {
         val calendar = calendarBusinessService.getByMemberId(memberId)
-            ?: throw CalendarException("캘린더를 찾을 수 없습니다. memberId: $memberId")
+            ?: throw CalendarException("캘린더를 찾을 수 없습니다.")
 
         if (calendar.calendarName.isNullOrBlank() || calendar.totalCount < COMMUNITY_ACCESS_MINIMUM_COUNT) {
             throw CalendarException(ErrorCode.COMMUNITY_NOT_ACCESSIBLE, "커뮤니티는 캘린더명을 설정하고, 3개 이상의 기록이 있어야 확인할 수 있습니다.")
         }
+
+        val calendars: Slice<CalendarResponse> = getBoards(time, PageRequest.of(0, size), memberId)
+        return CalendarResult(calendars.toList(), calendars.hasNext())
     }
 
     private fun getBoards(time: Instant?, page: Pageable, memberId: Long): Slice<CalendarResponse> {
@@ -42,7 +38,9 @@ class CalendarAppService(
     }
 
     fun getCalendar(memberId: Long): Calendar {
-        validate(memberId)
+        calendarBusinessService.getByMemberId(memberId)
+            ?: throw CalendarException("캘린더를 찾을 수 없습니다.")
+
         return calendarBusinessService.getByMemberId(memberId)
     }
 

@@ -44,3 +44,4 @@ out/
 
 ### Secret file ###
 *.p8
+*.json

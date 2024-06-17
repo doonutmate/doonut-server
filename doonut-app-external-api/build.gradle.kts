@@ -62,6 +62,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
 
+    // firebase
+    implementation("com.google.firebase:firebase-admin:9.2.0")
+
     // localstack
     implementation("com.amazonaws:aws-java-sdk-s3")
     implementation("org.testcontainers:localstack")
@@ -73,6 +76,7 @@ tasks {
         from("../doonut-config")
         include("*.yml")
         include("*.p8")
+        include("*.json")
         into("src/main/resources")
     }
 

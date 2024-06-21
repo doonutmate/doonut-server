@@ -12,6 +12,7 @@ public record Calendar(
         int totalCount,
         Instant firstUploadedAt,
         Instant lastUploadedAt,
+        Instant updatedAt,
         boolean deleted
 ) {
 

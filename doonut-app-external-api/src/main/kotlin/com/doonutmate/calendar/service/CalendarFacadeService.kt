@@ -33,6 +33,7 @@ class CalendarFacadeService(
             calendar.calendarName,
             timeFormatConvert(calendar.firstUploadedAt),
             timeFormatConvert(calendar.lastUploadedAt),
+            calendar.updatedAt,
             extractRepresentativeImage(member.profileImages)?.imageUrl,
         )
     }

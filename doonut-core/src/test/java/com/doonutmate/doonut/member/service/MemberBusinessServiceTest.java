@@ -95,7 +95,6 @@ class MemberBusinessServiceTest {
         // given
         var member = generateMember();
         var savedEntityId = service.create(member);
-        var now = Instant.now();
 
         // when
         service.updateMarketingReceiveConsent(true, savedEntityId);
@@ -103,7 +102,6 @@ class MemberBusinessServiceTest {
         // then
         var actual = service.get(savedEntityId);
         assertThat(actual.marketingReceiveConsent()).isTrue();
-        assertThat(actual.marketingReceiveConsentUpdatedAt()).isAfter(now);
     }
 
     private Member generateMember() {

@@ -1,5 +1,6 @@
 package com.doonutmate.member.controller
 
+import com.doonutmate.member.controller.dto.AlarmConfigResponse
 import com.doonutmate.member.controller.dto.DeleteRequest
 import com.doonutmate.member.controller.dto.MemberDeleteRequest
 import com.doonutmate.member.controller.dto.MyPageResponse
@@ -67,7 +68,6 @@ class MemberController(
         @RequestPart("nameRequest")
         nameRequest: NameRequest,
         @RequestPart("multipartFile") multipartFile: MultipartFile,
-
     ): Long {
         return memberProfileFacadeService.updateProfile(memberId, nameRequest.nickname, multipartFile)
     }
@@ -84,5 +84,15 @@ class MemberController(
     ): ResponseEntity<Unit> {
         memberProfileFacadeService.updateProfileName(nameRequest.nickname, memberId)
         return ResponseEntity.ok().build()
+    }
+
+    @Operation(summary = "알람 설정 조회")
+    @GetMapping("/alarm-config")
+    fun getAlarmConfig(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+    ): AlarmConfigResponse {
+        return memberAppService.findMyAlarmConfig(memberId)
     }
 }

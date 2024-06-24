@@ -113,6 +113,10 @@ class MemberBusinessServiceTest {
                 .email("yeongun@naver.com")
                 .oauthId(oauthId)
                 .oauthType(OauthType.KAKAO)
+                .serviceAlarm(true)
+                .lateNightAlarm(true)
+                .marketingReceiveConsent(true)
+                .marketingReceiveConsentUpdatedAt(Instant.now())
                 .build();
     }
 }

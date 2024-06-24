@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -58,6 +60,50 @@ class MemberBusinessServiceTest {
         assertThat(actual)
                 .extracting("name", "oauthId")
                 .containsExactly("yeongun", oauthId);
+    }
+
+    @Test
+    void updateServiceAlarmConfig() {
+        // given
+        var member = generateMember();
+        var savedEntityId = service.create(member);
+
+        // when
+        service.updateServiceAlarmConfig(true, savedEntityId);
+
+        // then
+        var actual = service.get(savedEntityId);
+        assertThat(actual.serviceAlarm()).isTrue();
+    }
+
+    @Test
+    void updateLateNightAlarm() {
+        // given
+        var member = generateMember();
+        var savedEntityId = service.create(member);
+
+        // when
+        service.updateLateNightAlarm(true, savedEntityId);
+
+        // then
+        var actual = service.get(savedEntityId);
+        assertThat(actual.lateNightAlarm()).isTrue();
+    }
+
+    @Test
+    void updateMarketingReceiveConsent() {
+        // given
+        var member = generateMember();
+        var savedEntityId = service.create(member);
+        var now = Instant.now();
+
+        // when
+        service.updateMarketingReceiveConsent(true, savedEntityId);
+
+        // then
+        var actual = service.get(savedEntityId);
+        assertThat(actual.marketingReceiveConsent()).isTrue();
+        assertThat(actual.marketingReceiveConsentUpdatedAt()).isAfter(now);
     }
 
     private Member generateMember() {

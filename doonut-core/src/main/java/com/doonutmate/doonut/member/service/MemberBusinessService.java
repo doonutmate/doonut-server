@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,22 @@ public class MemberBusinessService {
     @Transactional
     public void updateProfileName(String name, Long memberId) {
         repository.updateMemberNameByMemberId(name, memberId);
+    }
+
+    @Transactional
+    public void updateServiceAlarmConfig(boolean serviceAlarm, Long memberId) {
+        repository.updateServiceAlarmConfig(serviceAlarm, memberId);
+    }
+
+    @Transactional
+    public void updateLateNightAlarm(boolean lateNightAlarm, Long memberId) {
+        repository.updateLateNightAlarm(lateNightAlarm, memberId);
+    }
+
+    @Transactional
+    public void updateMarketingReceiveConsent(boolean marketingReceiveConsent, Long memberId) {
+        var marketingReceiveConsentUpdatedAt = Instant.now();
+        repository.updateMarketingReceiveConsent(marketingReceiveConsent, marketingReceiveConsentUpdatedAt, memberId);
     }
 
     public MemberEntity getEntity(Long id) {

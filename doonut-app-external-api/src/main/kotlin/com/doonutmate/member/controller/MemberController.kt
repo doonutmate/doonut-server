@@ -1,9 +1,13 @@
 package com.doonutmate.member.controller
 
+import com.doonutmate.member.controller.dto.AlarmConfigResponse
 import com.doonutmate.member.controller.dto.DeleteRequest
+import com.doonutmate.member.controller.dto.LateNightAlarmRequest
+import com.doonutmate.member.controller.dto.MarketingReceiveConsentRequest
 import com.doonutmate.member.controller.dto.MemberDeleteRequest
 import com.doonutmate.member.controller.dto.MyPageResponse
 import com.doonutmate.member.controller.dto.NameRequest
+import com.doonutmate.member.controller.dto.ServiceAlarmRequest
 import com.doonutmate.member.service.MemberAppService
 import com.doonutmate.member.service.MemberProfileFacadeService
 import com.doonutmate.oauth.configuration.Authorization
@@ -67,7 +71,6 @@ class MemberController(
         @RequestPart("nameRequest")
         nameRequest: NameRequest,
         @RequestPart("multipartFile") multipartFile: MultipartFile,
-
     ): Long {
         return memberProfileFacadeService.updateProfile(memberId, nameRequest.nickname, multipartFile)
     }
@@ -83,6 +86,58 @@ class MemberController(
         nameRequest: NameRequest,
     ): ResponseEntity<Unit> {
         memberProfileFacadeService.updateProfileName(nameRequest.nickname, memberId)
+        return ResponseEntity.ok().build()
+    }
+
+    @Operation(summary = "알람 설정 조회")
+    @GetMapping("/alarm-config")
+    fun getAlarmConfig(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+    ): AlarmConfigResponse {
+        return memberAppService.findMyAlarmConfig(memberId)
+    }
+
+    @Operation(summary = "서비스 알람 설정 수정")
+    @PutMapping("/service-alarm")
+    fun updateServiceAlarmConfig(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+        @Valid
+        @RequestBody
+        req: ServiceAlarmRequest,
+    ): ResponseEntity<Unit> {
+        memberAppService.updateServiceAlarmConfig(memberId, req.serviceAlarm)
+        return ResponseEntity.ok().build()
+    }
+
+    @Operation(summary = "심야시간 알람 설정 수정")
+    @PutMapping("/late-night-alarm")
+    fun updateLateNightAlarm(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+        @Valid
+        @RequestBody
+        req: LateNightAlarmRequest,
+    ): ResponseEntity<Unit> {
+        memberAppService.updateLateNightAlarm(memberId, req.lateNightAlarm)
+        return ResponseEntity.ok().build()
+    }
+
+    @Operation(summary = "마케팅 수신 동의 수정")
+    @PutMapping("/marketing-receive-consent")
+    fun updateMarketingReceiveConsent(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+        @Valid
+        @RequestBody
+        req: MarketingReceiveConsentRequest,
+    ): ResponseEntity<Unit> {
+        memberAppService.updateMarketingReceiveConsent(memberId, req.marketingReceiveConsent)
         return ResponseEntity.ok().build()
     }
 }

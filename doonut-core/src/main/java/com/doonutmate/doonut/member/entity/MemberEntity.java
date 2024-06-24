@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,18 @@ public class MemberEntity extends BaseTimeEntity {
 
     @Embedded
     OauthInfo oauthInfo;
+
+    @Column
+    boolean serviceAlarm;
+
+    @Column
+    boolean lateNightAlarm;
+
+    @Column
+    boolean marketingReceiveConsent;
+
+    @Column
+    Instant marketingReceiveConsentUpdatedAt;
 
     @Builder.Default
     @Column

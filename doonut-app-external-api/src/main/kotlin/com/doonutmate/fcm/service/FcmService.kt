@@ -18,13 +18,18 @@ class FcmService(
         memberBusinessService.updateDeviceToken(deviceToken, memberId)
     }
 
-    fun sendMessageTo(notification: Notification) {
+    fun sendNotification(notification: Notification, useNickname: Boolean = false) {
         val tokenList = memberBusinessService.serviceAlarmList
+        val authorization = "Bearer ${getAccessToken()}"
 
-        val authorization = "Bearer " + getAccessToken()
-
-        for (i in tokenList) {
-            fcmAccessClient.sendFcmMessage(authorization, makeMessage(i, notification.title, notification.body))
+        tokenList.forEach { token ->
+            val title = if (useNickname) {
+                memberBusinessService.getMemberNameByDeviceToken(token)
+            } else {
+                notification.title
+            }
+            val message = createMessage(token, title, notification.body)
+            sendMessage(authorization, message)
         }
     }
 
@@ -39,7 +44,11 @@ class FcmService(
     }
 
     // TODO firebase 파일명 오타
-    private fun makeMessage(targetToken: String, title: String, body: String): FcmMessage {
+    private fun createMessage(targetToken: String, title: String, body: String): FcmMessage {
         return FcmMessage(false, Message(Notification(title, body), targetToken))
+    }
+
+    private fun sendMessage(authorization: String, fcmMessage: FcmMessage) {
+        fcmAccessClient.sendFcmMessage(authorization, fcmMessage)
     }
 }

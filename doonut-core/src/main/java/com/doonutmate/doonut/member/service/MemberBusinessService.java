@@ -121,6 +121,10 @@ public class MemberBusinessService {
         return repository.findByFcmTokenList();
     }
 
+    public String getMemberNameByDeviceToken(String deviceToken) {
+        return repository.findByName(deviceToken);
+    }
+
     public MemberEntity getEntity(Long id) {
         return repository.findById(id)
                 .orElse(null);

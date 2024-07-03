@@ -1,6 +1,6 @@
 package com.doonutmate.fcm.client.dto
 
 data class Notification(
-    val title: String,
+    var title: String,
     val body: String,
 )

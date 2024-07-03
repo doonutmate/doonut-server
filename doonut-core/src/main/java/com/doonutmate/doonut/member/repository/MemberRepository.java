@@ -25,6 +25,13 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
             """)
     List<String> findByFcmTokenList();
 
+    @Query("""
+                SELECT member.name
+                FROM MemberEntity member
+                WHERE member.deleted = false AND member.fcmToken = :fcmToken
+            """)
+    String findByName(String fcmToken);
+
     @Modifying(clearAutomatically = true)
     @Query("UPDATE MemberEntity m SET m.fcmToken = :deviceToken WHERE  m.id = :memberId")
     void updateDeviceToken(String deviceToken, Long memberId);

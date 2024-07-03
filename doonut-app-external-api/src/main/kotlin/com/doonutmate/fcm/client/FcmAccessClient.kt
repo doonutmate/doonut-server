@@ -10,7 +10,7 @@ import org.springframework.web.service.annotation.PostExchange
 @HttpExchange
 interface FcmAccessClient {
 
-    @PostExchange("https://fcm.googleapis.com/v1/projects/doonut-e933c/messages:send")
+    @PostExchange
     fun sendFcmMessage(
         @RequestHeader("Authorization") authorization: String,
         @RequestBody message: FcmMessage,

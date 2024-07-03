@@ -30,7 +30,7 @@ class FcmService(
     }
 
     private fun getAccessToken(): String {
-        val firebaseConfigPath = "firbase_key.json"
+        val firebaseConfigPath = "firebase_key.json"
         val googleCredentials = GoogleCredentials
             .fromStream(ClassPathResource(firebaseConfigPath).inputStream)
             .createScoped(listOf("https://www.googleapis.com/auth/cloud-platform"))
@@ -39,7 +39,6 @@ class FcmService(
         return googleCredentials.accessToken.tokenValue
     }
 
-    // TODO firebase 파일명 오타
     private fun createMessage(targetToken: String, title: String, body: String): FcmMessage {
         return FcmMessage(false, Message(Notification(title, body), targetToken))
     }

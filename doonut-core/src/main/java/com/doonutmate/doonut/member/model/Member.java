@@ -17,6 +17,7 @@ public record Member(
         boolean lateNightAlarm,
         boolean marketingReceiveConsent,
         Instant marketingReceiveConsentUpdatedAt,
+        String fcmToken,
         boolean deleted
 ) {
 }

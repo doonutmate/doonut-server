@@ -110,6 +110,17 @@ public class MemberBusinessService {
         repository.updateMarketingReceiveConsent(marketingReceiveConsent, marketingReceiveConsentUpdatedAt, memberId);
     }
 
+    @Transactional
+    public void updateDeviceToken(String deviceToken, Long memberId) {
+        repository.updateDeviceToken(deviceToken, memberId);
+    }
+
+
+    //TODO NULL처리 하기
+    public List<String> getServiceAlarmList() {
+        return repository.findByFcmTokenList();
+    }
+
     public MemberEntity getEntity(Long id) {
         return repository.findById(id)
                 .orElse(null);

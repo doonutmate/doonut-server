@@ -1,0 +1,2 @@
+ALTER TABLE member
+    ADD COLUMN fcm_token VARCHAR(255) NULL COMMENT 'fcm 토큰'

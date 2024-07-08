@@ -26,6 +26,13 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     List<String> findByFcmTokenList();
 
     @Query("""
+                SELECT member.fcmToken
+                FROM MemberEntity member
+                WHERE member.deleted= false AND member.lateNightAlarm = true AND member.fcmToken IS NOT NULL
+            """)
+    List<String> findByFcmTokenListForLateAlarm();
+
+    @Query("""
                 SELECT member.name
                 FROM MemberEntity member
                 WHERE member.deleted = false AND member.fcmToken = :fcmToken

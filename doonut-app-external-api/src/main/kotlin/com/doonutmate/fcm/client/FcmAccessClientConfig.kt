@@ -16,7 +16,8 @@ class FcmAccessClientConfig {
     @Bean
     internal fun fcmOpenApiClient(): FcmAccessClient {
         val webClient = WebClient.builder().baseUrl(fcmUrl).build()
-        val factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient)).build()
+        val factory = HttpServiceProxyFactory.builderFor(WebClientAdapter.create(webClient)).build()
+
         return factory.createClient(FcmAccessClient::class.java)
     }
 }

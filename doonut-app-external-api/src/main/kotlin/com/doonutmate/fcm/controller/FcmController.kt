@@ -25,8 +25,8 @@ class FcmController(
         @RequestBody
         req: Notification,
         @RequestParam(defaultValue = "false") useNickname: Boolean,
-    ): Any {
-        return fcmService.sendNotification(req, useNickname)
+    ) {
+        fcmService.sendNotification(req, useNickname)
     }
 
     @Operation(summary = "디바이스 토큰 업데이트")

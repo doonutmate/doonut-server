@@ -18,14 +18,21 @@ class FcmService(
         memberBusinessService.updateDeviceToken(deviceToken, memberId)
     }
 
-    fun sendNotification(notification: Notification, useNickname: Boolean) {
-        val tokenList = memberBusinessService.serviceAlarmList
+    fun sendNotification(notification: Notification, useNickname: Boolean, useNightAlarm: Boolean) {
+        val tokenList = getTokens(useNightAlarm)
         val authorization = "Bearer ${getAccessToken()}"
 
         tokenList.forEach { token ->
             val title = branchTitle(notification.title, token, useNickname)
             val message = createMessage(token, title, notification.body)
             sendMessage(authorization, message)
+        }
+    }
+
+    private fun getTokens(useNightAlarm: Boolean): List<String> {
+        return when (useNightAlarm) {
+            true -> memberBusinessService.serviceTokenListForLateAlarm
+            false -> memberBusinessService.serviceTokenList
         }
     }
 

@@ -19,14 +19,21 @@ import org.springframework.web.bind.annotation.RestController
 class FcmController(
     val fcmService: FcmService,
 ) {
-    @Operation(summary = "FCM 알림 전송")
+    @Operation(
+        summary = "FCM 알림 전송",
+        description = """
+            사용자 닉네임을 담은 알림을 전송하고 싶으면 useNickname = true,       
+            심야 알림을 전송하고 싶으면 useLateAlarm = true
+        """,
+    )
     @PostMapping("/send")
     fun sendFcmNotification(
         @RequestBody
         req: Notification,
         @RequestParam(defaultValue = "false") useNickname: Boolean,
+        @RequestParam(defaultValue = "false") useLateAlarm: Boolean,
     ) {
-        fcmService.sendNotification(req, useNickname)
+        fcmService.sendNotification(req, useNickname, useLateAlarm)
     }
 
     @Operation(summary = "디바이스 토큰 업데이트")

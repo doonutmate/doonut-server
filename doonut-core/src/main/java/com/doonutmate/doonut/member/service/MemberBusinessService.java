@@ -117,8 +117,12 @@ public class MemberBusinessService {
 
 
     //TODO NULL처리 하기
-    public List<String> getServiceAlarmList() {
+    public List<String> getServiceTokenList() {
         return repository.findByFcmTokenList();
+    }
+
+    public List<String> getServiceTokenListForLateAlarm() {
+        return repository.findByFcmTokenListForLateAlarm();
     }
 
     public String getMemberNameByDeviceToken(String deviceToken) {

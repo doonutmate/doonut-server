@@ -33,7 +33,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     String findByName(String fcmToken);
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE MemberEntity m SET m.fcmToken = :deviceToken WHERE  m.id = :memberId")
+    @Query("UPDATE MemberEntity m SET m.fcmToken = :deviceToken WHERE m.id = :memberId")
     void updateDeviceToken(String deviceToken, Long memberId);
 
     @Modifying(clearAutomatically = true)

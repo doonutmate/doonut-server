@@ -51,10 +51,9 @@ class FcmService(
     }
 
     private fun branchTitle(title: String, token: String, useNickname: Boolean): String {
-        return if (useNickname) {
-            memberBusinessService.getMemberNameByDeviceToken(token) + "님 ," + title
-        } else {
-            title
+        return when (useNickname) {
+            true -> "${memberBusinessService.getMemberNameByDeviceToken(token)}님, $title"
+            false -> title
         }
     }
 

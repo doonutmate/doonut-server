@@ -3,8 +3,7 @@ package com.doonutmate.fcm.service
 import com.doonutmate.doonut.member.service.MemberBusinessService
 import com.doonutmate.fcm.client.FcmAccessClient
 import com.doonutmate.fcm.client.dto.FcmMessage
-import com.doonutmate.fcm.client.dto.Message
-import com.doonutmate.fcm.client.dto.Notification
+import com.doonutmate.fcm.client.dto.FcmRequest
 import com.google.auth.oauth2.GoogleCredentials
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
@@ -18,13 +17,13 @@ class FcmService(
         memberBusinessService.updateDeviceToken(deviceToken, memberId)
     }
 
-    fun sendNotification(notification: Notification, useNickname: Boolean, useNightAlarm: Boolean) {
+    fun sendNotification(req: FcmRequest, useNickname: Boolean, useNightAlarm: Boolean) {
         val tokenList = getTokens(useNightAlarm)
         val authorization = "Bearer ${getAccessToken()}"
 
         tokenList.forEach { token ->
-            val title = branchTitle(notification.title, token, useNickname)
-            val message = createMessage(token, title, notification.body)
+            val title = branchTitle(req.title, token, useNickname)
+            val message = createMessage(token, title, req.content)
             sendMessage(authorization, message)
         }
     }
@@ -47,7 +46,7 @@ class FcmService(
     }
 
     private fun createMessage(targetToken: String, title: String, body: String): FcmMessage {
-        return FcmMessage(false, Message(Notification(title, body), targetToken))
+        return FcmMessage.of(false, title, body, targetToken)
     }
 
     private fun branchTitle(title: String, token: String, useNickname: Boolean): String {

@@ -1,6 +1,6 @@
 package com.doonutmate.fcm.controller
 
-import com.doonutmate.fcm.client.dto.Notification
+import com.doonutmate.fcm.client.dto.FcmRequest
 import com.doonutmate.fcm.service.FcmService
 import com.doonutmate.oauth.configuration.Authorization
 import io.swagger.v3.oas.annotations.Operation
@@ -29,7 +29,7 @@ class FcmController(
     @PostMapping("/send")
     fun sendFcmNotification(
         @RequestBody
-        req: Notification,
+        req: FcmRequest,
         @RequestParam(defaultValue = "false") useNickname: Boolean,
         @RequestParam(defaultValue = "false") useLateAlarm: Boolean,
     ) {

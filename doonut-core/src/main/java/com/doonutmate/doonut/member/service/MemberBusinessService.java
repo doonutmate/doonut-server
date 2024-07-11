@@ -110,6 +110,25 @@ public class MemberBusinessService {
         repository.updateMarketingReceiveConsent(marketingReceiveConsent, marketingReceiveConsentUpdatedAt, memberId);
     }
 
+    @Transactional
+    public void updateDeviceToken(String deviceToken, Long memberId) {
+        repository.updateDeviceToken(deviceToken, memberId);
+    }
+
+
+    //TODO NULL처리 하기
+    public List<String> getServiceTokenList() {
+        return repository.findByFcmTokenList();
+    }
+
+    public List<String> getServiceTokenListForLateAlarm() {
+        return repository.findByFcmTokenListForLateAlarm();
+    }
+
+    public String getMemberNameByDeviceToken(String deviceToken) {
+        return repository.findByName(deviceToken);
+    }
+
     public MemberEntity getEntity(Long id) {
         return repository.findById(id)
                 .orElse(null);

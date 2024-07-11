@@ -64,6 +64,9 @@ public class MemberEntity extends BaseTimeEntity {
     @Column
     Instant marketingReceiveConsentUpdatedAt;
 
+    @Column
+    String fcmToken;
+
     @Builder.Default
     @Column
     boolean deleted = false;

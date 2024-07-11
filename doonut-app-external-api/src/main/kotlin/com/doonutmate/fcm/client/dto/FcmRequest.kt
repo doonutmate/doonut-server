@@ -1,6 +1,6 @@
 package com.doonutmate.fcm.client.dto
 
-data class Notification(
+data class FcmRequest(
     val title: String,
-    val body: String,
+    val content: String,
 )

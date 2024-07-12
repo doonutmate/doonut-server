@@ -43,7 +43,7 @@ class MemberAppService(
             serviceAlarm = member.serviceAlarm,
             lateNightAlarm = member.lateNightAlarm,
             marketingReceiveConsent = member.marketingReceiveConsent,
-            marketingReceiveConsentUpdatedAt = timeFormatConvert(member.marketingReceiveConsentUpdatedAt)
+            marketingReceiveConsentUpdatedAt = timeFormatConvert(member.marketingReceiveConsentUpdatedAt),
         )
     }
 

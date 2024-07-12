@@ -47,7 +47,7 @@ class CalendarFacadeService(
         val iterator = profileImages.listIterator()
         while (iterator.hasNext()) {
             val image = iterator.next()
-            if (image.imageType == ImageType.REPRESENTATIVE) {
+            if (image.imageType == ImageType.REPRESENTATIVE && !image.deleted) {
                 return image
             }
         }

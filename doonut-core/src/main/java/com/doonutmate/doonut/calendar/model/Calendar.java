@@ -1,5 +1,6 @@
 package com.doonutmate.doonut.calendar.model;
 
+import com.doonutmate.util.CommonDateUtils;
 import lombok.Builder;
 
 import java.time.Instant;
@@ -30,14 +31,21 @@ public record Calendar(
     }
 
     public Calendar toUpdated(Instant updatedAt) {
-        return Calendar.builder()
-                .id(this.id)
-                .memberId(this.memberId)
-                .calendarName(this.calendarName)
+        if (this.totalCount == 0) {
+            return this.toBuilder()
+                    .totalCount(this.totalCount + 1)
+                    .firstUploadedAt(updatedAt)
+                    .lastUploadedAt(updatedAt)
+                    .build();
+        }
+        if (CommonDateUtils.isToday(updatedAt)) {
+            return this.toBuilder()
+                    .lastUploadedAt(updatedAt)
+                    .build();
+        }
+        return this.toBuilder()
                 .totalCount(this.totalCount + 1)
-                .firstUploadedAt(this.firstUploadedAt == null ? updatedAt : this.firstUploadedAt)
                 .lastUploadedAt(updatedAt)
-                .deleted(this.deleted)
                 .build();
     }
 }

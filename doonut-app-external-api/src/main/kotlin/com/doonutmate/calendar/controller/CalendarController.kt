@@ -5,6 +5,7 @@ import com.doonutmate.calendar.controller.dto.CalendarNameResponse
 import com.doonutmate.calendar.controller.dto.CalendarReportRequest
 import com.doonutmate.calendar.controller.dto.CalendarResponse
 import com.doonutmate.calendar.controller.dto.CalendarResult
+import com.doonutmate.calendar.controller.dto.CalendarTotalCount
 import com.doonutmate.calendar.service.CalendarAppService
 import com.doonutmate.doonut.calendar.model.CalendarReportReason
 import com.doonutmate.oauth.configuration.Authorization
@@ -68,6 +69,16 @@ class CalendarController(
         memberId: Long,
     ): CalendarNameResponse {
         return CalendarNameResponse(calendarAppService.getCalendar(memberId).calendarName)
+    }
+
+    @Operation(summary = "캘린더 사진기록 횟수 조회")
+    @GetMapping("/total-count")
+    fun getMemberTotalCount(
+        @Authorization
+        @Parameter(hidden = true)
+        memberId: Long,
+    ): CalendarTotalCount {
+        return CalendarTotalCount(calendarAppService.getCalendar(memberId).totalCount)
     }
 
     @Operation(summary = "캘린더 제목 설정")

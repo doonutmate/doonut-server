@@ -152,9 +152,8 @@ public class MemberBusinessService {
         var entity = repository.findById(id)
                 .orElseThrow(RuntimeException::new); // TODO 적절한 예외로 변환 ex) NotFoundMemberException
 
-        eventPublisher.publishEvent(new MemberDeleteEvent(id));
-
         entity.delete();
-        repository.save(entity);
+
+        eventPublisher.publishEvent(new MemberDeleteEvent(id));
     }
 }

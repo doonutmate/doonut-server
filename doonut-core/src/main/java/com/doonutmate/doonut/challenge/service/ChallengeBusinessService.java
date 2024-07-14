@@ -6,9 +6,11 @@ import com.doonutmate.doonut.challenge.repository.ChallengeRepository;
 import com.doonutmate.doonut.member.event.MemberDeleteEvent;
 import com.doonutmate.util.CommonDateUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.Instant;
 import java.util.List;
@@ -59,7 +61,8 @@ public class ChallengeBusinessService {
         entity.delete();
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteByEvent(MemberDeleteEvent event) {
         var memberId = event.id();
         repository.deleteAllByMemberId(memberId);

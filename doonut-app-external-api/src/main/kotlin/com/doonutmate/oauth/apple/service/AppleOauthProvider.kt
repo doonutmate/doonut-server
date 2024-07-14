@@ -58,6 +58,10 @@ class AppleOauthProvider(
             .email(req.email)
             .oauthId(req.oauthId)
             .oauthType(OauthType.APPLE)
+            .serviceAlarm(false)
+            .lateNightAlarm(false)
+            .marketingReceiveConsent(false)
+            .marketingReceiveConsentUpdatedAt(null)
             .deleted(false)
             .build()
 

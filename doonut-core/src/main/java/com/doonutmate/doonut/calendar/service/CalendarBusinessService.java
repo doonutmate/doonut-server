@@ -4,12 +4,15 @@ import com.doonutmate.doonut.calendar.entity.CalendarEntity;
 import com.doonutmate.doonut.calendar.repository.CalendarRepository;
 import com.doonutmate.doonut.calendar.mapper.CalendarMapper;
 import com.doonutmate.doonut.calendar.model.Calendar;
+import com.doonutmate.doonut.member.event.MemberDeleteEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.Instant;
 import java.util.List;
@@ -82,4 +85,11 @@ public class CalendarBusinessService {
                 .orElseThrow();
         entity.delete();
     }
+
+    @EventListener
+    public void deleteByEvent(MemberDeleteEvent event) {
+        var memberId = event.id();
+        repository.deleteAllByMemberId(memberId);
+    }
+
 }

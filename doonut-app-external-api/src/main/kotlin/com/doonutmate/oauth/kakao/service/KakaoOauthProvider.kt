@@ -31,6 +31,10 @@ class KakaoOauthProvider(
             .email(savedInfo.kakao_account?.email)
             .oauthId(savedInfo.id)
             .oauthType(OauthType.KAKAO)
+            .serviceAlarm(false)
+            .lateNightAlarm(false)
+            .marketingReceiveConsent(false)
+            .marketingReceiveConsentUpdatedAt(null)
             .deleted(false)
             .build()
 

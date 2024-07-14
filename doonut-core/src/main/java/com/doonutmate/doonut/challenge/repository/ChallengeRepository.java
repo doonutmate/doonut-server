@@ -34,7 +34,7 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
             """)
     List<ChallengeEntity> findAllByMemberIdAfter(Long memberId, Instant startAt);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
                 UPDATE ChallengeEntity c
                 SET c.deleted = true

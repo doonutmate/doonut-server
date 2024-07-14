@@ -44,13 +44,9 @@ class CalendarFacadeService(
     }
 
     private fun extractRepresentativeImage(profileImages: List<ProfileImage>): ProfileImage? {
-        val iterator = profileImages.listIterator()
-        while (iterator.hasNext()) {
-            val image = iterator.next()
-            if (image.imageType == ImageType.REPRESENTATIVE && !image.deleted) {
-                return image
-            }
-        }
-        return null
+        return profileImages
+            .filter { !it.deleted && it.imageType == ImageType.REPRESENTATIVE }
+            .sortedByDescending { it.updatedAt }
+            .firstOrNull()
     }
 }

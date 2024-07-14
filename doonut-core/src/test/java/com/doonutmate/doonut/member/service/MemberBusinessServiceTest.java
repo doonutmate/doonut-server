@@ -7,6 +7,7 @@ import com.doonutmate.doonut.challenge.service.ChallengeBusinessService;
 import com.doonutmate.doonut.member.event.MemberDeleteEvent;
 import com.doonutmate.doonut.member.model.Member;
 import com.doonutmate.doonut.member.model.OauthType;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -116,6 +117,7 @@ class MemberBusinessServiceTest {
     }
 
     @Test
+    @DisplayName("멤버가 회원탈퇴하면 해당 멤버의 캘린더, 챌린지가 모두 삭제처리된다.")
     void deleteMember() {
 
         // given

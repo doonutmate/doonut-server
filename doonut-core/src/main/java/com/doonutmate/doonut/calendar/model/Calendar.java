@@ -38,7 +38,8 @@ public record Calendar(
                     .lastUploadedAt(updatedAt)
                     .build();
         }
-        if (CommonDateUtils.isToday(updatedAt)) {
+        // 마지막 수정 날짜가 오늘이라면 totalCount를 올리지 않는다.
+        if (CommonDateUtils.isToday(this.lastUploadedAt)) {
             return this.toBuilder()
                     .lastUploadedAt(updatedAt)
                     .build();

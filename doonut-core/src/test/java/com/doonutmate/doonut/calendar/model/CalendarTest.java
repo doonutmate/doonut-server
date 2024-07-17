@@ -85,7 +85,7 @@ class CalendarTest {
                 .memberId(10L)
                 .calendarName("부끄러운 물개님의 캘린더")
                 .firstUploadedAt(now)
-                .lastUploadedAt(now.minusSeconds(3))
+                .lastUploadedAt(now.minusSeconds(86400))
                 .totalCount(1)
                 .deleted(false)
                 .build();

@@ -124,6 +124,41 @@ class CalendarRepositoryTest {
     }
 
     @Test
+    @DisplayName("첫 캘린더를 조회할 때 삭제된 캘린더는 제외한다.")
+    void findInitialLatestCalendar4() {
+
+        // given
+        var memberId = 10L;
+        var now = Instant.now();
+        var entity1 = CalendarEntity.builder()
+                .memberId(2L)
+                .calendarName("캘린더명2")
+                .totalCount(3)
+                .firstUploadedAt(now.plusSeconds(10))
+                .lastUploadedAt(now.plusSeconds(20))
+                .deleted(true)
+                .build();
+        var entity2 = CalendarEntity.builder()
+                .memberId(3L)
+                .calendarName("캘린더명3")
+                .totalCount(4)
+                .firstUploadedAt(now.plusSeconds(10))
+                .lastUploadedAt(now.plusSeconds(20))
+                .deleted(false)
+                .build();
+        repository.saveAll(List.of(entity1, entity2));
+
+        // when
+        var actual = repository.findInitialLatestCalendar(Pageable.ofSize(10), memberId);
+
+        // then
+        assertThat(actual.getContent())
+                .hasSize(1)
+                .extracting("calendarName")
+                .containsExactly(entity2.getCalendarName());
+    }
+
+    @Test
     @DisplayName("최신 캘린더를 조회할 때 totalCount가 3 이상인 캘린더만을 가져온다.")
     void findLatestCalendar1() {
 
@@ -222,5 +257,40 @@ class CalendarRepositoryTest {
 
         // then
         assertThat(actual.getContent()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("최신 캘린더를 조회할 때 삭제된 캘린더는 제외한다.")
+    void findLatestCalendar4() {
+
+        // given
+        var memberId = 10L;
+        var now = Instant.now();
+        var entity1 = CalendarEntity.builder()
+                .memberId(2L)
+                .calendarName("캘린더명2")
+                .totalCount(3)
+                .firstUploadedAt(now.plusSeconds(10))
+                .lastUploadedAt(now.plusSeconds(20))
+                .deleted(true)
+                .build();
+        var entity2 = CalendarEntity.builder()
+                .memberId(3L)
+                .calendarName("캘린더명3")
+                .totalCount(4)
+                .firstUploadedAt(now.plusSeconds(10))
+                .lastUploadedAt(now.plusSeconds(20))
+                .deleted(false)
+                .build();
+        repository.saveAll(List.of(entity1, entity2));
+
+        // when
+        var actual = repository.findLatestCalendar(now.plusSeconds(100), Pageable.ofSize(10), memberId);
+
+        // then
+        assertThat(actual.getContent())
+                .hasSize(1)
+                .extracting("calendarName")
+                .containsExactly(entity2.getCalendarName());
     }
 }

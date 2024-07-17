@@ -18,8 +18,9 @@ public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> 
             WHERE LENGTH(c.calendarName) >= 1
             AND c.totalCount >= 3
             AND c.memberId != :memberId
+            AND c.deleted = false
             ORDER BY c.updatedAt DESC
-             """)
+            """)
     Slice<CalendarEntity> findInitialLatestCalendar(Pageable page, Long memberId);
 
     @Query("""
@@ -28,8 +29,9 @@ public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> 
             AND LENGTH(c.calendarName) >= 1
             AND c.totalCount >= 3
             AND c.memberId != :memberId
+            AND c.deleted = false
             ORDER BY c.updatedAt DESC
-             """)
+            """)
     Slice<CalendarEntity> findLatestCalendar(Instant cursor, Pageable page, Long memberId);
 
     @Modifying(clearAutomatically = true)

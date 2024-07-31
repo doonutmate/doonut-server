@@ -28,6 +28,7 @@ class CalendarFacadeService(
         val member: Member = memberBusinessService.get(calendar.memberId)
         return CalendarResponse(
             calendar.id,
+            calendar.memberId,
             calendar.totalCount,
             member.name,
             calendar.calendarName,

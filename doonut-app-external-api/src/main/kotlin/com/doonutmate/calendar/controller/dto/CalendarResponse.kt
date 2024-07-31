@@ -6,6 +6,7 @@ import java.time.Instant
 @Schema(title = "캘린더 조회 응답")
 data class CalendarResponse(
     val id: Long,
+    val memberId: Long,
     val totalCount: Int,
     val memberName: String,
     val calendarName: String,

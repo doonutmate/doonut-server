@@ -18,6 +18,7 @@ import io.jsonwebtoken.Claims
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.security.PublicKey
+import java.time.Instant
 
 @Service
 class AppleOauthProvider(
@@ -61,7 +62,7 @@ class AppleOauthProvider(
             .serviceAlarm(false)
             .lateNightAlarm(false)
             .marketingReceiveConsent(false)
-            .marketingReceiveConsentUpdatedAt(null)
+            .marketingReceiveConsentUpdatedAt(Instant.now())
             .deleted(false)
             .build()
 

@@ -9,6 +9,7 @@ import com.doonutmate.oauth.kakao.dto.KakaoIdResponse
 import com.doonutmate.oauth.kakao.dto.KakaoInfoResponse
 import com.doonutmate.oauth.service.OauthProvider
 import org.springframework.stereotype.Service
+import java.time.Instant
 
 @Service
 class KakaoOauthProvider(
@@ -34,7 +35,7 @@ class KakaoOauthProvider(
             .serviceAlarm(false)
             .lateNightAlarm(false)
             .marketingReceiveConsent(false)
-            .marketingReceiveConsentUpdatedAt(null)
+            .marketingReceiveConsentUpdatedAt(Instant.now())
             .deleted(false)
             .build()
 

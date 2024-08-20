@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ChallengeType {
-    DEFAULT(390, 390),
+    DEFAULT(1000, 1000),
     THUMBNAIL(46, 46);
 
     private static final String DEFAULT_URL_QUERY_STRING_FORMAT = "?w=%s&h=%s&swidth=%d&sheight=%d&smargin=%d&sleft=%d&fontSize=%d&stdDeviation=%d&preset=timestamp";
@@ -25,8 +25,7 @@ public enum ChallengeType {
     }
 
     public static String getDefaultUrl(String url) {
-        var queryString = String.format(DEFAULT_URL_QUERY_STRING_FORMAT, ChallengeType.DEFAULT.getWidth(), ChallengeType.DEFAULT.getHeight(),
-                DEFAULT_SWIDTH, DEFAULT_SHEIGHT, DEFAULT_SMARGIN, DEFAULT_SLEFT, DEFAULT_FONT_SIZE, DEFAULT_STD_DEVIATION);
+        var queryString = String.format(THUMBNAIL_URL_QUERY_STRING_FORMAT, ChallengeType.DEFAULT.getWidth(), ChallengeType.DEFAULT.getHeight());
         return url + queryString;
     }
 

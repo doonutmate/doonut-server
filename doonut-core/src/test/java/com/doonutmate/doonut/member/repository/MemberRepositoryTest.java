@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -33,6 +35,10 @@ class MemberRepositoryTest {
                         .oauthId(oauthInfo.getOauthId())
                         .oauthType(oauthInfo.getOauthType())
                         .build())
+                .serviceAlarm(true)
+                .lateNightAlarm(true)
+                .marketingReceiveConsent(true)
+                .marketingReceiveConsentUpdatedAt(Instant.now())
                 .build();
         repository.save(entity);
 

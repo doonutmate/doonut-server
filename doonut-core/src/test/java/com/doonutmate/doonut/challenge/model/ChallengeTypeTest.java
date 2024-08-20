@@ -10,7 +10,7 @@ class ChallengeTypeTest {
     void getDefaultUrl() {
         // given
         var imageUrl = "https://test.url";
-        var expected = String.format("https://test.url?w=%s&h=%s", ChallengeType.DEFAULT.getWidth(), ChallengeType.DEFAULT.getHeight());
+        var expected = "https://test.url?w=390&h=390&swidth=200&sheight=50&smargin=20&sleft=25&fontSize=20&stdDeviation=3&preset=timestamp";
 
         // when
         var actual = ChallengeType.getDefaultUrl(imageUrl);

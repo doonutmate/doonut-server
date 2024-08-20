@@ -1,7 +1,7 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.1.5"
-    id("io.spring.dependency-management") version "1.1.3"
+    id("org.springframework.boot") version "3.2.6"
+    id("io.spring.dependency-management") version "1.1.5"
 }
 
 group = "com.doonutmate"
@@ -21,6 +21,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation("commons-io:commons-io:2.11.0")
+
+    // lombok
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 }
 
 tasks.withType<Test> {

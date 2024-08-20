@@ -1,6 +1,8 @@
 package com.doonutmate.util;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -56,6 +58,14 @@ public class CommonDateUtils {
         return getInstant(year, month, day);
     }
 
+    public static boolean isToday(Instant instant) {
+        if (instant == null) {
+            return false;
+        }
+        var now = Instant.now().atZone(TimeZone.getTimeZone(KST_ZONE_ID).toZoneId());
+        return getDay(instant) == now.getDayOfMonth();
+    }
+
     /**
      * Calendar는 month가 0부터 시작한다.
      *
@@ -63,5 +73,15 @@ public class CommonDateUtils {
      */
     private static int getCalendarMonth(int month) {
         return month - 1;
+    }
+
+
+    public static LocalDateTime convertInstantToLocalDateTime(Instant instant) {
+        return instant.atZone(ZoneId.of(KST_ZONE_ID)).toLocalDateTime();
+    }
+
+    public static String changeTimeFormat(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        return localDateTime.format(formatter);
     }
 }

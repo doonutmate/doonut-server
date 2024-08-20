@@ -95,4 +95,26 @@ class CommonDateUtilsTest {
                 arguments(CommonDateUtils.getInstant(2024, 3, 1), 1)
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("isToday_provider")
+    void isToday(Instant instant, boolean expected) {
+
+        // when
+        var actual = CommonDateUtils.isToday(instant);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+
+    private static Stream<Arguments> isToday_provider() {
+        var now = Instant.now();
+        return Stream.of(
+                arguments(now, true),
+                arguments(null, false),
+                arguments(now.minusSeconds(86400), false),
+                arguments(now.plusSeconds(86400), false)
+        );
+    }
 }

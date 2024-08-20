@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.1.5"
-    id("io.spring.dependency-management") version "1.1.3"
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
+    id("org.springframework.boot") version "3.2.6"
+    id("io.spring.dependency-management") version "1.1.5"
+    kotlin("jvm") version "1.9.24"
+    kotlin("plugin.spring") version "1.9.24"
 }
 
 group = "com.doonutmate"
@@ -26,6 +26,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     // test
@@ -57,6 +58,13 @@ dependencies {
     // s3
     implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 
+    // actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
+
+    // firebase
+    implementation("com.google.firebase:firebase-admin:9.2.0")
+
     // localstack
     implementation("com.amazonaws:aws-java-sdk-s3")
     implementation("org.testcontainers:localstack")
@@ -68,6 +76,7 @@ tasks {
         from("../doonut-config")
         include("*.yml")
         include("*.p8")
+        include("*.json")
         into("src/main/resources")
     }
 

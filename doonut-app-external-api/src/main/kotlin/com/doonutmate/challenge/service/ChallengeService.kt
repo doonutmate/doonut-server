@@ -18,6 +18,7 @@ class ChallengeService(
             ChallengeListResponse(
                 defaultUrl = ChallengeType.getDefaultUrl(challenge.imageUrl),
                 thumbNailUrl = ChallengeType.getThumbNailUrl(challenge.imageUrl),
+                timestamp = CommonDateUtils.convertInstantToLocalDateTime(challenge.createdAt),
                 day = CommonDateUtils.getDay(challenge.createdAt),
             )
         }

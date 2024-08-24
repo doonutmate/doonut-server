@@ -6,6 +6,7 @@ import com.doonutmate.doonut.calendar.mapper.CalendarMapper;
 import com.doonutmate.doonut.calendar.model.Calendar;
 import com.doonutmate.doonut.member.event.MemberDeleteEvent;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -90,6 +92,10 @@ public class CalendarBusinessService {
     public void deleteByEvent(MemberDeleteEvent event) {
         var memberId = event.id();
         repository.deleteAllByMemberId(memberId);
+    }
+
+    public void logTest(String message) {
+        log.error(message);
     }
 
 }

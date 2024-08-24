@@ -29,10 +29,10 @@ class CalendarAppService(
             ?: throw CalendarException("캘린더를 찾을 수 없습니다.")
 
         if (calendar.calendarName.isNullOrBlank() || calendar.totalCount < COMMUNITY_ACCESS_MINIMUM_COUNT) {
-            log.warn { "커뮤니티 에러!!! memberId: $memberId, calendarName: ${calendar.calendarName}, totalCount: ${calendar.totalCount} " }
+            log.error { "커뮤니티 에러!!! memberId: $memberId, calendarName: ${calendar.calendarName}, totalCount: ${calendar.totalCount} " }
             throw CalendarException(ErrorCode.COMMUNITY_NOT_ACCESSIBLE, "커뮤니티는 캘린더명을 설정하고, 3개 이상의 기록이 있어야 확인할 수 있습니다.")
         }
-        log.warn { "[커뮤니티 정상 조회] memberId: $memberId, calendarName: ${calendar.calendarName}, totalCount: ${calendar.totalCount} " }
+        log.error { "[커뮤니티 정상 조회] memberId: $memberId, calendarName: ${calendar.calendarName}, totalCount: ${calendar.totalCount} " }
 
         val calendars: Slice<CalendarResponse> = getBoards(time, PageRequest.of(0, size), memberId)
         return CalendarResult(calendars.toList(), calendars.hasNext())

@@ -69,6 +69,9 @@ dependencies {
     implementation("com.amazonaws:aws-java-sdk-s3")
     implementation("org.testcontainers:localstack")
     testImplementation("org.testcontainers:junit-jupiter")
+
+    // logging
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
 }
 
 tasks {

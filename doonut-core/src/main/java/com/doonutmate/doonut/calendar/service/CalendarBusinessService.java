@@ -94,8 +94,4 @@ public class CalendarBusinessService {
         repository.deleteAllByMemberId(memberId);
     }
 
-    public void logTest(String message) {
-        log.error(message);
-    }
-
 }

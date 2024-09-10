@@ -4,11 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum ChallengeType {
-    DEFAULT(390, 390),
+    DEFAULT(1000, 1000),
     THUMBNAIL(46, 46);
 
-    private static final String DEFAULT_URL_QUERY_STRING_FORMAT = "?w=%s&h=%s&swidth=%d&sheight=%d&smargin=%d&sleft=%d&fontSize=%d&stdDeviation=%d&preset=timestamp";
-    private static final String THUMBNAIL_URL_QUERY_STRING_FORMAT = "?w=%s&h=%s";
+    private static final String URL_QUERY_STRING_FORMAT = "?w=%s&h=%s";
     private static final int DEFAULT_SWIDTH = 200;
     private static final int DEFAULT_SHEIGHT = 50;
     private static final int DEFAULT_SMARGIN = 20;
@@ -25,13 +24,12 @@ public enum ChallengeType {
     }
 
     public static String getDefaultUrl(String url) {
-        var queryString = String.format(DEFAULT_URL_QUERY_STRING_FORMAT, ChallengeType.DEFAULT.getWidth(), ChallengeType.DEFAULT.getHeight(),
-                DEFAULT_SWIDTH, DEFAULT_SHEIGHT, DEFAULT_SMARGIN, DEFAULT_SLEFT, DEFAULT_FONT_SIZE, DEFAULT_STD_DEVIATION);
+        var queryString = String.format(URL_QUERY_STRING_FORMAT, ChallengeType.DEFAULT.getWidth(), ChallengeType.DEFAULT.getHeight());
         return url + queryString;
     }
 
     public static String getThumbNailUrl(String url) {
-        var queryString = String.format(THUMBNAIL_URL_QUERY_STRING_FORMAT, ChallengeType.THUMBNAIL.getWidth(), ChallengeType.THUMBNAIL.getHeight());
+        var queryString = String.format(URL_QUERY_STRING_FORMAT, ChallengeType.THUMBNAIL.getWidth(), ChallengeType.THUMBNAIL.getHeight());
         return url + queryString;
     }
 }

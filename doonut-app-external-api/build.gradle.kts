@@ -27,12 +27,15 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "mockito-core")
+    }
 
     // test
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
-    testImplementation("io.kotest:kotest-framework-datatest:5.6.2")
-    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("com.ninja-squad:springmockk:3.1.2")
+    testImplementation("io.mockk:mockk:1.13.7")
+    testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
 
     // database
     runtimeOnly("com.h2database:h2")

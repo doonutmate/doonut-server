@@ -83,6 +83,13 @@ tasks {
         into("src/main/resources")
     }
 
+    copy {
+        from("../doonut-config")
+        include("application.yml")
+        include("application-test.yml")
+        into("src/test/resources")
+    }
+
     withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs += "-Xjsr305=strict"

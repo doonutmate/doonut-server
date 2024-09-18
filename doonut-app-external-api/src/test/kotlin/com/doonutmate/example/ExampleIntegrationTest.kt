@@ -3,16 +3,12 @@ package com.doonutmate.example
 import com.doonutmate.example.entity.ExampleEntity
 import com.doonutmate.example.repository.ExampleRepository
 import com.doonutmate.example.service.ExampleAppService
+import com.doonutmate.support.IntegrationTest
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.longs.shouldNotBeZero
 import io.kotest.matchers.shouldBe
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.TestConstructor
 
-@ActiveProfiles("test")
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-@SpringBootTest
+@IntegrationTest
 class ExampleIntegrationTest(
     private val exampleAppService: ExampleAppService,
     private val exampleRepository: ExampleRepository,

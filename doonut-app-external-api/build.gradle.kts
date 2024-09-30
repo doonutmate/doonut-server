@@ -5,6 +5,9 @@ plugins {
     id("io.spring.dependency-management") version "1.1.5"
     kotlin("jvm") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
+
+    id("jacoco")
+    id("org.sonarqube") version "4.2.1.3168"
 }
 
 group = "com.doonutmate"
@@ -16,6 +19,21 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "doonutmate_doonut-server")
+        property("sonar.organization", "doonutmate")
+        property("sonar.host.url", "https://sonarcloud.io")
+        // sonar additional settings
+        property("sonar.sources", "src")
+        property("sonar.language", "Kotlin")
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.test.inclusions", "**/*Test.java")
+        property("sonar.exclusions", "**/test/**, **/Q*.kt, **/*Doc*.kt, **/resources/** ,**/*Application*.kt , **/*Config*.kt, **/*Dto*.kt, **/*Request*.kt, **/*Response*.kt ,**/*Exception*.kt ,**/*ErrorCode*.kt")
+        property("sonar.java.coveragePlugin", "jacoco")
+    }
 }
 
 dependencies {
@@ -99,5 +117,21 @@ tasks {
 
     withType<Test> {
         enabled = false
+    }
+
+    test {
+        finalizedBy(jacocoTestReport) // report is always generated after tests run
+    }
+
+    jacocoTestReport {
+        dependsOn(test) // tests are required to run before generating the report
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.required.set(true)
+            csv.required.set(false)
+            html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+        }
     }
 }

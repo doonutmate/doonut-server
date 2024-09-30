@@ -119,19 +119,18 @@ tasks {
         enabled = false
     }
 
-    test {
-        finalizedBy(jacocoTestReport) // report is always generated after tests run
-    }
-
     jacocoTestReport {
         dependsOn(test) // tests are required to run before generating the report
-    }
-
-    jacocoTestReport {
         reports {
             xml.required.set(true)
-            csv.required.set(false)
-            html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+            html.required.set(true)
+        }
+    }
+    test {
+        finalizedBy(jacocoTestReport) // report is always generated after tests run
+        reports {
+            junitXml.required.set(false)
+            html.required.set(true)
         }
     }
 }

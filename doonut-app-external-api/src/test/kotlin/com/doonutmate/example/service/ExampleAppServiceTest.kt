@@ -40,4 +40,3 @@ class ExampleAppServiceTest : BehaviorSpec({
         }
     }
 })
-

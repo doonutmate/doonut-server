@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.spring") version "1.9.24"
 
     id("jacoco")
-    id("org.sonarqube") version "4.2.1.3168"
+    id("org.sonarqube") version "5.1.0.4882"
 }
 
 group = "com.doonutmate"
@@ -23,8 +23,8 @@ repositories {
 
 sonarqube {
     properties {
-        property("sonar.projectKey", "doonutmate123")
-        property("sonar.organization", "doonutmate_sonarcloud")
+        property("sonar.projectKey", "doonut123")
+        property("sonar.organization", "doonutmate")
         property("sonar.host.url", "https://sonarcloud.io")
         // sonar additional settings
         property("sonar.sources", "src")

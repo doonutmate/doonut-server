@@ -23,8 +23,8 @@ repositories {
 
 sonarqube {
     properties {
-        property("sonar.projectKey", "doonut123")
-        property("sonar.organization", "doonutmate")
+        property("sonar.projectKey", "doonutmate123")
+        property("sonar.organization", "doonutmate_sonarcloud")
         property("sonar.host.url", "https://sonarcloud.io")
         // sonar additional settings
         property("sonar.sources", "src")
